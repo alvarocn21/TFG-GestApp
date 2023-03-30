@@ -147,7 +147,7 @@ const CrearUsuarios: FC<{
                         setDiasHabiles(0);
                         setPermisos("Usuario")
                         reloadHandler();
-                    })
+                    });
                 }
             }}
             >Crear Usuario</button>
