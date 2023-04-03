@@ -2,25 +2,25 @@ import { ApolloError } from "apollo-server";
 import { ObjectId } from "mongodb";
 import { v4 as uuid } from "uuid";
 import { compareSync, genSaltSync, hashSync } from "bcrypt";
-import { Console } from "console";
 
 export const Mutation = {
     logIn: async (parent: any, args: any, context: any) => {
         const db = context.db;
         const { correo, contrasena } = args;
-        
-        const user = await db.collection("Usuarios").findOne({ correo });
+
+        const user = await db.collection("Usuarios").findOne({ correo: correo.toLowerCase() });
 
         if (user) {
             if (compareSync(contrasena, user.contrasena) == true) {
                 const token = uuid();
+                console.log("HOLA")
                 await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { token: token } });
                 return {
                     _id: user._id,
                     nombre: user.nombre,
                     apellido1: user.apellido1,
                     apellido2: user.apellido2,
-                    telefono: user.apellido2,
+                    telefono: user.telefono,
                     contrasena: user.contrasena,
                     token,
                     corre: user.correo,
@@ -44,7 +44,7 @@ export const Mutation = {
             apellido1: user.apellido1,
             apellido2: user.apellido2,
             telefono: user.apellido2,
-            contrasena: "********",
+            contrasena: user.contrasena,
             token: null,
             corre: user.correo,
             horasSemanales: user.horasSemanales,
@@ -54,7 +54,7 @@ export const Mutation = {
     },
     createUser: async (parent: any, args: any, context: any) => {
         const db = context.db;
-        const {nombre, apellido1, apellido2, telefono, contrasena, correo, horasSemanales, diasHabiles, permisos} = args;
+        const { nombre, apellido1, apellido2, telefono, contrasena, correo, horasSemanales, diasHabiles, permisos } = args;
 
         const usuario = await db.collection("Usuarios").findOne({ correo: { $regex: correo, $options: 'i' } });
 
@@ -64,7 +64,9 @@ export const Mutation = {
             const salt = genSaltSync(contrasena.length);
             const hash = hashSync(contrasena, salt);
 
-            const insertedId = await db.collection("Usuarios").insertOne({ nombre, apellido1, apellido2, telefono, contrasena: hash, token: null, correo, horasSemanales, diasHabiles, permisos });
+            console.log(hash)
+
+            const insertedId = await db.collection("Usuarios").insertOne({ nombre, apellido1, apellido2, telefono, contrasena: hash, token: null, correo: correo.toLowerCase(), horasSemanales, diasHabiles, permisos });
 
             return {
                 _id: insertedId.insertedId,
@@ -91,7 +93,7 @@ export const Mutation = {
         const fechaInicio = new Date(Fdesde)
         const fechaFin = new Date(Fhasta)
 
-        if(fechaInicio < new Date() || fechaFin < new Date()) return new ApolloError("Las fechas tienen que ser posteriores al dia de hoy.");
+        if (fechaInicio < new Date() || fechaFin < new Date()) return new ApolloError("Las fechas tienen que ser posteriores al dia de hoy.");
 
         if (fechaInicio > fechaFin) {
             return new ApolloError("La fecha de inicio es mayor a la fecha fin");
@@ -108,9 +110,10 @@ export const Mutation = {
         } else {
             await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { $set: { diasHabiles: user.diasHabiles - diasVacas.length } });
             const usuario = await db.collection("Usuarios").findOne({ _id: user._id });
-            const insertedId = await db.collection("Vacaciones").insertOne({ persona: usuario._id, diasVacas, estado: "Solicitada" });
+            const insertedId = await db.collection("Vacaciones").insertOne({ persona: usuario._id, correoPersona: usuario.correo, diasVacas, estado: "Solicitada", });
             return {
                 _id: insertedId.insertedId,
+                correoPersona: usuario._id,
                 persona: user._id,
                 diasVacas,
                 estado: "Solicitada"
@@ -120,13 +123,12 @@ export const Mutation = {
     gestionaVacaciones: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
         const { _id, estado } = args;
-        console.log(user._id)
-        const Vacaciones = await db.collection("Vacaciones").findOne({ _id: new ObjectId(_id), estado: "Solicitada"});
-        console.log(user._id)
+
+        const Vacaciones = await db.collection("Vacaciones").findOne({ _id: new ObjectId(_id), estado: "Solicitada" });
+
         if (Vacaciones) {
-            if(estado == "Denegada"){
-                console.log(user._id)
-                await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { diasHabiles: user.diasHabiles + Vacaciones.diasVacas.length } });
+            if (estado == "Denegada") {
+                await db.collection("Usuarios").findOneAndUpdate({ _id: Vacaciones.persona }, { '$set': { diasHabiles: user.diasHabiles + Vacaciones.diasVacas.length } });
                 await db.collection("Vacaciones").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { estado: "Denegada" } });
             } else await db.collection("Vacaciones").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { estado: "Aceptada" } });
         }
@@ -137,11 +139,15 @@ export const Mutation = {
         const { db, user } = context;
         const { _id } = args;
 
-        const Vacaciones = await db.collection("Vacaciones").findOne({ _id: new ObjectId(_id)});
+        const Vacaciones = await db.collection("Vacaciones").findOne({ _id: new ObjectId(_id) });
 
         if (Vacaciones) {
-            await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { diasHabiles: user.diasHabiles + Vacaciones.diasVacas.length } });
-            await db.collection("Vacaciones").deleteOne({ _id: new ObjectId(_id) })
+            if (Vacaciones.estado == "Solicitada") {
+                await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { diasHabiles: user.diasHabiles + Vacaciones.diasVacas.length } });
+                await db.collection("Vacaciones").deleteOne({ _id: new ObjectId(_id) })
+            }else{
+                return new ApolloError("Solo se pueden borrar Vacaciones en estado Solicitadas");
+            }
         }
         else return new ApolloError("Registro no encontrado");
         return Vacaciones;
@@ -151,14 +157,11 @@ export const Mutation = {
         const { db, user } = context;
         const { hora, comentario } = args;
 
-        const f = new Date();
-        const fecha = f.getFullYear() + "-" + f.getMonth() + "-" + f.getDate();
-
-        const insertedId = await db.collection("Fichaje").insertOne({ persona: user._id, fecha, entradasSalidas: hora, comentario: comentario });
+        const insertedId = await db.collection("Fichaje").insertOne({ persona: user._id, fecha: new Date().toISOString(), entradasSalidas: hora, comentario: comentario });
         return {
             _id: insertedId.insertedId,
             persona: user._id,
-            fecha,
+            fecha: new Date().toISOString(),
             entradasSalidas: hora,
             comentario: comentario,
         }
@@ -193,14 +196,11 @@ export const Mutation = {
         const { db, user } = context;
         const { tiempo, trabajoRealizado, Fdesde, comentario } = args;
 
-        const f = new Date();
-        const fecha = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate();
-
-        const insertedId = await db.collection("TrabajoReg").insertOne({ persona: user._id, tiempo, fecha, trabajoRealizado, Fdesde, comentario });
+        const insertedId = await db.collection("TrabajoReg").insertOne({ persona: user._id, tiempo, fecha: new Date().toISOString(), trabajoRealizado, Fdesde, comentario });
         return {
             _id: insertedId.insertedId,
             persona: user._id,
-            fecha,
+            fecha: new Date().toISOString(),
             tiempo,
             trabajoRealizado,
             Fdesde,

@@ -1,6 +1,5 @@
 import { FC, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import VacasAusenHoras from "./Vacas"
 import Fichaje from "./Fichaje"
 import RegHoras from "./RegHoras"
 import LogIn from "./LogIn";
@@ -20,7 +19,7 @@ query Query {
 `
 
 const LOGOUT = gql`
-mutation{
+mutation Mutation{
     logOut{
         _id
     }
@@ -47,12 +46,13 @@ const Contenedor: FC<{
 
   const fecha = diasSemana[f.getDay()] + " " + f.getDate() + " de " + meses[f.getMonth()] + " del " + f.getFullYear();
 
+  
   const { data } = useQuery<{ getUser: Usuario }>(
     GETUSER,
     {
       context: {
         headers: {
-          authorization: localStorage.getItem("token")
+          authorization: token
         }
       },
     }
@@ -69,10 +69,9 @@ const Contenedor: FC<{
   });
 
   if (loading) return <div>Loading...</div>;
-  if (data && error) return <div>Error :(</div>;
+  if (error) return <div>Error :(</div>;
 
   return (
-    <div>
       <div className="h-screen ">
         {token ? (
           <div>
@@ -100,7 +99,7 @@ const Contenedor: FC<{
                         <path d="M10 20a10 10 0 110-20 10 10 0 010 20zm2-2.25a8 8 0 100-16 8 8 0 000 16zm-4-5.75a1 1 0 011-1 1 1 0 011 1v4a1 1 0 01-2 0v-4zm6 0a1 1 0 011-1 1 1 0 011 1v4a1 1 0 01-2 0v-4z" />
                       </svg>Registro de horas
                     </button>
-                    {data?.getUser.permisos == "Administrador" &&
+                    {data?.getUser.permisos === "Administrador" &&
                       <button onClick={() => setPantallas(4)} className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm">
                         <svg stroke="currentColor" viewBox="0 0 24 24" className="h-4 w-4">
                           <path d="M10 20a10 10 0 110-20 10 10 0 010 20zm2-2.25a8 8 0 100-16 8 8 0 000 16zm-4-5.75a1 1 0 011-1 1 1 0 011 1v4a1 1 0 01-2 0v-4zm6 0a1 1 0 011-1 1 1 0 011 1v4a1 1 0 01-2 0v-4z" />
@@ -175,7 +174,6 @@ const Contenedor: FC<{
           <LogIn reloadHandler={reloadHandler}></LogIn>
         )}
       </div>
-    </div>
   );
 }
 

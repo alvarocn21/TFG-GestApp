@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
 type TrabajoReg = {
@@ -106,7 +106,7 @@ const RegHoras: FC<{
                             setOrden(2);
                         }}>Mayor hora Inicio</button>
                     </div>
-                    {orden == 1 &&
+                    {orden === 1 &&
                         <div>
                             {registros?.sort((o1, o2) => {
                                 if (parseInt(o1.Fdesde[0] + o1.Fdesde[1]) + (parseInt(o1.Fdesde[3] + o1.Fdesde[4]) / 60) < parseInt(o2.Fdesde[0] + o2.Fdesde[1]) + (parseInt(o2.Fdesde[3] + o2.Fdesde[4]) / 60)) return -1;
@@ -145,7 +145,7 @@ const RegHoras: FC<{
                             ))}
                         </div>
                     }
-                     {orden == 2 &&
+                     {orden === 2 &&
                         <div>
                             {registros?.sort((o1, o2) => {
                                 if (parseInt(o1.Fdesde[0] + o1.Fdesde[1]) + (parseInt(o1.Fdesde[3] + o1.Fdesde[4]) / 60) < parseInt(o2.Fdesde[0] + o2.Fdesde[1]) + (parseInt(o2.Fdesde[3] + o2.Fdesde[4]) / 60)) return -1;

@@ -2,8 +2,14 @@ import React, { FC, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
 
 type vacas = {
+    _id: string;
     diasVacas: string[];
     estado: string
+}
+
+type mes = {
+    dias: string[];
+    meses: string;
 }
 
 const GETMES = gql`
@@ -25,7 +31,7 @@ const DiasMes: FC<{
     let [año, setAño] = useState<number>(fecha.getFullYear());
     let mes = meses[numeroMes] + "," + año;
 
-    const { data, loading, error } = useQuery<{ getMes: any }>(
+    const { data, loading, error } = useQuery<{ getMes: mes }>(
         GETMES,
         {
             variables: {
@@ -46,14 +52,14 @@ const DiasMes: FC<{
         <div>
             <div className="flex justify-center p-4 underline underline-offset-1 font-serif">{data?.getMes.meses}</div>
             <div className="grid grid-cols-7 mx-5">
-                {data?.getMes.dias.map((diaMes: any) => (
-                    <div className="border-colapse h-20 border-2 border-black text bg-amber-100 border-double">
+                {data?.getMes.dias.map((diaMes: string) => (
+                    <div key={diaMes} className="border-colapse h-20 border-2 border-black text bg-amber-100 border-double">
                         <div className="text-center">{new Date(diaMes).toLocaleDateString()}</div>
                         {vacaciones.vacaciones?.map((a: vacas) => (
-                            <div>
-                                {a.diasVacas.map((dia: string) => (
-                                    <div>
-                                        {(new Date(diaMes).toLocaleDateString() === new Date(dia.substring(0,10)).toLocaleDateString() ?
+                            <div key={a._id}>
+                                {a.estado !== "Denegada" && a.diasVacas.map((dia: string) => (
+                                    <div key={dia}>
+                                        {(new Date(diaMes).toLocaleDateString() === new Date(dia.substring(0,10)).toLocaleDateString()?
                                             <div className=" text-rose-500 text-center">VACAS</div>
                                             :
                                             <div className=""></div>
@@ -62,7 +68,6 @@ const DiasMes: FC<{
                                 ))}
                             </div>
                         ))}
-
                     </div>
                 ))}
             </div>

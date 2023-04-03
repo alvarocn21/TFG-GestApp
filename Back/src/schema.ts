@@ -18,6 +18,7 @@ export const typeDefs = gql`
     type Vacaciones {
         _id: String!
         persona: String!
+        correoPersona: String!
         diasVacas: [String!]
         estado: String!
     }

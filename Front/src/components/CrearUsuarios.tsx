@@ -116,7 +116,7 @@ const CrearUsuarios: FC<{
                 </div>
             </div>
             <button className="glass p-2 bg-amber-700 btn-group mx-56 my-10" onClick={() => {
-                if (nombre == "" || apellido1 == "" || apellido2 == "" || telefono == "" || contrasena == "" || correo == "" || horasSemanales == 0 || permisos == "") {
+                if (nombre === "" || apellido1 === "" || apellido2 === "" || telefono === "" || contrasena === "" || correo === "" || horasSemanales === 0 || permisos === "") {
                     window.alert("Falta por añadir algun campo OBLIGATORIO");
                 } else {
                     createUser({

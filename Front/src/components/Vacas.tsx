@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import DiasMes from "./DiasMes";
 import VacasAdmin from "./VacasAdmin";
@@ -74,7 +74,7 @@ const Vacas: FC<{
                     <button className="glass p-2 bg-amber-700 " onClick={() => {
                         setPantalla(2);
                     }}>Gestionar Vacaciones</button>
-                    <DiasMes vacaciones={data?.getVacacionesUsu}></DiasMes>
+                    <DiasMes key={""} vacaciones={data?.getVacacionesUsu}></DiasMes>
                 </div>
             }
             {pantalla === 1 &&
@@ -112,8 +112,8 @@ const Vacas: FC<{
                         else if (new Date(hasta) < new Date() || new Date(desde) < new Date()) window.alert("Las fechas tienen que ser posteriores al dia de hoy.")
                         else {
                             let entra = false;
-                            data?.getVacacionesUsu.map((e) => {
-                                e.diasVacas.map((a) => {
+                            data?.getVacacionesUsu.forEach((e) => {
+                                e.diasVacas.forEach((a) => {
                                     if (new Date(a) <= new Date(hasta) && new Date(a) >= new Date(desde)) entra = true;
                                 })
                             })
@@ -148,34 +148,36 @@ const Vacas: FC<{
                     <div className="underline underline-offset-1 mx-5">Tus Vacaciones</div>
                     <div className="grid grid-cols-3">
                         {data?.getVacacionesUsu.map((e) => (
-                            <div className="m-5 border-colapse h-max w-max border-2 border-black text bg-amber-100 border-double p-2">
+                            <div key={e._id} className="m-5 border-colapse h-max w-max border-2 border-black text bg-amber-100 border-double p-2">
                                 <div className="font-bold">Dias</div>
-                                {new Date(e.diasVacas[0]).toLocaleDateString()} - {new Date(e.diasVacas[e.diasVacas.length -1]).toLocaleDateString()}
+                                {new Date(e.diasVacas[0]).toLocaleDateString()} - {new Date(e.diasVacas[e.diasVacas.length - 1]).toLocaleDateString()}
                                 <div className="font-bold">Estado</div>
                                 <div className="p-2">{e.estado}</div>
                                 <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
-                                    deleteVacas({
-                                        variables: {
-                                            id: e._id,
-                                        },
-                                        context: {
-                                            headers: {
-                                                authorization: localStorage.getItem("token")
+                                    if (e.estado === "Solicitada") {
+                                        deleteVacas({
+                                            variables: {
+                                                id: e._id,
+                                            },
+                                            context: {
+                                                headers: {
+                                                    authorization: localStorage.getItem("token")
+                                                }
                                             }
-                                        }
-                                    }).then(() => {
-                                        reloadHandler();
-                                    });
+                                        }).then(() => {
+                                            reloadHandler();
+                                        });
+                                    } else window.alert("Solo se pueden borrar Vacaciones en estado Solicitadas");
                                 }}>Eliminar</button>
                             </div>
                         ))}
                     </div>
-                    {permisos == "Administrador" &&
+                    {permisos === "Administrador" &&
                         <VacasAdmin reloadHandler={reloadHandler}></VacasAdmin>
                     }
                 </div>
             }
-        </div >
+        </div>
     )
 }
 

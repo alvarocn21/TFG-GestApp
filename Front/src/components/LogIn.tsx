@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 
 const LOGIN = gql`
-mutation Mutation($correo: String!, $contrasena: String!) {
+mutation LogIn($correo: String!, $contrasena: String!) {
     logIn(correo: $correo, contrasena: $contrasena) {
       token
     }
@@ -60,6 +60,7 @@ const LogIn: FC<{
                             </div>
                             <div className="form-control mt-6">
                                 <label htmlFor="log" className="btn btn-primary" onClick={() => {
+                                    console.log("HOA")
                                     login({
                                         variables: {
                                             correo,
