@@ -46,7 +46,8 @@ export const typeDefs = gql`
     }
 
     type Query{
-        getVacaciones: [Vacaciones]
+        getVacacionesUsu: [Vacaciones]
+        getVacacionesAdmin: [Vacaciones]
         getFichaje: [Fichaje]
         getTrabajoReg: [TrabajoReg]
         getUser: Persona
@@ -70,6 +71,7 @@ export const typeDefs = gql`
         deleteFichaje(id: String): Fichaje
 
         setVacaciones(Fdesde: String, Fhasta: String): Vacaciones
+        gestionaVacaciones(_id: String, estado: String): Vacaciones
         deleteVacaciones(_id: String): Vacaciones
     }
 `

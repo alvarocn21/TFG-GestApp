@@ -33,8 +33,8 @@ const run = async () => {
     },
   });
 
-  server.listen(4000).then(() => {
-    console.log(`Server ready on 4000`);
+  server.listen({ port: 4000, host: '0.0.0.0' }).then(({url}) => {
+    console.log(`Server ready on ${url}`);
   });
 }
 try {

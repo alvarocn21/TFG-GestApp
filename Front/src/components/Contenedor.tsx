@@ -1,10 +1,11 @@
 import { FC, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import VacasAusenHoras from "./VacasAusenHoras"
+import VacasAusenHoras from "./Vacas"
 import Fichaje from "./Fichaje"
 import RegHoras from "./RegHoras"
 import LogIn from "./LogIn";
 import CrearUsuarios from "./CrearUsuarios";
+import Vacas from "./Vacas";
 
 const GETUSER = gql`
 query Query {
@@ -134,7 +135,7 @@ const Contenedor: FC<{
               </div>
             }
             {pantallas === 1 &&
-              <VacasAusenHoras diasHabiles={data?.getUser.diasHabiles} reloadHandler={reloadHandler}></VacasAusenHoras>
+              <Vacas diasHabiles={data?.getUser.diasHabiles} reloadHandler={reloadHandler} permisos={data?.getUser.permisos}></Vacas>
             }
             {pantallas === 2 &&
               <Fichaje horasSemanales={data?.getUser.horasSemanales} reloadHandler={reloadHandler}></Fichaje>

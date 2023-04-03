@@ -1,11 +1,20 @@
 export const Query = {
-    getVacaciones: async (parent: any, args: any, context: any) => { 
+    getVacacionesUsu: async (parent: any, args: any, context: any) => { 
         const db = context.db;
         const user = context.user;
 
         const vacaciones: any = await db.collection("Vacaciones").find({persona: user._id}).toArray();
         if (vacaciones) return vacaciones;
-        else return 0;
+        else return "Aun no hay Vacaciones solicitadas";
+    },
+    getVacacionesAdmin: async (parent: any, args: any, context: any) => { 
+        const db = context.db;
+        const user = context.user;
+
+        const vacaciones: any = await db.collection("Vacaciones").find({diasVacas: {$gt: new Date().toISOString()}}).toArray();
+
+        if(vacaciones) return vacaciones;
+        else return "Aun no hay Vacaciones solicitadas";
     },
     getFichaje: async (parent: any, args: any, context: any) => {
         const db = context.db;
@@ -15,7 +24,7 @@ export const Query = {
         const fecha = f.getFullYear() + "-" + f.getMonth() + "-" + f.getDate();
         const fichaje = await db.collection("Fichaje").find({ persona: user._id, fecha}).toArray();
         if (fichaje) return fichaje;
-        else return 0;
+        else return "Aun no hay Fichajes solicitados";
     },
     getTrabajoReg: async (parent: any, args: any, context: any) => {
         const db = context.db;
@@ -25,13 +34,13 @@ export const Query = {
         const fecha = f.getFullYear() + "-" + (f.getMonth()+1) + "-" + f.getDate();
         const trabajoReg = await db.collection("TrabajoReg").find({ persona: user._id, fecha}).toArray();
         if (trabajoReg) return trabajoReg;
-        else return 0;
+        else return "Aun no hay Trabajo registrado";
     },
     getUser: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
         
         if(user) return user;
-        else return 0;
+        else return "Usuario no existe";
     },
     getMes: async (parent: any, args: any, context: any) => {
         const db = context.db;
@@ -39,6 +48,6 @@ export const Query = {
 
         const diasMeses = await db.collection("DiasMeses").findOne({ meses: mes });
         if (diasMeses) return diasMeses;
-        else return 0;
+        else return "Este mes no esta añadido";
     }
 }
