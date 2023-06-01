@@ -58,10 +58,12 @@ export const typeDefs = gql`
     type Mutation{
         logIn(correo: String!, contrasena: String!): Persona!
         logOut: Persona!
+        recuperarContrasena(correo: String): Persona!
 
         masMeses: Int
 
         createUser(nombre: String, apellido1: String, apellido2: String, telefono: String, contrasena: String, correo: String, horasSemanales: Float, diasHabiles: Float, permisos: String): Persona
+        editUser(_id: String, contrasena: String): Persona
 
         setTrabajoReg(tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg
         editTrabajoReg(id: String, tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg

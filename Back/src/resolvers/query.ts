@@ -10,22 +10,21 @@ export const Query = {
     getVacacionesAdmin: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
 
-        const vacaciones: any = await db.collection("Vacaciones").find({ diasVacas: { $gt: new Date().toISOString() } }).toArray();
+        const vacaciones: any = await db.collection("Vacaciones").find({ diasVacas: { $gt: new Date().toLocaleDateString() } }).toArray();
 
         if (vacaciones) return vacaciones;
         else return "Aun no hay Vacaciones solicitadas";
     },
     getFichaje: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
-
-        const fichaje = await db.collection("Fichaje").find({ persona: user._id, fecha: new Date().toISOString() }).toArray();
+        const fichaje = await db.collection("Fichaje").find({ persona: user._id, fecha: new Date().toLocaleDateString() }).toArray();
         if (fichaje) return fichaje;
         else return "Aun no hay Fichajes solicitados";
     },
     getTrabajoReg: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
 
-        const trabajoReg = await db.collection("TrabajoReg").find({ persona: user._id, fecha: new Date().toISOString() }).toArray();
+        const trabajoReg = await db.collection("TrabajoReg").find({ persona: user._id, fecha: new Date().toLocaleDateString() }).toArray();
 
         if (trabajoReg) return trabajoReg;
         else return "Aun no hay Trabajo registrado";

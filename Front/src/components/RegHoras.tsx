@@ -89,9 +89,6 @@ const RegHoras: FC<{
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error :(</div>;
 
-    console.log(orden);
-
-
     return (
         <div className="flex h-full flex-1 flex-col md:pl-[190px]">
             {pantalla === 0 &&

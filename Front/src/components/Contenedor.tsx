@@ -5,6 +5,7 @@ import RegHoras from "./RegHoras"
 import LogIn from "./LogIn";
 import CrearUsuarios from "./CrearUsuarios";
 import Vacas from "./Vacas";
+import PerfilUsuario from "./PerfilUsuario";
 
 const GETUSER = gql`
 query Query {
@@ -14,16 +15,20 @@ query Query {
     _id
     nombre
     permisos
+    correo
+    telefono
+    apellido1
+    apellido2
   }
 }
 `
 
 const LOGOUT = gql`
-mutation Mutation{
-    logOut{
-        _id
-    }
+mutation Mutation($id: String, $contrasena: String) {
+  editUser(_id: $id, contrasena: $contrasena) {
+    _id
   }
+}
 `
 
 type Usuario = {
@@ -32,6 +37,10 @@ type Usuario = {
   _id: string;
   nombre: string;
   permisos: string;
+  correo: string;
+  telefono: string;
+  apellido1: string;
+  apellido2: string;
 }
 
 const Contenedor: FC<{
@@ -99,6 +108,11 @@ const Contenedor: FC<{
                         <path d="M10 20a10 10 0 110-20 10 10 0 010 20zm2-2.25a8 8 0 100-16 8 8 0 000 16zm-4-5.75a1 1 0 011-1 1 1 0 011 1v4a1 1 0 01-2 0v-4zm6 0a1 1 0 011-1 1 1 0 011 1v4a1 1 0 01-2 0v-4z" />
                       </svg>Registro de horas
                     </button>
+                    <button onClick={() => setPantallas(5)} className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm">
+                      <svg stroke="currentColor" viewBox="0 0 24 24" className="h-4 w-4">
+                        <path d="M10 20a10 10 0 110-20 10 10 0 010 20zm2-2.25a8 8 0 100-16 8 8 0 000 16zm-4-5.75a1 1 0 011-1 1 1 0 011 1v4a1 1 0 01-2 0v-4zm6 0a1 1 0 011-1 1 1 0 011 1v4a1 1 0 01-2 0v-4z" />
+                      </svg>Perfil
+                    </button>
                     {data?.getUser.permisos === "Administrador" &&
                       <button onClick={() => setPantallas(4)} className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm">
                         <svg stroke="currentColor" viewBox="0 0 24 24" className="h-4 w-4">
@@ -144,6 +158,9 @@ const Contenedor: FC<{
             }
             {pantallas === 4 &&
               <CrearUsuarios reloadHandler={reloadHandler}></CrearUsuarios>
+            }
+            {pantallas === 5 &&
+              <PerfilUsuario data={data?.getUser} reloadHandler={reloadHandler}></PerfilUsuario>
             }
             {pantallas === 0 &&
               <footer className="footer flex flex-row p-10 bg-neutral text-neutral-content bottom-0 md:pl-[190px]">

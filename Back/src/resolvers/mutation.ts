@@ -2,6 +2,7 @@ import { ApolloError } from "apollo-server";
 import { ObjectId } from "mongodb";
 import { v4 as uuid } from "uuid";
 import { compareSync, genSaltSync, hashSync } from "bcrypt";
+import nodemailer from "nodemailer";
 
 export const Mutation = {
     logIn: async (parent: any, args: any, context: any) => {
@@ -13,7 +14,6 @@ export const Mutation = {
         if (user) {
             if (compareSync(contrasena, user.contrasena) == true) {
                 const token = uuid();
-                console.log("HOLA")
                 await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { token: token } });
                 return {
                     _id: user._id,
@@ -52,6 +52,48 @@ export const Mutation = {
             permisos: user.permisos
         };
     },
+    recuperarContrasena: async (parent: any, args: any, context: any) => {
+        const db = context.db;
+        const correo = args.correo;
+
+        const usuario = await db.collection("Usuarios").findOne({ correo: correo });
+// console.log("A")
+         if (usuario) {
+//             let testAccount = await nodemailer.createTestAccount();
+//             console.log("A")
+//             // create reusable transporter object using the default SMTP transport
+//             let transporter = nodemailer.createTransport({
+//                 host: "4000",
+//                 port: 465,
+//                 secure: false, // true for 465, false for other ports
+//                 auth: {
+//                     user: testAccount.user, // generated ethereal user
+//                     pass: testAccount.pass, // generated ethereal password
+//                 },
+//             });
+//             console.log("A")
+//             // send mail with defined transport object
+//             let info = await transporter.sendMail({
+//                 from: '"Fred Foo 👻" <foo@example.com>', // sender address
+//                 to: "alvaroocn21@gmail.com, baz@example.com", // list of receivers
+//                 subject: "Hello ✔", // Subject line
+//                 text: "Hello world?", // plain text body
+//                 html: "<b>Hello world?</b>", // html body
+//             });
+//             console.log("A")
+//             console.log("Message sent: %s", info.messageId);
+//             // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+//             // Preview only available when sending through an Ethereal account
+//             console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+            // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+
+            return usuario;
+        } else {
+            throw new ApolloError("Usuario no encontrado");
+        }
+    },
+
     createUser: async (parent: any, args: any, context: any) => {
         const db = context.db;
         const { nombre, apellido1, apellido2, telefono, contrasena, correo, horasSemanales, diasHabiles, permisos } = args;
@@ -81,6 +123,27 @@ export const Mutation = {
                 diasHabiles,
                 permisos
             }
+        }
+    },
+
+    editUser: async (parent: any, args: any, context: any) => {
+        const db = context.db;
+        const { _id, contrasena } = args;
+
+        const usuario = await db.collection("Usuarios").findOne({ _id: new Object(_id)});
+
+        console.log("HOLA");
+
+        if (usuario) {
+            console.log("HOLA1");
+            return new ApolloError("Usuario no existe");
+        } else {
+            console.log(contrasena)
+            const salt = genSaltSync(contrasena.length);
+            const hash = hashSync(contrasena, salt);
+            await db.collection("Usuarios").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { contrasena: hash } });
+
+            return usuario;
         }
     },
 
@@ -145,7 +208,7 @@ export const Mutation = {
             if (Vacaciones.estado == "Solicitada") {
                 await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { diasHabiles: user.diasHabiles + Vacaciones.diasVacas.length } });
                 await db.collection("Vacaciones").deleteOne({ _id: new ObjectId(_id) })
-            }else{
+            } else {
                 return new ApolloError("Solo se pueden borrar Vacaciones en estado Solicitadas");
             }
         }
@@ -157,11 +220,11 @@ export const Mutation = {
         const { db, user } = context;
         const { hora, comentario } = args;
 
-        const insertedId = await db.collection("Fichaje").insertOne({ persona: user._id, fecha: new Date().toISOString(), entradasSalidas: hora, comentario: comentario });
+        const insertedId = await db.collection("Fichaje").insertOne({ persona: user._id, fecha: new Date().toDateString(), entradasSalidas: hora, comentario: comentario });
         return {
             _id: insertedId.insertedId,
             persona: user._id,
-            fecha: new Date().toISOString(),
+            fecha: new Date().toDateString(),
             entradasSalidas: hora,
             comentario: comentario,
         }
@@ -196,11 +259,11 @@ export const Mutation = {
         const { db, user } = context;
         const { tiempo, trabajoRealizado, Fdesde, comentario } = args;
 
-        const insertedId = await db.collection("TrabajoReg").insertOne({ persona: user._id, tiempo, fecha: new Date().toISOString(), trabajoRealizado, Fdesde, comentario });
+        const insertedId = await db.collection("TrabajoReg").insertOne({ persona: user._id, tiempo, fecha: new Date().toLocaleDateString(), trabajoRealizado, Fdesde, comentario });
         return {
             _id: insertedId.insertedId,
             persona: user._id,
-            fecha: new Date().toISOString(),
+            fecha: new Date().toLocaleDateString(),
             tiempo,
             trabajoRealizado,
             Fdesde,
