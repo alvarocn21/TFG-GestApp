@@ -14,11 +14,14 @@ type Usuario = {
     horasSemanales: number;
     _id: string;
     nombre: string;
-    permisos: string;
+    cargo: string;
     correo: string;
     telefono: string;
     apellido1: string;
     apellido2: string;
+    dni: String;
+    numeroSS: String;
+    direccion: String;
 }
 
 
@@ -33,9 +36,18 @@ const PerfilUsuario: FC<{
     const [cambiarPDW, setCambiarPDW] = useState<boolean>(false);
 
     return (
-        <div className="flex h-full flex-1 flex-col md:pl-[190px]"> Datos del empleado
+        <div className="flex h-full flex-1 flex-col md:pl-[190px]">
             {data &&
                 <div>
+                    <div className="bg-primary text-white w-20 h-20 flex items-center justify-center rounded-full" style={{ pointerEvents: 'none' }}>
+                        <span className="text-5xl font-bold">{data.nombre[0].toUpperCase()}</span>
+                    </div>
+                    <div> DNI:
+                        {data.dni}
+                    </div>
+                    <div> Numero de la Seguridad Social:
+                        {data.numeroSS}
+                    </div>
                     <div> Nombre:
                         {data.nombre} {data.apellido1} {data.apellido2}
                     </div>
@@ -69,28 +81,31 @@ const PerfilUsuario: FC<{
                                     ></input>
                                 </div>
                                 <button className="btn btn-primary flex items-center" onClick={() => {
-                                    if(contrasena === contrasena1){
-                                    editUser({
-                                        variables: {
-                                            _id: data._id,
-                                            contrasena: contrasena
-                                        },
-                                        context: {
-                                            headers: {
-                                                authorization: localStorage.getItem("token")
+                                    if (contrasena === contrasena1) {
+                                        editUser({
+                                            variables: {
+                                                _id: data._id,
+                                                contrasena: contrasena
+                                            },
+                                            context: {
+                                                headers: {
+                                                    authorization: localStorage.getItem("token")
+                                                }
                                             }
-                                        }
-                                    }).then(() => {
-                                        setContrasena("")
-                                        setContrasena1("")
-                                        setCambiarPDW(false)
-                                        reloadHandler();
-                                    })
+                                        }).then(() => {
+                                            setContrasena("")
+                                            setContrasena1("")
+                                            setCambiarPDW(false)
+                                            reloadHandler();
+                                        })
 
-                                }else window.alert("Las contraseñas no coinciden");
+                                    } else window.alert("Las contraseñas no coinciden");
                                 }}></button>
                             </div>
                         }
+                    </div>
+                    <div> Direccion:
+                        {data.direccion}
                     </div>
                     <div> Jornada laboral:
                         {data.horasSemanales} horas/semanales

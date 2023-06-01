@@ -9,14 +9,6 @@ mutation LogIn($correo: String!, $contrasena: String!) {
   }
 `
 
-// const RECUPERAR_CONTRASEÑA = gql`
-// mutation Mutation($hora: String!, $comentario: String!) {
-//     setFichaje(hora: $hora, comentario: $comentario) {
-//       fecha
-//     }
-//   }
-// `
-
 const LogIn: FC<{
     reloadHandler: () => void;
 }> = ({ reloadHandler }) => {

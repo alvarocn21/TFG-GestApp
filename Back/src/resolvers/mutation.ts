@@ -26,7 +26,10 @@ export const Mutation = {
                     corre: user.correo,
                     horasSemanales: user.horasSemanales,
                     diasHabiles: user.diasHabiles,
-                    permisos: user.permisos
+                    cargo: user.cargo,
+                    dni: user.dni,
+                    numeroSS: user.numeroSS,
+                    direccion: user.direccion,
                 }
             } else {
                 return new ApolloError("Contraseña incorrecta.");
@@ -49,7 +52,10 @@ export const Mutation = {
             corre: user.correo,
             horasSemanales: user.horasSemanales,
             diasHabiles: user.diasHabiles,
-            permisos: user.permisos
+            cargo: user.cargo,
+            dni: user.dni,
+            numeroSS: user.numeroSS,
+            direccion: user.direccion
         };
     },
     recuperarContrasena: async (parent: any, args: any, context: any) => {
@@ -96,7 +102,7 @@ export const Mutation = {
 
     createUser: async (parent: any, args: any, context: any) => {
         const db = context.db;
-        const { nombre, apellido1, apellido2, telefono, contrasena, correo, horasSemanales, diasHabiles, permisos } = args;
+        const { nombre, apellido1, apellido2, telefono, contrasena, correo, horasSemanales, diasHabiles, cargo, dni, numeroSS, direccion} = args;
 
         const usuario = await db.collection("Usuarios").findOne({ correo: { $regex: correo, $options: 'i' } });
 
@@ -106,9 +112,7 @@ export const Mutation = {
             const salt = genSaltSync(contrasena.length);
             const hash = hashSync(contrasena, salt);
 
-            console.log(hash)
-
-            const insertedId = await db.collection("Usuarios").insertOne({ nombre, apellido1, apellido2, telefono, contrasena: hash, token: null, correo: correo.toLowerCase(), horasSemanales, diasHabiles, permisos });
+            const insertedId = await db.collection("Usuarios").insertOne({ nombre, apellido1, apellido2, telefono, contrasena: hash, token: null, correo: correo.toLowerCase(), horasSemanales, diasHabiles, cargo, dni, numeroSS, direccion});
 
             return {
                 _id: insertedId.insertedId,
@@ -121,7 +125,9 @@ export const Mutation = {
                 correo,
                 horasSemanales,
                 diasHabiles,
-                permisos
+                cargo,
+                dni, 
+                numeroSS
             }
         }
     },
@@ -132,13 +138,9 @@ export const Mutation = {
 
         const usuario = await db.collection("Usuarios").findOne({ _id: new Object(_id)});
 
-        console.log("HOLA");
-
         if (usuario) {
-            console.log("HOLA1");
             return new ApolloError("Usuario no existe");
         } else {
-            console.log(contrasena)
             const salt = genSaltSync(contrasena.length);
             const hash = hashSync(contrasena, salt);
             await db.collection("Usuarios").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { contrasena: hash } });
@@ -149,7 +151,7 @@ export const Mutation = {
 
     setVacaciones: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
-        const { Fdesde, Fhasta } = args;
+        const { Fdesde, Fhasta,  idAusencia } = args;
 
         let diasVacas: string[] = [];
 
@@ -173,7 +175,7 @@ export const Mutation = {
         } else {
             await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { $set: { diasHabiles: user.diasHabiles - diasVacas.length } });
             const usuario = await db.collection("Usuarios").findOne({ _id: user._id });
-            const insertedId = await db.collection("Vacaciones").insertOne({ persona: usuario._id, correoPersona: usuario.correo, diasVacas, estado: "Solicitada", });
+            const insertedId = await db.collection("Vacaciones").insertOne({ persona: usuario._id, idAusencia, correoPersona: usuario.correo, diasVacas, estado: "Solicitada", });
             return {
                 _id: insertedId.insertedId,
                 correoPersona: usuario._id,

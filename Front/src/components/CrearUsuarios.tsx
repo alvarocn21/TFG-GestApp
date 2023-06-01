@@ -2,8 +2,8 @@ import React, { FC, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 
 const CREAUSER = gql`
-mutation Mutation($nombre: String, $apellido1: String, $apellido2: String, $telefono: String, $contrasena: String, $correo: String, $horasSemanales: Float, $diasHabiles: Float, $permisos: String) {
-    createUser(nombre: $nombre, apellido1: $apellido1, apellido2: $apellido2, telefono: $telefono, contrasena: $contrasena, correo: $correo, horasSemanales: $horasSemanales, diasHabiles: $diasHabiles, permisos: $permisos) {
+mutation Mutation($nombre: String, $apellido1: String, $apellido2: String, $telefono: String, $contrasena: String, $correo: String, $horasSemanales: Float, $diasHabiles: Float, $cargo: String) {
+    createUser(nombre: $nombre, apellido1: $apellido1, apellido2: $apellido2, telefono: $telefono, contrasena: $contrasena, correo: $correo, horasSemanales: $horasSemanales, diasHabiles: $diasHabiles, cargo: $cargo) {
       _id
     }
   }
@@ -18,10 +18,13 @@ const CrearUsuarios: FC<{
     const [apellido2, setApellido2] = useState<string>("");
     const [telefono, setTelefono] = useState<string>("");
     const [contrasena, setContrasena] = useState<string>("");
+    const [dni, setDni] = useState<string>("");
+    const [numeroSS, setNumeroSS] = useState<string>("");
+    const [direccion, setDireccion] = useState<string>("");
     const [correo, setCorreo] = useState<string>("");
     const [horasSemanales, setHorasSemanales] = useState<number>(0);
     const [diasHabiles, setDiasHabiles] = useState<number>(0);
-    const [permisos, setPermisos] = useState<string>("Usuario");
+    const [cargo, setcargo] = useState<string>("Usuario");
 
     const [createUser] = useMutation(CREAUSER);
 
@@ -104,19 +107,46 @@ const CrearUsuarios: FC<{
                         />
                     </div >
                     <div className="block mx-4">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                            DNI
+                        </span>
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                            type="text"
+                            value={dni}
+                            onChange={(e) => setDni(e.target.value)}
+                        /></div >
+                        <div className="block mx-4">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                            Numero de la Seguridad Social
+                        </span>
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                            type="text"
+                            value={numeroSS}
+                            onChange={(e) => setNumeroSS(e.target.value)}
+                        /></div >
+                         <div className="block mx-4">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                            Numero de la Seguridad Social
+                        </span>
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                            type="text"
+                            value={direccion}
+                            onChange={(e) => setDireccion(e.target.value)}
+                        /></div >
+                    <div className="block mx-4">
                         <label className="label cursor-pointer">
                             <span className="block text-sm font-medium text-slate-700 mt-5">Usuario</span>
-                            <input type="radio" name="radio-10" className="radio checked:bg-blue-500 m-1" checked onChange={() => setPermisos("Usuario")} />
+                            <input type="radio" name="radio-10" className="radio checked:bg-blue-500 m-1" checked onChange={() => setcargo("Usuario")} />
                         </label>
                         <label className="label cursor-pointer">
                             <span className="block text-sm font-medium text-slate-700 mt-5">Administrador</span>
-                            <input type="radio" name="radio-10" className="radio checked:bg-red-500 m-1" onChange={() => setPermisos("Administrador")} />
+                            <input type="radio" name="radio-10" className="radio checked:bg-red-500 m-1" onChange={() => setcargo("Administrador")} />
                         </label>
                     </div>
                 </div>
             </div>
             <button className="glass p-2 bg-amber-700 btn-group mx-56 my-10" onClick={() => {
-                if (nombre === "" || apellido1 === "" || apellido2 === "" || telefono === "" || contrasena === "" || correo === "" || horasSemanales === 0 || permisos === "") {
+                if (nombre === "" || apellido1 === "" || apellido2 === "" || telefono === "" || contrasena === "" || correo === "" || horasSemanales === 0 || cargo === "") {
                     window.alert("Falta por añadir algun campo OBLIGATORIO");
                 } else {
                     createUser({
@@ -129,7 +159,10 @@ const CrearUsuarios: FC<{
                             correo: correo,
                             horasSemanales: horasSemanales,
                             diasHabiles: diasHabiles,
-                            permisos: permisos
+                            cargo: cargo,
+                            dni: dni,
+                            numeroSS: numeroSS,
+                            direccion: direccion
                         },
                         context: {
                             headers: {
@@ -145,7 +178,7 @@ const CrearUsuarios: FC<{
                         setCorreo("");
                         setHorasSemanales(0);
                         setDiasHabiles(0);
-                        setPermisos("Usuario")
+                        setcargo("Usuario")
                         reloadHandler();
                     });
                 }

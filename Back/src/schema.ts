@@ -10,14 +10,18 @@ export const typeDefs = gql`
         contrasena: String!
         token: String!
         correo: String!
-        permisos: String!
+        cargo: String!
         horasSemanales: Float!
         diasHabiles: Float!
+        dni: String!
+        numeroSS: String!
+        direccion: String!
     }
 
     type Vacaciones {
         _id: String!
         persona: String!
+        idAusencia: String!
         correoPersona: String!
         diasVacas: [String!]
         estado: String!
@@ -62,7 +66,7 @@ export const typeDefs = gql`
 
         masMeses: Int
 
-        createUser(nombre: String, apellido1: String, apellido2: String, telefono: String, contrasena: String, correo: String, horasSemanales: Float, diasHabiles: Float, permisos: String): Persona
+        createUser(nombre: String, apellido1: String, apellido2: String, telefono: String, contrasena: String, correo: String, horasSemanales: Float, diasHabiles: Float, cargo: String, dni: String, numeroSS: String,direccion: String): Persona
         editUser(_id: String, contrasena: String): Persona
 
         setTrabajoReg(tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg
@@ -73,7 +77,7 @@ export const typeDefs = gql`
         editFichaje(id: String, hora: String, comentario: String): Fichaje
         deleteFichaje(id: String): Fichaje
 
-        setVacaciones(Fdesde: String, Fhasta: String): Vacaciones
+        setVacaciones(Fdesde: String, Fhasta: String,  idAusencia: String!): Vacaciones
         gestionaVacaciones(_id: String, estado: String): Vacaciones
         deleteVacaciones(_id: String): Vacaciones
     }

@@ -4,6 +4,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 type vacas = {
     _id: string;
     correoPersona: string;
+    idAusencia: string;
     diasVacas: string[];
     estado: string
 }
@@ -13,6 +14,7 @@ query Query {
     getVacacionesAdmin {
       _id
       correoPersona
+      idAusencia
       diasVacas
       estado
     }
@@ -55,6 +57,8 @@ const VacasAdmin: FC<{
                     <div key={e._id} className="m-5 border-colapse h-max w-max border-2 border-black text bg-amber-100 border-double p-2">
                         <div className="font-bold">Usuario</div>
                         <div className="p-2">{e.correoPersona}</div>
+                        <div className="font-bold">Identificador Ausencia</div>
+                        <div className="p-2"> {e.idAusencia} </div>
                         <div className="font-bold">Dias</div>
                         {new Date(e.diasVacas[0]).toLocaleDateString()} - {new Date(e.diasVacas[e.diasVacas.length -1]).toLocaleDateString()}
                         <div className="font-bold">Estado</div>

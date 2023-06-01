@@ -10,8 +10,8 @@ type vacas = {
 }
 
 const SET_VACAS = gql`
-mutation Mutation($fdesde: String, $fhasta: String) {
-    setVacaciones(Fdesde: $fdesde, Fhasta: $fhasta) {
+mutation Mutation($idAusencia: String!, $fhasta: String, $fdesde: String) {
+    setVacaciones(idAusencia: $idAusencia, Fhasta: $fhasta, Fdesde: $fdesde) {
       diasVacas
     }
   }
@@ -21,6 +21,7 @@ const GETVACAS = gql`
 query Query {
     getVacacionesUsu {
       _id
+      idAusencia
       diasVacas
       estado
     }
@@ -38,12 +39,13 @@ mutation Mutation($id: String) {
 const Vacas: FC<{
     reloadHandler: () => void;
     diasHabiles: number | undefined;
-    permisos: string | undefined;
-}> = ({ reloadHandler, diasHabiles, permisos }) => {
+    cargo: string | undefined;
+}> = ({ reloadHandler, diasHabiles, cargo }) => {
     const [pantalla, setPantalla] = useState<number>(0)
 
     const [desde, setDesde] = useState<string>("");
     const [hasta, setHasta] = useState<string>("");
+    const [ausencia, setAusencia] = useState<string>("");
 
     const [setVacas] = useMutation(SET_VACAS);
     const [deleteVacas] = useMutation(DELETEVACAS);
@@ -105,10 +107,22 @@ const Vacas: FC<{
                             placeholder="dd/mm/yyyy"
                         />
                     </div>
+                    <div className="block mx-4">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                            Identificador de la Ausencia
+                        </span>
+                        <select onChange={(e) => setAusencia(e.target.value)} className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md sm:text-sm focus:ring-1">
+                            <option></option>
+                            <option value="PE">PE - Permiso Enfermedad</option>
+                            <option value="PP">PP - Permiso Personal</option>
+                            <option value="V">V - Vacaciones</option>
+                        </select>
+                    </div>
                     <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
                         if (hasta === "" && desde === "") window.alert("CUIDADO, no estas añadiendo ninguna fecha en algun parametro.")
                         else if (new Date(hasta) < new Date(desde)) window.alert("CUIDADO, estas poniendo una fecha de fin inferior a la fecha de inicio.")
                         else if (diasHabiles === 0) window.alert("No te quedan dias de Vacaciones.")
+                        else if (ausencia === "") window.alert("La ausencia debe tener un id")
                         else if (new Date(hasta) < new Date() || new Date(desde) < new Date()) window.alert("Las fechas tienen que ser posteriores al dia de hoy.")
                         else {
                             let entra = false;
@@ -121,7 +135,8 @@ const Vacas: FC<{
                                 setVacas({
                                     variables: {
                                         fhasta: hasta,
-                                        fdesde: desde
+                                        fdesde: desde,
+                                        idAusencia: ausencia
                                     },
                                     context: {
                                         headers: {
@@ -172,7 +187,7 @@ const Vacas: FC<{
                             </div>
                         ))}
                     </div>
-                    {permisos === "Administrador" &&
+                    {cargo === "Administrador" &&
                         <VacasAdmin reloadHandler={reloadHandler}></VacasAdmin>
                     }
                 </div>
