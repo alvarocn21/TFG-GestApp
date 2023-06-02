@@ -19,7 +19,6 @@ const CrearUsuarios: FC<{
     const [telefono, setTelefono] = useState<string>("");
     const [contrasena, setContrasena] = useState<string>("");
     const [dni, setDni] = useState<string>("");
-    const [numeroSS, setNumeroSS] = useState<string>("");
     const [direccion, setDireccion] = useState<string>("");
     const [correo, setCorreo] = useState<string>("");
     const [horasSemanales, setHorasSemanales] = useState<number>(0);
@@ -115,15 +114,6 @@ const CrearUsuarios: FC<{
                             value={dni}
                             onChange={(e) => setDni(e.target.value)}
                         /></div >
-                        <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
-                            Numero de la Seguridad Social
-                        </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
-                            type="text"
-                            value={numeroSS}
-                            onChange={(e) => setNumeroSS(e.target.value)}
-                        /></div >
                          <div className="block mx-4">
                         <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
                             Numero de la Seguridad Social
@@ -161,7 +151,6 @@ const CrearUsuarios: FC<{
                             diasHabiles: diasHabiles,
                             cargo: cargo,
                             dni: dni,
-                            numeroSS: numeroSS,
                             direccion: direccion
                         },
                         context: {

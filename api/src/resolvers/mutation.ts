@@ -28,7 +28,6 @@ export const Mutation = {
                     diasHabiles: user.diasHabiles,
                     cargo: user.cargo,
                     dni: user.dni,
-                    numeroSS: user.numeroSS,
                     direccion: user.direccion,
                 }
             } else {
@@ -54,7 +53,6 @@ export const Mutation = {
             diasHabiles: user.diasHabiles,
             cargo: user.cargo,
             dni: user.dni,
-            numeroSS: user.numeroSS,
             direccion: user.direccion
         };
     },
@@ -102,7 +100,7 @@ export const Mutation = {
 
     createUser: async (parent: any, args: any, context: any) => {
         const db = context.db;
-        const { nombre, apellido1, apellido2, telefono, contrasena, correo, horasSemanales, diasHabiles, cargo, dni, numeroSS, direccion} = args;
+        const { nombre, apellido1, apellido2, telefono, contrasena, correo, horasSemanales, diasHabiles, cargo, dni, direccion} = args;
 
         const usuario = await db.collection("Usuarios").findOne({ correo: { $regex: correo, $options: 'i' } });
 
@@ -112,7 +110,7 @@ export const Mutation = {
             const salt = genSaltSync(contrasena.length);
             const hash = hashSync(contrasena, salt);
 
-            const insertedId = await db.collection("Usuarios").insertOne({ nombre, apellido1, apellido2, telefono, contrasena: hash, token: null, correo: correo.toLowerCase(), horasSemanales, diasHabiles, cargo, dni, numeroSS, direccion});
+            const insertedId = await db.collection("Usuarios").insertOne({ nombre, apellido1, apellido2, telefono, contrasena: hash, token: null, correo: correo.toLowerCase(), horasSemanales, diasHabiles, cargo, dni, direccion});
 
             return {
                 _id: insertedId.insertedId,
@@ -126,8 +124,7 @@ export const Mutation = {
                 horasSemanales,
                 diasHabiles,
                 cargo,
-                dni, 
-                numeroSS
+                dni
             }
         }
     },

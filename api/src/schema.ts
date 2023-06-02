@@ -14,7 +14,6 @@ export const typeDefs = gql`
         horasSemanales: Float!
         diasHabiles: Float!
         dni: String!
-        numeroSS: String!
         direccion: String!
     }
 
@@ -66,7 +65,7 @@ export const typeDefs = gql`
 
         masMeses: Int
 
-        createUser(nombre: String, apellido1: String, apellido2: String, telefono: String, contrasena: String, correo: String, horasSemanales: Float, diasHabiles: Float, cargo: String, dni: String, numeroSS: String,direccion: String): Persona
+        createUser(nombre: String, apellido1: String, apellido2: String, telefono: String, contrasena: String, correo: String, horasSemanales: Float, diasHabiles: Float, cargo: String, dni: String,direccion: String): Persona
         editUser(_id: String, contrasena: String): Persona
 
         setTrabajoReg(tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg

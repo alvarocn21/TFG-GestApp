@@ -20,7 +20,6 @@ type Usuario = {
     apellido1: string;
     apellido2: string;
     dni: String;
-    numeroSS: String;
     direccion: String;
 }
 
@@ -44,9 +43,6 @@ const PerfilUsuario: FC<{
                     </div>
                     <div> DNI:
                         {data.dni}
-                    </div>
-                    <div> Numero de la Seguridad Social:
-                        {data.numeroSS}
                     </div>
                     <div> Nombre:
                         {data.nombre} {data.apellido1} {data.apellido2}

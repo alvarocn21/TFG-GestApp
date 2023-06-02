@@ -20,7 +20,6 @@ query Query {
     apellido1
     apellido2
     dni
-    numeroSS
     direccion
   }
 }
@@ -46,7 +45,6 @@ type Usuario = {
   apellido1: string;
   apellido2: string;
   dni: String;
-  numeroSS: String;
   direccion: String;
 }
 
