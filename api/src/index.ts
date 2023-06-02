@@ -26,7 +26,7 @@ else {
             const token = req.headers.authorization || "";
             if (token != "") {
               const user = await client.db("myAppTfg").collection("Usuarios").findOne({ token });
-              if (user) return { db: client.db("myAppTfg"), user }; else throw new ApolloError("No autorizado", "403");
+              if (user) return { db: client.db("myAppTfg"), user: user }; else throw new ApolloError("No autorizado", "403");
             } else throw new ApolloError("No autorizado", "403");
           } else return { db: client.db("myAppTfg") };
           // const user = await client.db("myAppTfg").collection("Usuarios").findOne({ correo: "A@gmail.com", contrasena: "$2b$04$EU2I.QWclj824G.XRW/QjO2O/S1UAcCbnCLwlTMUXrBOG2bRWGFeu"})

@@ -81,7 +81,7 @@ const LogIn: FC<{
                                 <div className=" text-red-500">Usuario no registrado</div>
                             }
                             {loading &&
-                                <div className=" text-red-500">Cargando...</div>
+                                <div className=" text-500">Cargando...</div>
                             }
                             <div className="form-control">
                                 <label className="label">

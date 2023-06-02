@@ -19,7 +19,7 @@ mutation Mutation($tiempo: Float, $trabajoRealizado: String, $fdesde: String, $c
 
 const EDIT_REGHORAS = gql`
 mutation Mutation($editTrabajoRegId: String, $tiempo: Float, $trabajoRealizado: String, $fdesde: String, $comentario: String) {
-    editTrabajoReg(id: $editTrabajoRegId, tiempo: $tiempo, trabajoRealizado: $trabajoRealizado, Fdesde: $fdesde, comentario: $comentario) {
+    editTrabajoReg(_id: $editTrabajoRegId, tiempo: $tiempo, trabajoRealizado: $trabajoRealizado, Fdesde: $fdesde, comentario: $comentario) {
       _id
     }
   }   
@@ -27,7 +27,7 @@ mutation Mutation($editTrabajoRegId: String, $tiempo: Float, $trabajoRealizado: 
 
 const DELETE_REGHORAS = gql`
 mutation Mutation($deleteTrabajoRegId: String) {
-    deleteTrabajoReg(id: $deleteTrabajoRegId) {
+    deleteTrabajoReg(_id: $deleteTrabajoRegId) {
       _id
     }
   }

@@ -66,17 +66,17 @@ export const typeDefs = gql`
         masMeses: Int
 
         createUser(nombre: String, apellido1: String, apellido2: String, telefono: String, contrasena: String, correo: String, horasSemanales: Float, diasHabiles: Float, cargo: String, dni: String,direccion: String): Persona
-        editUser(_id: String, contrasena: String): Persona
+        editUser(contrasena: String): Persona
 
         setTrabajoReg(tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg
-        editTrabajoReg(id: String, tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg
-        deleteTrabajoReg(id: String): TrabajoReg
+        editTrabajoReg(_id: String, tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg
+        deleteTrabajoReg(_id: String): TrabajoReg
 
         setFichaje(hora: String, comentario: String): Fichaje
-        editFichaje(id: String, hora: String, comentario: String): Fichaje
-        deleteFichaje(id: String): Fichaje
+        editFichaje(_id: String, hora: String, comentario: String): Fichaje
+        deleteFichaje(_id: String): Fichaje
 
-        setVacaciones(Fdesde: String, Fhasta: String,  idAusencia: String!): Vacaciones
+        setVacaciones(Fdesde: String, Fhasta: String, idAusencia: String!): Vacaciones
         gestionaVacaciones(_id: String, estado: String): Vacaciones
         deleteVacaciones(_id: String): Vacaciones
     }

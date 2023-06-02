@@ -18,7 +18,7 @@ mutation Mutation($hora: String!, $comentario: String!) {
 
 const EDIT_FICHAJE = gql`
 mutation Mutation($editFichajeId: String, $hora: String, $comentario: String) {
-    editFichaje(id: $editFichajeId, hora: $hora, comentario: $comentario) {
+    editFichaje(_id: $editFichajeId, hora: $hora, comentario: $comentario) {
       _id
     }
   }
@@ -26,7 +26,7 @@ mutation Mutation($editFichajeId: String, $hora: String, $comentario: String) {
 
 const DELETE_FICHAJE = gql`
 mutation Mutation($deleteFichajeId: String) {
-    deleteFichaje(id: $deleteFichajeId) {
+    deleteFichaje(_id: $deleteFichajeId) {
       _id
     }
   }

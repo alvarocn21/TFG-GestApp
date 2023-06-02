@@ -10,7 +10,7 @@ export const Mutation = {
         const { correo, contrasena } = args;
 
         const user = await db.collection("Usuarios").findOne({ correo: correo.toLowerCase() });
-
+        
         if (user) {
             if (compareSync(contrasena, user.contrasena) == true) {
                 const token = uuid();
@@ -130,17 +130,15 @@ export const Mutation = {
     },
 
     editUser: async (parent: any, args: any, context: any) => {
-        const db = context.db;
-        const { _id, contrasena } = args;
-
-        const usuario = await db.collection("Usuarios").findOne({ _id: new Object(_id)});
-
-        if (usuario) {
+        const { db, user } = context;
+        const { contrasena } = args;
+        const usuario = await db.collection("Usuarios").findOne({ _id: user._id});
+        if (!usuario) {
             return new ApolloError("Usuario no existe");
         } else {
             const salt = genSaltSync(contrasena.length);
             const hash = hashSync(contrasena, salt);
-            await db.collection("Usuarios").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { contrasena: hash } });
+            await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { contrasena: hash } });
 
             return usuario;
         }
@@ -162,7 +160,7 @@ export const Mutation = {
         } else {
             fechaFin.setDate(fechaFin.getDate() + 1);
             while (fechaInicio < fechaFin) {
-                diasVacas.push(new Date(fechaInicio).toISOString());
+                diasVacas.push(new Date(fechaInicio).toLocaleDateString());
                 fechaInicio.setDate(fechaInicio.getDate() + 1);
             }
         }
@@ -230,14 +228,14 @@ export const Mutation = {
     },
     editFichaje: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
-        const { id, hora, comentario } = args;
+        const { _id, hora, comentario } = args;
 
-        const fichaje = await db.collection("Fichaje").findOne({ _id: new ObjectId(id) });
+        const fichaje = await db.collection("Fichaje").findOne({ _id: new ObjectId(_id) });
 
-        if (fichaje) await db.collection("Fichaje").findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { entradasSalidas: hora, comentario } });
+        if (fichaje) await db.collection("Fichaje").findOneAndUpdate({ _id: new ObjectId(_id) }, { $set: { entradasSalidas: hora, comentario } });
         else return new ApolloError("Registro no encontrado");
         return {
-            _id: new ObjectId(id),
+            _id: new ObjectId(_id),
             fecha: fichaje.fecha,
             persona: user._id,
             entradasSalidas: hora,
@@ -246,11 +244,11 @@ export const Mutation = {
     },
     deleteFichaje: async (parent: any, args: any, context: any) => {
         const { db } = context;
-        const { id } = args;
+        const { _id } = args;
 
-        const fichaje = await db.collection("Fichaje").findOne({ _id: new ObjectId(id) });
+        const fichaje = await db.collection("Fichaje").findOne({ _id: new ObjectId(_id) });
 
-        if (fichaje) await db.collection("Fichaje").deleteOne({ _id: new ObjectId(id) })
+        if (fichaje) await db.collection("Fichaje").deleteOne({ _id: new ObjectId(_id) })
         else return new ApolloError("Registro no encontrado");
         return fichaje;
     },
@@ -271,14 +269,14 @@ export const Mutation = {
     },
     editTrabajoReg: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
-        const { id, tiempo, trabajoRealizado, Fdesde, comentario } = args;
+        const { _id, tiempo, trabajoRealizado, Fdesde, comentario } = args;
 
-        const trabRegHoy = await db.collection("TrabajoReg").findOne({ _id: new ObjectId(id) });
+        const trabRegHoy = await db.collection("TrabajoReg").findOne({ _id: new ObjectId(_id) });
 
-        if (trabRegHoy) await db.collection("TrabajoReg").findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { tiempo, trabajoRealizado, Fdesde, comentario } });
+        if (trabRegHoy) await db.collection("TrabajoReg").findOneAndUpdate({ _id: new ObjectId(_id) }, { $set: { tiempo, trabajoRealizado, Fdesde, comentario } });
         else return new ApolloError("Registro no encontrado");
         return {
-            _id: new ObjectId(id),
+            _id: new ObjectId(_id),
             persona: user._id,
             fecha: trabRegHoy.fecha,
             tiempo,
@@ -289,11 +287,11 @@ export const Mutation = {
     },
     deleteTrabajoReg: async (parent: any, args: any, context: any) => {
         const { db } = context;
-        const { id } = args;
+        const { _id } = args;
 
-        const trabRegHoy = await db.collection("TrabajoReg").findOne({ _id: new ObjectId(id) });
+        const trabRegHoy = await db.collection("TrabajoReg").findOne({ _id: new ObjectId(_id) });
 
-        if (trabRegHoy) await db.collection("TrabajoReg").deleteOne({ _id: new ObjectId(id) })
+        if (trabRegHoy) await db.collection("TrabajoReg").deleteOne({ _id: new ObjectId(_id) })
         else return new ApolloError("Registro no encontrado");
         return trabRegHoy;
     },

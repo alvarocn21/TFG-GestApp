@@ -61,7 +61,6 @@ const Vacas: FC<{
         }
     );
 
-
     if (loading) return <div>Loading...</div>;
     if (data && error) return <div>Error :(</div>;
 

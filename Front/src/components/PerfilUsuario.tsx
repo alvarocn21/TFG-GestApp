@@ -2,8 +2,8 @@ import React, { FC, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 
 const EDITUSER = gql`
-mutation Mutation($contrasena: String, $id: String) {
-    editUser(contrasena: $contrasena, _id: $id) {
+mutation Mutation($contrasena: String) {
+    editUser(contrasena: $contrasena) {
       _id
     }
   }
@@ -77,10 +77,10 @@ const PerfilUsuario: FC<{
                                     ></input>
                                 </div>
                                 <button className="btn btn-primary flex items-center" onClick={() => {
-                                    if (contrasena === contrasena1) {
+                                    console.log(contrasena)
+                                    if (contrasena === contrasena1 && contrasena !== "") {
                                         editUser({
                                             variables: {
-                                                _id: data._id,
                                                 contrasena: contrasena
                                             },
                                             context: {
@@ -95,7 +95,7 @@ const PerfilUsuario: FC<{
                                             reloadHandler();
                                         })
 
-                                    } else window.alert("Las contraseñas no coinciden");
+                                    } else window.alert("Las contraseñas no coinciden o no estan rellenas");
                                 }}></button>
                             </div>
                         }

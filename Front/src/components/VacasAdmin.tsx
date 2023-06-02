@@ -60,7 +60,7 @@ const VacasAdmin: FC<{
                         <div className="font-bold">Identificador Ausencia</div>
                         <div className="p-2"> {e.idAusencia} </div>
                         <div className="font-bold">Dias</div>
-                        {new Date(e.diasVacas[0]).toLocaleDateString()} - {new Date(e.diasVacas[e.diasVacas.length -1]).toLocaleDateString()}
+                        {new Date(e.diasVacas[0]).toLocaleDateString()} - {new Date(e.diasVacas[e.diasVacas.length - 1]).toLocaleDateString()}
                         <div className="font-bold">Estado</div>
                         <div className="p-2">{e.estado}</div>
                         <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
