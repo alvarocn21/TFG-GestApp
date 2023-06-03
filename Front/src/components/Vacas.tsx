@@ -61,6 +61,16 @@ const Vacas: FC<{
         }
     );
 
+    const vacasAceptadas: string[] | undefined = [];
+    if(data){
+        console.log(data)
+        data.getVacacionesUsu.map((e: any) => {
+            if(e.estado === "Aceptada"){
+                vacasAceptadas.push(e.diasVacas);
+            }
+        });
+    }
+
     if (loading) return <div>Loading...</div>;
     if (data && error) return <div>Error :(</div>;
 
@@ -75,7 +85,34 @@ const Vacas: FC<{
                     <button className="glass p-2 bg-amber-700 " onClick={() => {
                         setPantalla(2);
                     }}>Gestionar Vacaciones</button>
-                    <DiasMes key={""} vacaciones={data?.getVacacionesUsu}></DiasMes>
+                    <DiasMes key={""} vacaciones={vacasAceptadas}></DiasMes>
+                    <div className=" my-5 underline underline-offset-1 mx-5">Tus Vacaciones</div>
+                    <div className="grid grid-cols-3">
+                        {data?.getVacacionesUsu.map((e) => (
+                            <div key={e._id} className="m-5 border-colapse h-max w-max border-2 border-black text bg-amber-100 border-double p-2">
+                                <div className="font-bold">Dias</div>
+                                {new Date(e.diasVacas[0]).toLocaleDateString()} - {new Date(e.diasVacas[e.diasVacas.length - 1]).toLocaleDateString()}
+                                <div className="font-bold">Estado</div>
+                                <div className="p-2">{e.estado}</div>
+                                <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
+                                    if (e.estado === "Solicitada") {
+                                        deleteVacas({
+                                            variables: {
+                                                id: e._id,
+                                            },
+                                            context: {
+                                                headers: {
+                                                    authorization: localStorage.getItem("token")
+                                                }
+                                            }
+                                        }).then(() => {
+                                            reloadHandler();
+                                        });
+                                    } else window.alert("Solo se pueden borrar Vacaciones en estado Solicitadas");
+                                }}>Eliminar</button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             }
             {pantalla === 1 &&
@@ -159,33 +196,6 @@ const Vacas: FC<{
                     <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() =>
                         setPantalla(0)
                     }>atras</button>
-                    <div className="underline underline-offset-1 mx-5">Tus Vacaciones</div>
-                    <div className="grid grid-cols-3">
-                        {data?.getVacacionesUsu.map((e) => (
-                            <div key={e._id} className="m-5 border-colapse h-max w-max border-2 border-black text bg-amber-100 border-double p-2">
-                                <div className="font-bold">Dias</div>
-                                {new Date(e.diasVacas[0]).toLocaleDateString()} - {new Date(e.diasVacas[e.diasVacas.length - 1]).toLocaleDateString()}
-                                <div className="font-bold">Estado</div>
-                                <div className="p-2">{e.estado}</div>
-                                <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
-                                    if (e.estado === "Solicitada") {
-                                        deleteVacas({
-                                            variables: {
-                                                id: e._id,
-                                            },
-                                            context: {
-                                                headers: {
-                                                    authorization: localStorage.getItem("token")
-                                                }
-                                            }
-                                        }).then(() => {
-                                            reloadHandler();
-                                        });
-                                    } else window.alert("Solo se pueden borrar Vacaciones en estado Solicitadas");
-                                }}>Eliminar</button>
-                            </div>
-                        ))}
-                    </div>
                     {cargo === "Administrador" &&
                         <VacasAdmin reloadHandler={reloadHandler}></VacasAdmin>
                     }

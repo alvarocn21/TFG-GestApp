@@ -77,7 +77,6 @@ const PerfilUsuario: FC<{
                                     ></input>
                                 </div>
                                 <button className="btn btn-primary flex items-center" onClick={() => {
-                                    console.log(contrasena)
                                     if (contrasena === contrasena1 && contrasena !== "") {
                                         editUser({
                                             variables: {

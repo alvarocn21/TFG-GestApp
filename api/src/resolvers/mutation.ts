@@ -2,7 +2,6 @@ import { ApolloError } from "apollo-server";
 import { ObjectId } from "mongodb";
 import { v4 as uuid } from "uuid";
 import { compareSync, genSaltSync, hashSync } from "bcrypt";
-import nodemailer from "nodemailer";
 
 export const Mutation = {
     logIn: async (parent: any, args: any, context: any) => {
@@ -61,37 +60,9 @@ export const Mutation = {
         const correo = args.correo;
 
         const usuario = await db.collection("Usuarios").findOne({ correo: correo });
-// console.log("A")
+
+
          if (usuario) {
-//             let testAccount = await nodemailer.createTestAccount();
-//             console.log("A")
-//             // create reusable transporter object using the default SMTP transport
-//             let transporter = nodemailer.createTransport({
-//                 host: "4000",
-//                 port: 465,
-//                 secure: false, // true for 465, false for other ports
-//                 auth: {
-//                     user: testAccount.user, // generated ethereal user
-//                     pass: testAccount.pass, // generated ethereal password
-//                 },
-//             });
-//             console.log("A")
-//             // send mail with defined transport object
-//             let info = await transporter.sendMail({
-//                 from: '"Fred Foo 👻" <foo@example.com>', // sender address
-//                 to: "alvaroocn21@gmail.com, baz@example.com", // list of receivers
-//                 subject: "Hello ✔", // Subject line
-//                 text: "Hello world?", // plain text body
-//                 html: "<b>Hello world?</b>", // html body
-//             });
-//             console.log("A")
-//             console.log("Message sent: %s", info.messageId);
-//             // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-//             // Preview only available when sending through an Ethereal account
-//             console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-            // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-
             return usuario;
         } else {
             throw new ApolloError("Usuario no encontrado");
@@ -148,7 +119,7 @@ export const Mutation = {
         const { db, user } = context;
         const { Fdesde, Fhasta,  idAusencia } = args;
 
-        let diasVacas: string[] = [];
+        let diasVacas: String[] = [];
 
         const fechaInicio = new Date(Fdesde)
         const fechaFin = new Date(Fhasta)
