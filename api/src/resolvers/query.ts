@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-
 export const Query = {
     getVacacionesUsu: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
@@ -10,7 +8,7 @@ export const Query = {
     getVacacionesAdmin: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
 
-        const vacaciones: any = await db.collection("Vacaciones").find({ diasVacas: { $gt: new Date().toLocaleDateString() } }).toArray();
+        const vacaciones: any = await db.collection("Vacaciones").find({}).toArray();
 
         if (vacaciones) return vacaciones;
         else return "Aun no hay Vacaciones solicitadas";
@@ -31,7 +29,6 @@ export const Query = {
     },
     getUser: async (parent: any, args: any, context: any) => {
         const { user } = context;
-
         if (user) return user;
         else return "Usuario no existe";
     },
