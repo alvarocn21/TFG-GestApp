@@ -6,9 +6,9 @@ export const Query = {
         else return "Aun no hay Vacaciones solicitadas";
     },
     getVacacionesAdmin: async (parent: any, args: any, context: any) => {
-        const { db, user } = context;
+        const { db } = context;
 
-        const vacaciones: any = await db.collection("Vacaciones").find({}).toArray();
+        const vacaciones: any = await db.collection("Vacaciones").find({ estado: "Solicitada"}).toArray();
 
         if (vacaciones) return vacaciones;
         else return "Aun no hay Vacaciones solicitadas";

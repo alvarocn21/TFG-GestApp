@@ -63,7 +63,7 @@ const VacasAdmin: FC<{
                         {new Date(e.diasVacas[0]).toLocaleDateString()} - {new Date(e.diasVacas[e.diasVacas.length - 1]).toLocaleDateString()}
                         <div className="font-bold">Estado</div>
                         <div className="p-2">{e.estado}</div>
-                        <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
+                        <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => {
                             if (e.estado === "Solicitada") {
                                 gestionaVacas({
                                     variables: {
@@ -80,8 +80,8 @@ const VacasAdmin: FC<{
                                 });
                             } else window.alert("Solo se pueden Aceptar ausencias Solicitada.")
                         }}>Aceptar</button>
-                        <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
-                            if (e.estado === "Solicitada") {
+                        <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => {
+                        if (e.estado === "Solicitada") {
                                 gestionaVacas({
                                     variables: {
                                         id: e._id,

@@ -20,30 +20,23 @@ const DiasMes: FC<{
 
     const renderCalendarDays = () => {
         const daysInMonth = fecha.daysInMonth();
-        const firstDayOfMonth = fecha.startOf('month').day()-1;
+        const firstDayOfMonth = fecha.startOf('month').day();
 
         const days = [];
 
-        for (let i = 0; i < firstDayOfMonth; i++) {
-            days.push(<div className="text-center text-gray-500" key={`empty-${i}`} />);
+        for (let i = 1; i < firstDayOfMonth; i++) {
+            days.push(
+                <div className="text-center text-gray-500" key={`empty-${i}`} />
+            );
         }
 
         for (let day = 1; day <= daysInMonth; day++) {
             const isToday = dayjs().isSame(fecha, 'month') && day === dayjs().date();
-            let dateKey = fecha.add(day-fecha.startOf('month').day()+1, 'day').format('MM/DD/YYYY');
-
-            let mes = dateKey[0] + dateKey[1];
-            if (dateKey[0] === "0") mes = dateKey[1];
-            let dia = dateKey[3] + dateKey[4];
-            if (dateKey[3] === "0") dia = dateKey[4];
-
-            dateKey = mes + "/" + dia + "/" + dateKey[6] + dateKey[7] + dateKey[8] + dateKey[9];
+            let dateKey = fecha.set('date', day).format('M/D/YYYY');
 
             let isHighlighted = false;
             if (dias) {
                 for (const dates of dias) {
-                    console.log("dates" + dates)
-                    console.log("datekey" + dateKey)
                     if (dates.includes(dateKey)) {
                         isHighlighted = true;
                         break;
@@ -52,10 +45,7 @@ const DiasMes: FC<{
             };
 
             days.push(
-                <div
-                    className={` m-2 text-center ${isToday ? 'bg-blue-500 text-white' : ''} ${isHighlighted ? 'bg-red-500' : ''}`}
-                    key={day}
-                >
+                <div className={` m-2 text-center ${isToday ? 'bg-blue-300 border border-black' : ''} ${isHighlighted ? 'bg-amber-100 border border-black' : ''}`} key={day}>
                     {day}
                 </div>
             );
@@ -68,14 +58,14 @@ const DiasMes: FC<{
         <div className="m-2 calendar bg-white border border-gray-300 rounded shadow p-4">
             <div className="m-2 flex justify-between items-center mb-4">
                 <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"
+                    className="bg-blue-300 hover:bg-blue-600 text-white px-2 py-1 rounded"
                     onClick={prevMonth}
                 >
                     &lt;
                 </button>
                 <h2 className="m-2 text-xl font-semibold">{fecha.format('MMMM YY')}</h2>
                 <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded"
+                    className="bg-blue-300 hover:bg-blue-600 text-white px-2 py-1 rounded"
                     onClick={nextMonth}
                 >
                     &gt;

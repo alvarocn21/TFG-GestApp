@@ -86,9 +86,9 @@ const Contenedor: FC<{
   if (error) return <div>Error :(</div>;
 
   return (
-    <div className="h-screen ">
+    <div className="h-screen">
       {token ? (
-        <div>
+        <div className="h-80">
           <div className="dark hidden bg-gray-900 md:fixed md:inset-y-0 md:flex md:w-[180px] md:flex-col">
             <div className="flex h-full min-h-0 flex-col ">
               <div className="scrollbar-trigger flex h-full w-full flex-1 items-start border-white/20">
@@ -151,9 +151,9 @@ const Contenedor: FC<{
               </div>
             </div>
           </div>
-          <div className="flex justify-center p-3 underline underline-offset-1 font-serif">{fecha}</div>
+          <div className="flex justify-center p-8 underline underline-offset-1 font-serif">{fecha}</div>
           {pantallas === 0 &&
-            <div className="flex h-full flex-1 flex-col md:pl-[190px] p-4 mb-56">
+            <div className="flex h-full flex-1 flex-col md:pl-[190px] p-4 mb-56 mx-32">
               Bienvenido {data?.getUser.nombre} a GestApp, donde podras gestionar tus entradas y salidas, tus vacaciones y el trabajo que realizas durante tu jornada laboral. ¡Explora nuestro sitio y descubre todo lo que tenemos para ofrecerte!<br></br>
               <br></br>
             </div>

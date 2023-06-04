@@ -62,10 +62,9 @@ const Vacas: FC<{
     );
 
     const vacasAceptadas: string[] | undefined = [];
-    if(data){
-        console.log(data)
+    if (data) {
         data.getVacacionesUsu.map((e: any) => {
-            if(e.estado === "Aceptada"){
+            if (e.estado === "Aceptada") {
                 vacasAceptadas.push(e.diasVacas);
             }
         });
@@ -78,11 +77,10 @@ const Vacas: FC<{
         <div className="flex h-full flex-1 flex-col md:pl-[190px]">
             {pantalla === 0 &&
                 <div>
-                    <div className="p-3 font-serif">Dias disponibles: {diasHabiles}<br></br></div>
-                    <button className="glass p-2 mx-20 mt-5 bg-amber-700 my-5" onClick={() => {
+                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black border- font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(1);
                     }}>Añadir vacaciones</button>
-                    <button className="glass p-2 bg-amber-700 " onClick={() => {
+                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(2);
                     }}>Gestionar Vacaciones</button>
                     <DiasMes key={""} vacaciones={vacasAceptadas}></DiasMes>
@@ -94,7 +92,7 @@ const Vacas: FC<{
                                 {new Date(e.diasVacas[0]).toLocaleDateString()} - {new Date(e.diasVacas[e.diasVacas.length - 1]).toLocaleDateString()}
                                 <div className="font-bold">Estado</div>
                                 <div className="p-2">{e.estado}</div>
-                                <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
+                                <button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => {
                                     if (e.estado === "Solicitada") {
                                         deleteVacas({
                                             variables: {
@@ -109,7 +107,9 @@ const Vacas: FC<{
                                             reloadHandler();
                                         });
                                     } else window.alert("Solo se pueden borrar Vacaciones en estado Solicitadas");
-                                }}>Eliminar</button>
+                                }}><svg style={{fill: 'black'}} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                                        <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                                    </svg></button>
                             </div>
                         ))}
                     </div>
@@ -117,9 +117,10 @@ const Vacas: FC<{
             }
             {pantalla === 1 &&
                 <div>
-                    <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() =>
+                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
-                    }>atras</button>
+                    }}>atras</button>
+                    <div className="p-3 font-serif">Dias disponibles: {diasHabiles}<br></br></div>
                     <div className="flex justify-start p-4 underline underline-offset-1 font-serif">Selecciona la fecha de inicio y de fin de tus vacaciones</div>
                     <div className="block mx-4">
                         <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
@@ -154,7 +155,7 @@ const Vacas: FC<{
                             <option value="V">V - Vacaciones</option>
                         </select>
                     </div>
-                    <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
+                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         if (hasta === "" && desde === "") window.alert("CUIDADO, no estas añadiendo ninguna fecha en algun parametro.")
                         else if (new Date(hasta) < new Date(desde)) window.alert("CUIDADO, estas poniendo una fecha de fin inferior a la fecha de inicio.")
                         else if (diasHabiles === 0) window.alert("No te quedan dias de Vacaciones.")
@@ -193,9 +194,9 @@ const Vacas: FC<{
             }
             {pantalla === 2 &&
                 <div>
-                    <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() =>
+                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
-                    }>atras</button>
+                    }}>atras</button>
                     {cargo === "Administrador" &&
                         <VacasAdmin reloadHandler={reloadHandler}></VacasAdmin>
                     }

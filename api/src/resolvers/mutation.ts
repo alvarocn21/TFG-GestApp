@@ -188,7 +188,7 @@ export const Mutation = {
         const { db, user } = context;
         const { hora, comentario } = args;
 
-        const insertedId = await db.collection("Fichaje").insertOne({ persona: user._id, fecha: new Date().toDateString(), entradasSalidas: hora, comentario: comentario });
+        const insertedId = await db.collection("Fichaje").insertOne({ persona: user._id, fecha: new Date().toLocaleDateString(), entradasSalidas: hora, comentario: comentario });
         return {
             _id: insertedId.insertedId,
             persona: user._id,

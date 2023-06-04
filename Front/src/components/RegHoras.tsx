@@ -93,13 +93,15 @@ const RegHoras: FC<{
         <div className="flex h-full flex-1 flex-col md:pl-[190px]">
             {pantalla === 0 &&
                 <div>
-                    <button className="glass p-1 m-4 bg-amber-700" onClick={() => setPantalla(1)}>Registrar trabajo</button>
+                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
+                        setPantalla(1)
+                    }}>Registrar trabajo</button>
                     {horasSemanales && <div className="p-4 font-serif">HORAS RESTANTES: {horasSemanales / 5 - a}</div>}
                     <div>
-                        <button className="glass p-1 mx-5 mt-2 bg-slate-600" onClick={() => {
+                        <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                             setOrden(1);
                         }}>Menor hora Inicio</button>
-                        <button className="glass p-1 bg-slate-600" onClick={() => {
+                        <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                             setOrden(2);
                         }}>Mayor hora Inicio</button>
                     </div>
@@ -116,15 +118,18 @@ const RegHoras: FC<{
                                     <div className="font-bold">Hora de comienzo</div> {e.Fdesde} h
                                     <div className="font-bold">Comentario</div>
                                     <div className="p-2">{e.comentario}</div>
-                                    <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
+                                    <button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => {
                                         setTiempo(e.tiempo);
                                         setTrabajoRealizado(e.trabajoRealizado);
                                         setFdesde(e.Fdesde);
                                         setComentario(e.comentario);
                                         setId(e._id);
                                         setPantalla(2);
-                                    }}>Editar</button>
-                                    <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
+                                    }}>
+                                        <svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                            <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" /></svg>
+                                    </button>
+                                    <button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => {
                                         delteRegHoras({
                                             variables: {
                                                 deleteTrabajoRegId: e._id,
@@ -137,12 +142,14 @@ const RegHoras: FC<{
                                         }).then(() => {
                                             reloadHandler();
                                         });
-                                    }}>Eliminar</button>
+                                    }}><svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                                            <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                                        </svg></button>
                                 </div>
                             ))}
                         </div>
                     }
-                     {orden === 2 &&
+                    {orden === 2 &&
                         <div>
                             {registros?.sort((o1, o2) => {
                                 if (parseInt(o1.Fdesde[0] + o1.Fdesde[1]) + (parseInt(o1.Fdesde[3] + o1.Fdesde[4]) / 60) < parseInt(o2.Fdesde[0] + o2.Fdesde[1]) + (parseInt(o2.Fdesde[3] + o2.Fdesde[4]) / 60)) return -1;
@@ -155,15 +162,18 @@ const RegHoras: FC<{
                                     <div className="font-bold">Hora de comienzo</div> {e.Fdesde} h
                                     <div className="font-bold">Comentario</div>
                                     <div className="p-2">{e.comentario}</div>
-                                    <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
+                                    <button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => {
                                         setTiempo(e.tiempo);
                                         setTrabajoRealizado(e.trabajoRealizado);
                                         setFdesde(e.Fdesde);
                                         setComentario(e.comentario);
                                         setId(e._id);
                                         setPantalla(2);
-                                    }}>Editar</button>
-                                    <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
+                                    }}>
+                                        <svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                            <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" /></svg>
+                                    </button>
+                                    <button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => {
                                         delteRegHoras({
                                             variables: {
                                                 deleteTrabajoRegId: e._id,
@@ -176,7 +186,9 @@ const RegHoras: FC<{
                                         }).then(() => {
                                             reloadHandler();
                                         });
-                                    }}>Eliminar</button>
+                                    }}><svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                                            <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                                        </svg></button>
                                 </div>
                             ))}
                         </div>
@@ -185,9 +197,9 @@ const RegHoras: FC<{
             }
             {pantalla === 1 &&
                 <div>
-                    <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() =>
+                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
-                    }>atras</button>
+                    }}>atras</button>
                     <div className="flex justify-start p-4 underline underline-offset-1 font-serif">Añade el trabajo realizado</div>
                     <div className="block mx-4">
                         <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
@@ -231,42 +243,40 @@ const RegHoras: FC<{
                             onChange={(e) => setComentario(e.target.value)}
                         ></input>
                     </div>
-                    <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4"
-                        onClick={() => {
-                            if (tiempo === 0) window.alert("Es obligatorio poner el tiempo dedicado a tus tareas.")
-                            if (trabajoRealizado === "") window.alert("Es obligatorio poner la tarea realizada.")
-                            if (fdesde === "") window.alert("Es obligatorio poner la hora de comienzo.")
-                            else {
-                                regHoras({
-                                    variables: {
-                                        tiempo,
-                                        trabajoRealizado,
-                                        fdesde,
-                                        comentario
-                                    },
-                                    context: {
-                                        headers: {
-                                            authorization: localStorage.getItem("token")
-                                        }
+                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
+                        if (tiempo === 0) window.alert("Es obligatorio poner el tiempo dedicado a tus tareas.")
+                        if (trabajoRealizado === "") window.alert("Es obligatorio poner la tarea realizada.")
+                        if (fdesde === "") window.alert("Es obligatorio poner la hora de comienzo.")
+                        else {
+                            regHoras({
+                                variables: {
+                                    tiempo,
+                                    trabajoRealizado,
+                                    fdesde,
+                                    comentario
+                                },
+                                context: {
+                                    headers: {
+                                        authorization: localStorage.getItem("token")
                                     }
-                                }).then(() => {
-                                    setTiempo(0);
-                                    setTrabajoRealizado("");
-                                    setFdesde("");
-                                    setComentario("");
-                                    setPantalla(0);
-                                    reloadHandler();
-                                });
-                            }
+                                }
+                            }).then(() => {
+                                setTiempo(0);
+                                setTrabajoRealizado("");
+                                setFdesde("");
+                                setComentario("");
+                                setPantalla(0);
+                                reloadHandler();
+                            });
                         }
-                        }>Aceptar</button>
+                    }}>Aceptar</button>
                 </div>
             }
             {pantalla === 2 &&
                 <div>
-                    <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() =>
+                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
-                    }>atras</button>
+                    }}>atras</button>
                     <div className="block mx-4">
                         <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
                             Tiempo dedicado
@@ -309,7 +319,7 @@ const RegHoras: FC<{
                             onChange={(e) => setComentario(e.target.value)}
                         ></input>
                     </div>
-                    <button className="glass p-2 m-2 bg-amber-700 btn-group mx-4 my-4" onClick={() => {
+                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         editRegHoras({
                             variables: {
                                 editTrabajoRegId: id,
