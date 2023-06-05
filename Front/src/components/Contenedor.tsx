@@ -3,24 +3,27 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import Fichaje from "./Fichaje"
 import RegHoras from "./RegHoras"
 import LogIn from "./LogIn";
-import CrearUsuarios from "./CrearUsuarios";
+import CrearUsuarios from "./GestionAdmin/CrearUsuarios";
 import Vacas from "./Vacas";
 import PerfilUsuario from "./PerfilUsuario";
+import PerfilesUsuariosAdmin from "./GestionAdmin/PerfilesUsuariosAdmin";
+import GeneradorInformes from "./GeneradorInformes";
 
 const GETUSER = gql`
 query Query {
   getUser {
-    diasHabiles
-    horasSemanales
     _id
-    nombre
     cargo
-    correo
-    telefono
+    contrasena
     apellido1
     apellido2
-    dni
+    correo
     direccion
+    dni
+    diasHabiles
+    horasSemanales
+    nombre
+    telefono
   }
 }
 `
@@ -85,10 +88,32 @@ const Contenedor: FC<{
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error :(</div>;
 
+  const contenido = "Hola soy Alvaro";
+
+  const handleDownload = () => {
+    // Contenido del archivo que deseas descargar
+    const contenido = "Hola soy Alvaro";
+
+    // Crear un Blob con el contenido del archivo
+    const blob = new Blob([contenido], { type: "text/plain" });
+
+    // Crear una URL del Blob
+    const url = URL.createObjectURL(blob);
+
+    // Crear un enlace <a> temporal y simular un clic para descargar el archivo
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "mi-archivo.txt";
+    link.click();
+
+    // Liberar la URL del Blob
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="h-screen">
       {token ? (
-        <div className="h-80">
+        <div>
           <div className="dark hidden bg-gray-900 md:fixed md:inset-y-0 md:flex md:w-[180px] md:flex-col">
             <div className="flex h-full min-h-0 flex-col ">
               <div className="scrollbar-trigger flex h-full w-full flex-1 items-start border-white/20">
@@ -117,6 +142,12 @@ const Contenedor: FC<{
                       <path d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z" />
                     </svg>Registro de horas
                   </button>
+                  <button onClick={() => setPantallas(4)} className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                      <style>{`svg{fill:#ffffff}`}</style>
+                      <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
+                    </svg>Generador de informes
+                  </button>
                   <button onClick={() => setPantallas(5)} className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
                       <style>{`svg{fill:#ffffff}`}</style>
@@ -124,12 +155,20 @@ const Contenedor: FC<{
                     </svg>Perfil
                   </button>
                   {data?.getUser.cargo === "Administrador" &&
-                    <button onClick={() => setPantallas(4)} className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm">
-                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
-                        <style>{`svg{fill:#ffffff}`}</style>
-                        <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
-                      </svg>Crear un Usuario
-                    </button>
+                    <div>
+                      <button onClick={() => setPantallas(6)} className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                          <style>{`svg{fill:#ffffff}`}</style>
+                          <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
+                        </svg>Crear un Usuario
+                      </button>
+                      <button onClick={() => setPantallas(7)} className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                          <style>{`svg{fill:#ffffff}`}</style>
+                          <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
+                        </svg>Todos los usuarios
+                      </button>
+                    </div>
                   }
                   <div className="flex-1"></div>
                   <button onClick={() => {
@@ -151,51 +190,57 @@ const Contenedor: FC<{
               </div>
             </div>
           </div>
-          <div className="flex justify-center p-8 underline underline-offset-1 font-serif">{fecha}</div>
           {pantallas === 0 &&
-            <div className="flex h-full flex-1 flex-col md:pl-[190px] p-4 mb-56 mx-32">
-              Bienvenido {data?.getUser.nombre} a GestApp, donde podras gestionar tus entradas y salidas, tus vacaciones y el trabajo que realizas durante tu jornada laboral. ¡Explora nuestro sitio y descubre todo lo que tenemos para ofrecerte!<br></br>
-              <br></br>
+            <div>
+              <div className="flex h-full flex-1 flex-col md:pl-[190px] p-4 mb-56 mx-32">
+                <div className="flex justify-center p-8 underline underline-offset-1 font-serif">{fecha}</div>
+                Bienvenido {data?.getUser.nombre} a GestApp, donde podras gestionar tus entradas y salidas, tus vacaciones y el trabajo que realizas durante tu jornada laboral. ¡Explora nuestro sitio y descubre todo lo que tenemos para ofrecerte!<br></br>
+                <br></br>
+              </div>
+              <div className="md:pt-[400px]">
+              <footer className="footer flex flex-row p-10 bg-neutral text-neutral-content md:pl-[190px]">
+                <div className="mx-20">
+                  <span className="footer-title">Company</span>
+                  <button className="link link-hover">About us</button>
+                  <button className="link link-hover">Contact</button>
+                  <button className="link link-hover">Jobs</button>
+                </div>
+                <div className="mx-20">
+                  <span className="footer-title">Legal</span>
+                  <button className="link link-hover">Terms of use</button>
+                  <button className="link link-hover">Privacy policy</button>
+                  <button className="link link-hover">Cookie policy</button>
+                </div>
+              </footer>
+              </div>
             </div>
           }
           {pantallas === 1 &&
             <Vacas diasHabiles={data?.getUser.diasHabiles} reloadHandler={reloadHandler} cargo={data?.getUser.cargo}></Vacas>
           }
           {pantallas === 2 &&
-            <Fichaje horasSemanales={data?.getUser.horasSemanales} reloadHandler={reloadHandler}></Fichaje>
+            <div>
+              <div className="flex justify-center p-8 underline underline-offset-1 font-serif">{fecha}</div>
+              <Fichaje horasSemanales={data?.getUser.horasSemanales} reloadHandler={reloadHandler}></Fichaje>
+            </div>
           }
           {pantallas === 3 &&
-            <RegHoras horasSemanales={data?.getUser.horasSemanales} reloadHandler={reloadHandler}></RegHoras>
+            <div>
+              <div className="flex justify-center p-8 underline underline-offset-1 font-serif">{fecha}</div>
+              <RegHoras horasSemanales={data?.getUser.horasSemanales} reloadHandler={reloadHandler}></RegHoras>
+            </div>
           }
           {pantallas === 4 &&
-            <CrearUsuarios reloadHandler={reloadHandler}></CrearUsuarios>
+            <GeneradorInformes reloadHandler={reloadHandler}></GeneradorInformes>
           }
           {pantallas === 5 &&
             <PerfilUsuario data={data?.getUser} reloadHandler={reloadHandler}></PerfilUsuario>
           }
-          {pantallas === 0 &&
-            <footer className="footer flex flex-row p-10 bg-neutral text-neutral-content bottom-0 md:pl-[190px]">
-              <div>
-                <span className="footer-title">Services</span>
-                <button className="link link-hover">Branding</button>
-                <button className="link link-hover">Design</button>
-                <button className="link link-hover">Marketing</button>
-                <button className="link link-hover">Advertisement</button>
-              </div>
-              <div>
-                <span className="footer-title">Company</span>
-                <button className="link link-hover">About us</button>
-                <button className="link link-hover">Contact</button>
-                <button className="link link-hover">Jobs</button>
-                <button className="link link-hover">Press kit</button>
-              </div>
-              <div>
-                <span className="footer-title">Legal</span>
-                <button className="link link-hover">Terms of use</button>
-                <button className="link link-hover">Privacy policy</button>
-                <button className="link link-hover">Cookie policy</button>
-              </div>
-            </footer>
+          {pantallas === 7 &&
+            <PerfilesUsuariosAdmin reloadHandler={reloadHandler}></PerfilesUsuariosAdmin>
+          }
+          {pantallas === 6 &&
+            <CrearUsuarios reloadHandler={reloadHandler}></CrearUsuarios>
           }
         </div>
       ) : (

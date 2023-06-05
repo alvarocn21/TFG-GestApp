@@ -9,7 +9,7 @@ export const Mutation = {
         const { correo, contrasena } = args;
 
         const user = await db.collection("Usuarios").findOne({ correo: correo.toLowerCase() });
-        
+
         if (user) {
             if (compareSync(contrasena, user.contrasena) == true) {
                 const token = uuid();
@@ -59,10 +59,10 @@ export const Mutation = {
         const db = context.db;
         const correo = args.correo;
 
-        const usuario = await db.collection("Usuarios").findOne({ correo: correo });
+        const usuario = await db.collection("Usuarios").findOne({ correo: correo.toLowerCase() });
 
 
-         if (usuario) {
+        if (usuario) {
             return usuario;
         } else {
             throw new ApolloError("Usuario no encontrado");
@@ -71,9 +71,9 @@ export const Mutation = {
 
     createUser: async (parent: any, args: any, context: any) => {
         const db = context.db;
-        const { nombre, apellido1, apellido2, telefono, contrasena, correo, horasSemanales, diasHabiles, cargo, dni, direccion} = args;
+        const { nombre, apellido1, apellido2, telefono, contrasena, correo, horasSemanales, diasHabiles, cargo, dni, direccion } = args;
 
-        const usuario = await db.collection("Usuarios").findOne({ correo: { $regex: correo, $options: 'i' } });
+        const usuario = await db.collection("Usuarios").findOne({ correo: correo.toLowerCase() });
 
         if (usuario) {
             return new ApolloError("Usuario ya registrado");
@@ -81,7 +81,7 @@ export const Mutation = {
             const salt = genSaltSync(contrasena.length);
             const hash = hashSync(contrasena, salt);
 
-            const insertedId = await db.collection("Usuarios").insertOne({ nombre, apellido1, apellido2, telefono, contrasena: hash, token: null, correo: correo.toLowerCase(), horasSemanales, diasHabiles, cargo, dni, direccion});
+            const insertedId = await db.collection("Usuarios").insertOne({ nombre, apellido1, apellido2, telefono, contrasena: hash, token: null, correo: correo.toLowerCase(), horasSemanales, diasHabiles, cargo, dni, direccion });
 
             return {
                 _id: insertedId.insertedId,
@@ -100,10 +100,31 @@ export const Mutation = {
         }
     },
 
-    editUser: async (parent: any, args: any, context: any) => {
+    editUserAdmin: async (parent: any, args: any, context: any) => {
+        const { db, user } = context;
+        const { _id, correo, contrasena } = args;
+        const usuario = await db.collection("Usuarios").findOne({ _id: new ObjectId(_id) });
+
+        if (!usuario) {
+            return new ApolloError("Usuario no encontrado");
+        } else {
+            if (contrasena !== "") {
+                const salt = genSaltSync(contrasena.length);
+                const hash = hashSync(contrasena, salt);
+                await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { contrasena: hash, correo: correo.toLowerCase() } });
+            } else {
+                await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { correo: correo.toLowerCase() } });
+            }
+
+            return usuario;
+        }
+    },
+
+    userChangePassword: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
         const { contrasena } = args;
-        const usuario = await db.collection("Usuarios").findOne({ _id: user._id});
+
+        const usuario = await db.collection("Usuarios").findOne({ _id: user._id });
         if (!usuario) {
             return new ApolloError("Usuario no existe");
         } else {
@@ -117,7 +138,7 @@ export const Mutation = {
 
     setVacaciones: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
-        const { Fdesde, Fhasta,  idAusencia } = args;
+        const { Fdesde, Fhasta, idAusencia } = args;
 
         let diasVacas: String[] = [];
 
@@ -265,24 +286,7 @@ export const Mutation = {
         if (trabRegHoy) await db.collection("TrabajoReg").deleteOne({ _id: new ObjectId(_id) })
         else return new ApolloError("Registro no encontrado");
         return trabRegHoy;
-    },
-    masMeses: async (parent: any, args: any, context: any) => {
-        const { db } = context; // "Diciembre, 2023" 31 - 28 - 31 - 30 - 31 - 30 - 31 - 31 - 30 - 31 - 30 - 31
-        const mes = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-        const diasMes = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-        for (let a = 0; a < mes.length; a++) {
-            const meses = mes[a] + "," + "2024";
-            let c: string[] = [];
-            for (let i = 1; i <= diasMes[a]; i++) {
-                let b = "2024" + "-" + (a + 1) + "-" + i;
-                c.push(b);
-            }
-            await db.collection("DiasMeses").insertOne({ meses, dias: c });
-        }
-
-        return 0;
-    },
+    }
 }
 
 

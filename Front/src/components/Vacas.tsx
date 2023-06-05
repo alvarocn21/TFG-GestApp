@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import DiasMes from "./DiasMes";
-import VacasAdmin from "./VacasAdmin";
+import DiasMes from "./Calendario/Calendario";
+import VacasAdmin from "./GestionAdmin/VacasAdmin";
 
 type vacas = {
     _id: string;
@@ -74,15 +74,17 @@ const Vacas: FC<{
     if (data && error) return <div>Error :(</div>;
 
     return (
-        <div className="flex h-full flex-1 flex-col md:pl-[190px]">
+        <div className="flex h-full flex-1 flex-col md:pl-[190px] my-12 mx-4">
             {pantalla === 0 &&
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black border- font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(1);
                     }}>Añadir vacaciones</button>
-                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
-                        setPantalla(2);
-                    }}>Gestionar Vacaciones</button>
+                    {cargo === "Administrador" &&
+                        <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
+                            setPantalla(2);
+                        }}>Gestionar Vacaciones</button>
+                    }
                     <DiasMes key={""} vacaciones={vacasAceptadas}></DiasMes>
                     <div className=" my-5 underline underline-offset-1 mx-5">Tus Vacaciones</div>
                     <div className="grid grid-cols-3">
@@ -107,7 +109,7 @@ const Vacas: FC<{
                                             reloadHandler();
                                         });
                                     } else window.alert("Solo se pueden borrar Vacaciones en estado Solicitadas");
-                                }}><svg style={{fill: 'black'}} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                                }}><svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
                                         <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
                                     </svg></button>
                             </div>

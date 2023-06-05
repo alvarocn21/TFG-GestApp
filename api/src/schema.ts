@@ -52,10 +52,15 @@ export const typeDefs = gql`
     type Query{
         getVacacionesUsu: [Vacaciones]
         getVacacionesAdmin: [Vacaciones]
+
         getFichaje: [Fichaje]
+        getFichajeMens(mes: String, anio: String): [Fichaje]
+
         getTrabajoReg: [TrabajoReg]
+        getTrabajoRegMens(mes: String, anio: String): [TrabajoReg]
+
         getUser: Persona
-        getMes(mes: String!): Mes
+        getUsers: [Persona]
     }
 
     type Mutation{
@@ -63,10 +68,9 @@ export const typeDefs = gql`
         logOut: Persona!
         recuperarContrasena(correo: String): Persona!
 
-        masMeses: Int
-
         createUser(nombre: String, apellido1: String, apellido2: String, telefono: String, contrasena: String, correo: String, horasSemanales: Float, diasHabiles: Float, cargo: String, dni: String,direccion: String): Persona
-        editUser(contrasena: String): Persona
+        userChangePassword(contrasena: String): Persona
+        editUserAdmin(_id: String, correo: String, contrasena: String): Persona
 
         setTrabajoReg(tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg
         editTrabajoReg(_id: String, tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg

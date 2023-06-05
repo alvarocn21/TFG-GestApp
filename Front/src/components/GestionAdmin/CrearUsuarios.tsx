@@ -2,8 +2,8 @@ import React, { FC, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 
 const CREAUSER = gql`
-mutation Mutation($nombre: String, $apellido1: String, $apellido2: String, $telefono: String, $contrasena: String, $correo: String, $horasSemanales: Float, $diasHabiles: Float, $cargo: String) {
-    createUser(nombre: $nombre, apellido1: $apellido1, apellido2: $apellido2, telefono: $telefono, contrasena: $contrasena, correo: $correo, horasSemanales: $horasSemanales, diasHabiles: $diasHabiles, cargo: $cargo) {
+mutation Mutation($nombre: String, $apellido1: String, $apellido2: String, $telefono: String, $contrasena: String, $correo: String, $horasSemanales: Float, $diasHabiles: Float, $cargo: String, $dni: String, $direccion: String) {
+    createUser(nombre: $nombre, apellido1: $apellido1, apellido2: $apellido2, telefono: $telefono, contrasena: $contrasena, correo: $correo, horasSemanales: $horasSemanales, diasHabiles: $diasHabiles, cargo: $cargo, dni: $dni, direccion: $direccion) {
       _id
     }
   }
@@ -114,7 +114,7 @@ const CrearUsuarios: FC<{
                             value={dni}
                             onChange={(e) => setDni(e.target.value)}
                         /></div >
-                         <div className="block mx-4">
+                    <div className="block mx-4">
                         <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
                             Direccion
                         </span>
@@ -135,7 +135,7 @@ const CrearUsuarios: FC<{
                     </div>
                 </div>
             </div>
-            <button className="glass p-2 bg-amber-700 btn-group mx-56 my-10" onClick={() => {
+            <button className=" border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300  mx-56 my-10" onClick={() => {
                 if (nombre === "" || apellido1 === "" || apellido2 === "" || telefono === "" || contrasena === "" || correo === "" || horasSemanales === 0 || cargo === "") {
                     window.alert("Falta por añadir algun campo OBLIGATORIO");
                 } else {
@@ -165,9 +165,11 @@ const CrearUsuarios: FC<{
                         setTelefono("");
                         setContrasena("");
                         setCorreo("");
+                        setDireccion("");
+                        setDni("");
                         setHorasSemanales(0);
                         setDiasHabiles(0);
-                        setcargo("Usuario")
+                        setcargo("Usuario");
                         reloadHandler();
                     });
                 }

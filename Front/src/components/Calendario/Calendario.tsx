@@ -3,7 +3,7 @@ import 'dayjs/locale/es';
 import dayjs from 'dayjs';
 dayjs.locale('es');
 
-const DiasMes: FC<{
+const Calendario: FC<{
     vacaciones: string[] | undefined;
 }> = (vacaciones) => {
     const [fecha, setFecha] = useState(dayjs());
@@ -87,4 +87,4 @@ const DiasMes: FC<{
     );
 }
 
-export default DiasMes;
+export default Calendario;
