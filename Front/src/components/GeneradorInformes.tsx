@@ -3,14 +3,6 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import FichajeMensual from "./GeneraInformes/FichajeMensual";
 import RegHorasMensual from "./GeneraInformes/RegHorasMensual";
 
-type TrabajoReg = {
-    _id: string,
-    tiempo: number;
-    trabajoRealizado: string;
-    Fdesde: string;
-    comentario: string;
-}
-
 const EDITUSER = gql`
 mutation Mutation($contrasena: String) {
     editUser(contrasena: $contrasena) {
@@ -18,20 +10,6 @@ mutation Mutation($contrasena: String) {
     }
   }
 `
-
-type Usuario = {
-    diasHabiles: number;
-    horasSemanales: number;
-    _id: string;
-    nombre: string;
-    cargo: string;
-    correo: string;
-    telefono: string;
-    apellido1: string;
-    apellido2: string;
-    dni: String;
-    direccion: String;
-}
 
 const GeneradorInformes: FC<{
     reloadHandler: () => void;

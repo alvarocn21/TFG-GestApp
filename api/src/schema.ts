@@ -10,9 +10,11 @@ export const typeDefs = gql`
         contrasena: String!
         token: String!
         correo: String!
+        permisos: String!
         cargo: String!
         horasSemanales: Float!
         diasHabiles: Float!
+        turno: String!
         dni: String!
         direccion: String!
     }
@@ -30,8 +32,8 @@ export const typeDefs = gql`
         _id: String!
         persona: String!
         fecha: String!
-        entradasSalidas: String!
-        comentario: String!
+        hora: String!
+        motivo: String!
     }
 
     type TrabajoReg {
@@ -39,49 +41,44 @@ export const typeDefs = gql`
         persona: String!
         fecha: String!
         tiempo: Float
-        trabajoRealizado: String
-        Fdesde: String
+        trabajoRealizado: String!
+        Fdesde: String!
         comentario: String
     }
 
-    type Mes {
-        meses: String!
-        dias: [String!]
-    }
-
     type Query{
-        getVacacionesUsu: [Vacaciones]
-        getVacacionesAdmin: [Vacaciones]
+        getVacacionesUsu: [Vacaciones]!
+        getVacacionesAdmin: [Vacaciones]!
 
-        getFichaje: [Fichaje]
-        getFichajeMens(mes: String, anio: String): [Fichaje]
+        getFichaje: [Fichaje]!
+        getFichajeMens(mes: String, anio: String): [Fichaje]!
 
-        getTrabajoReg: [TrabajoReg]
-        getTrabajoRegMens(mes: String, anio: String): [TrabajoReg]
+        getTrabajoReg: [TrabajoReg]!
+        getTrabajoRegMens(mes: String, anio: String): [TrabajoReg]!
 
-        getUser: Persona
-        getUsers: [Persona]
+        getUser: Persona!
+        getUsers: [Persona]!
     }
 
     type Mutation{
-        logIn(correo: String!, contrasena: String!): Persona!
+        logIn(correo: String, contrasena: String): Persona!
         logOut: Persona!
         recuperarContrasena(correo: String): Persona!
 
-        createUser(nombre: String, apellido1: String, apellido2: String, telefono: String, contrasena: String, correo: String, horasSemanales: Float, diasHabiles: Float, cargo: String, dni: String,direccion: String): Persona
-        userChangePassword(contrasena: String): Persona
-        editUserAdmin(_id: String, correo: String, contrasena: String): Persona
+        createUser(nombre: String, apellido1: String, apellido2: String, telefono: String, contrasena: String, correo: String, turno: String,horasSemanales: Float, diasHabiles: Float, permisos: String, dni: String,direccion: String): Persona!
+        userChangePassword(contrasena: String): Persona!
+        editUser(correo: String, contrasena: String, telefono: String, dni: String, direccion: String): Persona!
 
-        setTrabajoReg(tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg
-        editTrabajoReg(_id: String, tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg
-        deleteTrabajoReg(_id: String): TrabajoReg
+        setTrabajoReg(tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg!
+        editTrabajoReg(_id: String, tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg!
+        deleteTrabajoReg(_id: String): TrabajoReg!
 
-        setFichaje(hora: String, comentario: String): Fichaje
-        editFichaje(_id: String, hora: String, comentario: String): Fichaje
-        deleteFichaje(_id: String): Fichaje
+        setFichaje(hora: String, motivo: String): Fichaje!
+        editFichaje(_id: String, hora: String, motivo: String): Fichaje!
+        deleteFichaje(_id: String): Fichaje!
 
-        setVacaciones(Fdesde: String, Fhasta: String, idAusencia: String!): Vacaciones
-        gestionaVacaciones(_id: String, estado: String): Vacaciones
-        deleteVacaciones(_id: String): Vacaciones
+        setVacaciones(Fdesde: String, Fhasta: String, idAusencia: String): Vacaciones!
+        gestionaVacaciones(_id: String, estado: String): Vacaciones!
+        deleteVacaciones(_id: String): Vacaciones!
     }
 `

@@ -47,7 +47,7 @@ query Query {
 
 const RegHoras: FC<{
     reloadHandler: () => void;
-    horasSemanales: number | undefined;
+    horasSemanales: number;
 }> = ({ reloadHandler, horasSemanales }) => {
 
     const [tiempo, setTiempo] = useState<number>(0);

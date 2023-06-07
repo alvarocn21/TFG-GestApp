@@ -24,14 +24,14 @@ export const Query = {
     getFichajeMens: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
         const { mes, anio } = args;
-        
+
         const fichaje = await db.collection('Fichaje').find({
             persona: new ObjectId(user._id),
-            fecha: { 
-                $regex: `^\\d{1,2}/6/2023`, 
-                $options: 'i' 
+            fecha: {
+                $regex: `^${mes}/\\d{1,2}/${anio}`,
+                $options: 'i'
             },
-          }).toArray();
+        }).toArray();
 
         if (fichaje) return fichaje;
         else return "Aun no hay Fichajes solicitados";
@@ -40,7 +40,7 @@ export const Query = {
         const { db, user } = context;
 
         const trabajoReg = await db.collection("TrabajoReg").find({ persona: user._id, fecha: new Date().toLocaleDateString() }).toArray();
-        
+
         if (trabajoReg) return trabajoReg;
         else return "Aun no hay Trabajo registrado";
     },
@@ -48,13 +48,16 @@ export const Query = {
         const { db, user } = context;
         const { mes, anio } = args;
 
+        console.log(mes + " aa " + anio)
+
+
         const trabajoReg = await db.collection('TrabajoReg').find({
             persona: new ObjectId(user._id),
-            fecha: { 
-                $regex: `^\\d{1,2}/6/2023`, 
-                $options: 'i' 
+            fecha: {
+                $regex: `^${mes}/\\d{1,2}/${anio}`,
+                $options: 'i'
             },
-          }).toArray();
+        }).toArray();
 
         if (trabajoReg) return trabajoReg;
         else return "Aun no hay Trabajo registrado";

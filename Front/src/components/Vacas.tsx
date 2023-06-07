@@ -38,9 +38,9 @@ mutation Mutation($id: String) {
 
 const Vacas: FC<{
     reloadHandler: () => void;
-    diasHabiles: number | undefined;
-    cargo: string | undefined;
-}> = ({ reloadHandler, diasHabiles, cargo }) => {
+    diasHabiles: number;
+    permisos: string;
+}> = ({ reloadHandler, diasHabiles, permisos }) => {
     const [pantalla, setPantalla] = useState<number>(0)
 
     const [desde, setDesde] = useState<string>("");
@@ -74,13 +74,13 @@ const Vacas: FC<{
     if (data && error) return <div>Error :(</div>;
 
     return (
-        <div className="flex h-full flex-1 flex-col md:pl-[190px] my-12 mx-4">
+        <div className="flex h-full flex-1 flex-col md:pl-[190px] my-12 mx-4">Asistencia-Ausencias
             {pantalla === 0 &&
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black border- font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(1);
                     }}>Añadir vacaciones</button>
-                    {cargo === "Administrador" &&
+                    {permisos === "Administrador" &&
                         <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                             setPantalla(2);
                         }}>Gestionar Vacaciones</button>
@@ -199,7 +199,7 @@ const Vacas: FC<{
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
                     }}>atras</button>
-                    {cargo === "Administrador" &&
+                    {permisos === "Administrador" &&
                         <VacasAdmin reloadHandler={reloadHandler}></VacasAdmin>
                     }
                 </div>

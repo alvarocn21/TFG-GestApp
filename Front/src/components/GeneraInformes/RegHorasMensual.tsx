@@ -64,7 +64,7 @@ const RegHorasMensual: FC<{
     if (data && error) return <div>Error...</div>
 
     return (
-        <div className="mx-10 mt-10">
+        <div className="mx-10 mt-10">Registro de horas mensual
             <div className="flex items-center mb-4">
                 <select className="mr-2">
                     <option value="1">Enero</option>
@@ -81,14 +81,11 @@ const RegHorasMensual: FC<{
                     <option value="12">Diciembre</option>
                 </select>
                 <select>
-                    <option value="2021">2021</option>
-                    <option value="2022">2022</option>
                     <option value="2023">2023</option>
                     <option value="2024">2024</option>
                 </select>
             </div><br />
             <button className="mr-2" onClick={() =>
-
                 setMostrar(true)
             }>Mostrar</button><br /><br />
             <button className="mb-10" onClick={descargarTxt}>Descargar txt</button>
