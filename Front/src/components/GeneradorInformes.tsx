@@ -1,19 +1,8 @@
 import { FC, useState } from "react";
-import { gql, useMutation, useQuery } from "@apollo/client";
 import FichajeMensual from "./GeneraInformes/FichajeMensual";
 import RegHorasMensual from "./GeneraInformes/RegHorasMensual";
 
-const EDITUSER = gql`
-mutation Mutation($contrasena: String) {
-    editUser(contrasena: $contrasena) {
-      _id
-    }
-  }
-`
-
-const GeneradorInformes: FC<{
-    reloadHandler: () => void;
-}> = ({ reloadHandler }) => {
+const GeneradorInformes: FC = () => {
 
     const [generador, setGenerador] = useState<string>("");
 
@@ -49,26 +38,26 @@ const GeneradorInformes: FC<{
                     </div>
                     {resultadoBusqueda === "" &&
                         <div>
-                            <div className="mt-4 bg-gray-100 p-4 rounded">
+                            <div className="m-4 bg-gray-200 p-4 rounded">
                                 <button className="my-4 mx-10" onClick={() => setGenerador("Fichaje mensual")}>Fichaje mensual</button><br></br>
                             </div>
-                            <div className="mt-4 bg-gray-100 p-4 rounded">
+                            <div className="m-4 bg-gray-200 p-4 rounded">
                                 <button className="my-4 mx-10" onClick={() => setGenerador("Registro de horas mensual")}>Registro de horas mensual</button><br></br>
                             </div>
                         </div>
                     }
                     {resultadoBusqueda &&
-                        <div className="mt-4 bg-gray-100 p-4 rounded">
+                        <div className="m-4 bg-gray-100 p-4 rounded">
                             <button className="my-4 mx-10" onClick={() => setGenerador(resultadoBusqueda)}>{resultadoBusqueda}</button>
                         </div>
                     }
                 </div>
             }
             {generador === "Fichaje mensual" &&
-                <FichajeMensual reloadHandler={reloadHandler}></FichajeMensual>
+                <FichajeMensual setGenerador={setGenerador}></FichajeMensual>
             }
             {generador === "Registro de horas mensual" &&
-                <RegHorasMensual reloadHandler={reloadHandler}></RegHorasMensual>
+                <RegHorasMensual setGenerador={setGenerador}></RegHorasMensual>
             }
         </div>
     )

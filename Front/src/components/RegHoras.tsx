@@ -51,7 +51,7 @@ const RegHoras: FC<{
 }> = ({ reloadHandler, horasSemanales }) => {
 
     const [tiempo, setTiempo] = useState<number>(0);
-    const [orden, setOrden] = useState<number>(1);
+    const [orden, setOrden] = useState<string>("1");
     const [trabajoRealizado, setTrabajoRealizado] = useState<string>("");
     const [fdesde, setFdesde] = useState<string>("");
     const [comentario, setComentario] = useState<string>("");
@@ -97,15 +97,19 @@ const RegHoras: FC<{
                         setPantalla(1)
                     }}>Registrar trabajo</button>
                     {horasSemanales && <div className="p-4 font-serif">HORAS RESTANTES: {horasSemanales / 5 - a}</div>}
-                    <div>
-                        <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
-                            setOrden(1);
-                        }}>Menor hora Inicio</button>
-                        <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
-                            setOrden(2);
-                        }}>Mayor hora Inicio</button>
+
+                    <div className="m-2">
+                        Ordernar<br />
+                        <select
+                            className="mr-2 bg-white text-gray-800 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
+                            value={"ORDENAR"}
+                            onChange={(e) => setOrden(e.target.value)}
+                        >
+                            <option value={"1"}>Menor hora inicio</option>
+                            <option value={"2"}>Mayor hora inicio</option>
+                        </select>
                     </div>
-                    {orden === 1 &&
+                    {orden === "1" &&
                         <div>
                             {registros?.sort((o1, o2) => {
                                 if (parseInt(o1.Fdesde[0] + o1.Fdesde[1]) + (parseInt(o1.Fdesde[3] + o1.Fdesde[4]) / 60) < parseInt(o2.Fdesde[0] + o2.Fdesde[1]) + (parseInt(o2.Fdesde[3] + o2.Fdesde[4]) / 60)) return -1;
@@ -149,7 +153,7 @@ const RegHoras: FC<{
                             ))}
                         </div>
                     }
-                    {orden === 2 &&
+                    {orden === "2" &&
                         <div>
                             {registros?.sort((o1, o2) => {
                                 if (parseInt(o1.Fdesde[0] + o1.Fdesde[1]) + (parseInt(o1.Fdesde[3] + o1.Fdesde[4]) / 60) < parseInt(o2.Fdesde[0] + o2.Fdesde[1]) + (parseInt(o2.Fdesde[3] + o2.Fdesde[4]) / 60)) return -1;
@@ -245,8 +249,10 @@ const RegHoras: FC<{
                     </div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         if (tiempo === 0) window.alert("Es obligatorio poner el tiempo dedicado a tus tareas.")
-                        if (trabajoRealizado === "") window.alert("Es obligatorio poner la tarea realizada.")
-                        if (fdesde === "") window.alert("Es obligatorio poner la hora de comienzo.")
+                        else if (trabajoRealizado === "") window.alert("Es obligatorio poner la tarea realizada.")
+                        else if (trabajoRealizado.length > 30) window.alert("El limite de caracteres para ese campo es de 30.")
+                        else if (fdesde === "") window.alert("Es obligatorio poner la hora de comienzo.")
+                        else if (comentario.length > 50) window.alert("El limite de caracteres para ese campo es de 50.")
                         else {
                             regHoras({
                                 variables: {
@@ -320,27 +326,35 @@ const RegHoras: FC<{
                         ></input>
                     </div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
-                        editRegHoras({
-                            variables: {
-                                editTrabajoRegId: id,
-                                trabajoRealizado,
-                                fdesde,
-                                comentario,
-                                tiempo
-                            },
-                            context: {
-                                headers: {
-                                    authorization: localStorage.getItem("token")
+
+                        if (tiempo === 0) window.alert("Es obligatorio poner el tiempo dedicado a tus tareas.")
+                        else if (trabajoRealizado === "") window.alert("Es obligatorio poner la tarea realizada.")
+                        else if (trabajoRealizado.length > 30) window.alert("El limite de caracteres para ese campo es de 30.")
+                        else if (fdesde === "") window.alert("Es obligatorio poner la hora de comienzo.")
+                        else if (comentario.length > 50) window.alert("El limite de caracteres para ese campo es de 50.")
+                        else {
+                            editRegHoras({
+                                variables: {
+                                    editTrabajoRegId: id,
+                                    trabajoRealizado,
+                                    fdesde,
+                                    comentario,
+                                    tiempo
+                                },
+                                context: {
+                                    headers: {
+                                        authorization: localStorage.getItem("token")
+                                    }
                                 }
-                            }
-                        }).then(() => {
-                            setTiempo(0);
-                            setTrabajoRealizado("");
-                            setFdesde("");
-                            setComentario("");
-                            setPantalla(0);
-                            reloadHandler();
-                        });
+                            }).then(() => {
+                                setTiempo(0);
+                                setTrabajoRealizado("");
+                                setFdesde("");
+                                setComentario("");
+                                setPantalla(0);
+                                reloadHandler();
+                            });
+                        }
                     }}>Aceptar</button>
                 </div>
             }

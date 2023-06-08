@@ -69,7 +69,6 @@ export const Mutation = {
             throw new ApolloError("Usuario no encontrado");
         }
     },
-
     createUser: async (parent: any, args: any, context: any) => {
         const db = context.db;
         const { nombre, apellido1, apellido2, telefono, contrasena, correo, horasSemanales, cargo, turno, diasHabiles, permisos, dni, direccion } = args;
@@ -102,7 +101,6 @@ export const Mutation = {
             }
         }
     },
-
     editUser: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
         const { correo, contrasena, telefono, direccion, dni } = args;
@@ -125,75 +123,6 @@ export const Mutation = {
             }
             return usuario;
         }
-    },
-
-    setVacaciones: async (parent: any, args: any, context: any) => {
-        const { db, user } = context;
-        const { Fdesde, Fhasta, idAusencia } = args;
-
-        let diasVacas: String[] = [];
-
-        const fechaInicio = new Date(Fdesde)
-        const fechaFin = new Date(Fhasta)
-
-        if (fechaInicio < new Date() || fechaFin < new Date()) return new ApolloError("Las fechas tienen que ser posteriores al dia de hoy.");
-
-        if (fechaInicio > fechaFin) {
-            return new ApolloError("La fecha de inicio es mayor a la fecha fin");
-        } else {
-            fechaFin.setDate(fechaFin.getDate() + 1);
-            while (fechaInicio < fechaFin) {
-                diasVacas.push(new Date(fechaInicio).toLocaleDateString());
-                fechaInicio.setDate(fechaInicio.getDate() + 1);
-            }
-        }
-
-        if (user.diasHabiles == 0 || user.diasHabiles < diasVacas.length) {
-            return new ApolloError("No tienes dias habiles");
-        } else {
-            await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { $set: { diasHabiles: user.diasHabiles - diasVacas.length } });
-            const usuario = await db.collection("Usuarios").findOne({ _id: user._id });
-            const insertedId = await db.collection("Vacaciones").insertOne({ persona: usuario._id, idAusencia, correoPersona: usuario.correo, diasVacas, estado: "Solicitada", });
-            return {
-                _id: insertedId.insertedId,
-                correoPersona: usuario._id,
-                persona: user._id,
-                diasVacas,
-                estado: "Solicitada"
-            }
-        }
-    },
-    gestionaVacaciones: async (parent: any, args: any, context: any) => {
-        const { db, user } = context;
-        const { _id, estado } = args;
-
-        const Vacaciones = await db.collection("Vacaciones").findOne({ _id: new ObjectId(_id), estado: "Solicitada" });
-
-        if (Vacaciones) {
-            if (estado == "Denegada") {
-                await db.collection("Usuarios").findOneAndUpdate({ _id: Vacaciones.persona }, { '$set': { diasHabiles: user.diasHabiles + Vacaciones.diasVacas.length } });
-                await db.collection("Vacaciones").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { estado: "Denegada" } });
-            } else await db.collection("Vacaciones").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { estado: "Aceptada" } });
-        }
-        else return new ApolloError("Registro no encontrado o solicitud ya gestionada.");
-        return Vacaciones;
-    },
-    deleteVacaciones: async (parent: any, args: any, context: any) => {
-        const { db, user } = context;
-        const { _id } = args;
-
-        const Vacaciones = await db.collection("Vacaciones").findOne({ _id: new ObjectId(_id) });
-
-        if (Vacaciones) {
-            if (Vacaciones.estado == "Solicitada") {
-                await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { diasHabiles: user.diasHabiles + Vacaciones.diasVacas.length } });
-                await db.collection("Vacaciones").deleteOne({ _id: new ObjectId(_id) })
-            } else {
-                return new ApolloError("Solo se pueden borrar Vacaciones en estado Solicitadas");
-            }
-        }
-        else return new ApolloError("Registro no encontrado");
-        return Vacaciones;
     },
     setFichaje: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
@@ -263,7 +192,75 @@ export const Mutation = {
         if (trabRegHoy) await db.collection("TrabajoReg").deleteOne({ _id: new ObjectId(_id) })
         else return new ApolloError("Registro no encontrado");
         return trabRegHoy;
-    }
+    },
+    setVacaciones: async (parent: any, args: any, context: any) => {
+        const { db, user } = context;
+        const { Fdesde, Fhasta, idAusencia } = args;
+
+        let diasVacas: String[] = [];
+
+        const fechaInicio = new Date(Fdesde)
+        const fechaFin = new Date(Fhasta)
+
+        if (fechaInicio < new Date() || fechaFin < new Date()) return new ApolloError("Las fechas tienen que ser posteriores al dia de hoy.");
+
+        if (fechaInicio > fechaFin) {
+            return new ApolloError("La fecha de inicio es mayor a la fecha fin");
+        } else {
+            fechaFin.setDate(fechaFin.getDate() + 1);
+            while (fechaInicio < fechaFin) {
+                diasVacas.push(new Date(fechaInicio).toLocaleDateString());
+                fechaInicio.setDate(fechaInicio.getDate() + 1);
+            }
+        }
+
+        if (user.diasHabiles == 0 || user.diasHabiles < diasVacas.length) {
+            return new ApolloError("No tienes dias habiles");
+        } else {
+            await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { $set: { diasHabiles: user.diasHabiles - diasVacas.length } });
+            const usuario = await db.collection("Usuarios").findOne({ _id: user._id });
+            const insertedId = await db.collection("Vacaciones").insertOne({ persona: usuario._id, idAusencia, correoPersona: usuario.correo, diasVacas, estado: "Solicitada", });
+            return {
+                _id: insertedId.insertedId,
+                correoPersona: usuario._id,
+                persona: user._id,
+                diasVacas,
+                estado: "Solicitada"
+            }
+        }
+    },
+    gestionaVacaciones: async (parent: any, args: any, context: any) => {
+        const { db, user } = context;
+        const { _id, estado } = args;
+
+        const Vacaciones = await db.collection("Vacaciones").findOne({ _id: new ObjectId(_id), estado: "Solicitada" });
+
+        if (Vacaciones) {
+            if (estado == "Denegada") {
+                await db.collection("Usuarios").findOneAndUpdate({ _id: Vacaciones.persona }, { '$set': { diasHabiles: user.diasHabiles + Vacaciones.diasVacas.length } });
+                await db.collection("Vacaciones").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { estado: "Denegada" } });
+            } else await db.collection("Vacaciones").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { estado: "Aceptada" } });
+        }
+        else return new ApolloError("Registro no encontrado o solicitud ya gestionada.");
+        return Vacaciones;
+    },
+    deleteVacaciones: async (parent: any, args: any, context: any) => {
+        const { db, user } = context;
+        const { _id } = args;
+
+        const Vacaciones = await db.collection("Vacaciones").findOne({ _id: new ObjectId(_id) });
+
+        if (Vacaciones) {
+            if (Vacaciones.estado == "Solicitada") {
+                await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { diasHabiles: user.diasHabiles + Vacaciones.diasVacas.length } });
+                await db.collection("Vacaciones").deleteOne({ _id: new ObjectId(_id) })
+            } else {
+                return new ApolloError("Solo se pueden borrar Vacaciones en estado Solicitadas");
+            }
+        }
+        else return new ApolloError("Registro no encontrado");
+        return Vacaciones;
+    },
 }
 
 

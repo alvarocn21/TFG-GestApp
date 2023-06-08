@@ -7,6 +7,8 @@ import CrearUsuarios from "./GestionAdmin/CrearUsuarios";
 import Vacas from "./Vacas";
 import PerfilUsuario from "./PerfilUsuario";
 import GeneradorInformes from "./GeneradorInformes";
+import { PDFDocument, PageSizes, StandardFonts, rgb } from "pdf-lib";
+import mensajes from './mensajes.json';
 
 const GETUSER = gql`
 query Query {
@@ -58,14 +60,14 @@ type Usuario = {
 const Contenedor: FC<{
   reloadHandler: () => void;
 }> = ({ reloadHandler }) => {
-  const token = localStorage.getItem("token");
+  const token: string | null = localStorage.getItem("token");
   const [pantallas, setPantallas] = useState<number>(0);
-  const diasSemana = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
-  const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  const diasSemana: string[] = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
+  const meses: string[] = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-  const f = new Date();
+  const f: Date = new Date();
 
-  const fecha = diasSemana[f.getDay()] + " " + f.getDate() + " de " + meses[f.getMonth()] + " del " + f.getFullYear();
+  const fecha: string = diasSemana[f.getDay()] + " " + f.getDate() + " de " + meses[f.getMonth()] + " del " + f.getFullYear();
 
   const { data } = useQuery<{ getUser: Usuario }>(
     GETUSER,
@@ -87,6 +89,59 @@ const Contenedor: FC<{
       console.log(error);
     }
   });
+
+  function bufferToBase64(buffer: Uint8Array): string {
+    let binary: string = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }
+
+
+  const descargarManualUso = async () => {
+    try {
+      const pdfDoc = await PDFDocument.create();
+
+      const page = pdfDoc.addPage(PageSizes.A4);
+
+      const mensaje = mensajes.mensajes;
+
+      const text = mensaje.join('\n\n');
+
+      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      const fontSize = 12;
+
+      const drawTextOptions = {
+        x: 50,
+        y: page.getHeight() - 50,
+        size: fontSize,
+        font: font,
+        color: rgb(0, 0, 0),
+        maxWidth: page.getWidth() - 100,
+        lineHeight: fontSize * 1.2,
+        wrap: true,
+      };
+
+      page.drawText(text, drawTextOptions);
+
+      const pdfDataUri = `data:application/pdf;base64,${bufferToBase64(await pdfDoc.save())}`;
+
+      const link = document.createElement('a');
+      link.href = pdfDataUri;
+      link.download = 'manual.pdf';
+      link.target = '_blank';
+      link.click();
+
+      URL.revokeObjectURL(pdfDataUri);
+    } catch (error) {
+      console.error('Error al generar el PDF:', error);
+    }
+  };
+
+
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error :(</div>;
@@ -136,12 +191,12 @@ const Contenedor: FC<{
                     </svg>Calendario
                   </button>
                   {data?.getUser.permisos === "Administrador" &&
-                      <button onClick={() => setPantallas(6)} className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
-                          <style>{`svg{fill:#ffffff}`}</style>
-                          <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
-                        </svg>Alta Usuarios
-                      </button>
+                    <button onClick={() => setPantallas(6)} className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                        <style>{`svg{fill:#ffffff}`}</style>
+                        <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
+                      </svg>Alta Usuarios
+                    </button>
                   }
                   <div className="flex-1"></div>
                   <button onClick={() => {
@@ -167,24 +222,24 @@ const Contenedor: FC<{
             <div>
               <div className="flex h-full flex-1 flex-col md:pl-[190px] p-4 mb-56 mx-32">
                 <div className="flex justify-center p-8 underline underline-offset-1 font-serif">{fecha}</div>
-                Bienvenido {data?.getUser.nombre} a GestApp, donde podras gestionar tus entradas y salidas, tus vacaciones y el trabajo que realizas durante tu jornada laboral. ¡Explora nuestro sitio y descubre todo lo que tenemos para ofrecerte!<br></br>
-                <br></br>
+                Bienvenido {data?.getUser.nombre} a GestApp, donde podras gestionar tus entradas y salidas, tus vacaciones y el trabajo que realizas durante tu jornada laboral. ¡Explora nuestro sitio y descubre todo lo que tenemos para ofrecerte!
+                <button className="my-10" onClick={descargarManualUso}>Manual de uso</button>
               </div>
               <div className="md:pt-[400px]">
-              <footer className="footer flex flex-row p-10 bg-neutral text-neutral-content md:pl-[190px]">
-                <div className="mx-20">
-                  <span className="footer-title">Company</span>
-                  <button className="link link-hover">About us</button>
-                  <button className="link link-hover">Contact</button>
-                  <button className="link link-hover">Jobs</button>
-                </div>
-                <div className="mx-20">
-                  <span className="footer-title">Legal</span>
-                  <button className="link link-hover">Terms of use</button>
-                  <button className="link link-hover">Privacy policy</button>
-                  <button className="link link-hover">Cookie policy</button>
-                </div>
-              </footer>
+                <footer className="footer flex flex-row p-10 bg-neutral text-neutral-content md:pl-[190px]">
+                  <div className="mx-20">
+                    <span className="footer-title">Company</span>
+                    <button className="link link-hover">About us</button>
+                    <button className="link link-hover">Contact</button>
+                    <button className="link link-hover">Jobs</button>
+                  </div>
+                  <div className="mx-20">
+                    <span className="footer-title">Legal</span>
+                    <button className="link link-hover">Terms of use</button>
+                    <button className="link link-hover">Privacy policy</button>
+                    <button className="link link-hover">Cookie policy</button>
+                  </div>
+                </footer>
               </div>
             </div>
           }
@@ -204,7 +259,7 @@ const Contenedor: FC<{
             </div>
           }
           {pantallas === 4 &&
-            <GeneradorInformes reloadHandler={reloadHandler}></GeneradorInformes>
+            <GeneradorInformes></GeneradorInformes>
           }
           {pantallas === 5 && data &&
             <PerfilUsuario data={data.getUser} reloadHandler={reloadHandler}></PerfilUsuario>
@@ -221,3 +276,5 @@ const Contenedor: FC<{
 }
 
 export default Contenedor;
+
+

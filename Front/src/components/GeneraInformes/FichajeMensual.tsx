@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
+import { PDFDocument, rgb } from "pdf-lib";
 
 const GETFICHAJEMES = gql`
 query Query($mes: String, $anio: String) {
@@ -20,14 +21,14 @@ type Fichaje = {
 }
 
 const FichajeMensual: FC<{
-    reloadHandler: () => void;
-}> = ({ reloadHandler }) => {
-    const [anio, setAnio] = useState<string>("");
-    const [mes, setMes] = useState<string>("");
+    setGenerador: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ setGenerador }) => {
+    const [anio, setAnio] = useState<string>("2023");
+    const [mes, setMes] = useState<string>("1");
 
     const [mostrar, setMostrar] = useState<boolean>(false);
 
-    const { data, loading, error } = useQuery<{ getFichajeMens: Fichaje[] }>(
+    const { data, error } = useQuery<{ getFichajeMens: Fichaje[] }>(
         GETFICHAJEMES,
         {
             variables: {
@@ -42,36 +43,74 @@ const FichajeMensual: FC<{
         }
     );
 
-    console.log(data?.getFichajeMens);
+    if (error) return (<div>Error :(</div>)
+
     const datos = data?.getFichajeMens.map((e: Fichaje) => {
         if (data.getFichajeMens.indexOf(e) % 2 === 0) return { Regitros: "Entrada", fichaje: { _id: e._id, fecha: e.fecha, hora: e.hora, motivo: e.motivo } }
         else return { Regitros: "Salida", fichaje: { _id: e._id, fecha: e.fecha, hora: e.hora, motivo: e.motivo } }
     })
 
+    const descargarPDF = async () => {
+        try {
+            const pdfDoc = await PDFDocument.create();
+            const page = pdfDoc.addPage();
 
+            let x = 50;
+            let y = page.getHeight() - 50;
 
-    const descargarTxt = () => {
-        const contenido = JSON.stringify(datos);
+            const headers = ['Registro', 'Fecha', 'Hora', 'Motivo'];
 
-        console.log(contenido)
+            page.drawText('Tabla de datos:', { x, y, size: 16, color: rgb(0, 0, 0) });
+            y -= 30;
 
-        const blob = new Blob([contenido], { type: "text/plain" });
+            // Dibujar encabezados de la tabla
+            for (const header of headers) {
+                page.drawText(header, { x, y, size: 12, color: rgb(0, 0, 0) });
+                x += 130;
+            }
+            y -= 20;
+            x = 50;
 
-        const url = URL.createObjectURL(blob);
+            // Dibujar filas de la tabla
+            if (datos) {
+                for (const item of datos) {
+                    page.drawText(item.Regitros, { x, y, size: 10, color: rgb(0, 0, 0) });
+                    x += 130;
+                    page.drawText(new Date(item.fichaje.fecha).toLocaleDateString(), { x, y, size: 10, color: rgb(0, 0, 0) });
+                    x += 130;
+                    page.drawText(item.fichaje.hora, { x, y, size: 10, color: rgb(0, 0, 0) });
+                    x += 130;
+                    page.drawText(item.fichaje.motivo, { x, y, size: 10, color: rgb(0, 0, 0) });
+                    x += 130;
+                    y -= 20;
+                    x = 50;
+                }
 
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "mi-archivo.txt";
-        link.click();
+                const pdfBytes = await pdfDoc.save();
 
-        URL.revokeObjectURL(url);
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+
+                const url = URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'mi-archivo.pdf';
+                link.click();
+
+                URL.revokeObjectURL(url);
+            }
+        } catch (error) {
+            console.error('Error al generar el PDF:', error);
+        }
     };
 
     return (
-        <div className="mx-10 mt-10">Fichaje Mensual
+        <div className="mx-10 mt-10">
+            <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
+                setGenerador("")
+            }}>atras</button><div className=" my-5 underline underline-offset-1 mx-5">Fichaje Mensual</div>
             <div className="flex items-center mb-4">
                 <select className="mr-2" onChange={(e) => setMes(e.target.value)}>
-                    <option value=""></option>
                     <option value="1">Enero</option>
                     <option value="1">Enero</option>
                     <option value="2">Febrero</option>
@@ -87,7 +126,6 @@ const FichajeMensual: FC<{
                     <option value="12">Diciembre</option>
                 </select>
                 <select onChange={(e) => setAnio(e.target.value)}>
-                    <option value=""></option>
                     <option value="2023">2023</option>
                     <option value="2024">2024</option>
                 </select>
@@ -95,28 +133,28 @@ const FichajeMensual: FC<{
             <button className="mr-2" onClick={() =>
                 setMostrar(true)
             }>Mostrar</button><br /><br />
-            <button className="mb-10" onClick={descargarTxt}>Descargar txt</button>
+            <button className="mb-10" onClick={descargarPDF}>Descargar txt</button>
             {mostrar === true &&
-                <div className="my-4 flex flex-row">
+                <div className="flex flex-row">
                     <table className="w-full text-left">
                         <thead>
                             <tr>
-                                <th className={"flex-1"}>Registro</th>
-                                <th className={"flex-1"}>Fecha</th>
-                                <th className={"flex-1"}>Hora</th>
-                                <th className={"flex-1"}>Motivo</th>
-                            </tr><br/>
+                                <th>Registro</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Motivo</th>
+                            </tr>
                         </thead>
-                        {datos?.map((e) => (
-                            <tbody>
-                                <tr>
+                        <tbody>
+                            {datos?.map((e) => (
+                                <tr key={e.fichaje._id}>
                                     <td>{e.Regitros}</td>
-                                    <td>{(new Date(e.fichaje.fecha).toLocaleDateString())}</td>
+                                    <td>{new Date(e.fichaje.fecha).toLocaleDateString()}</td>
                                     <td>{e.fichaje.hora}</td>
                                     <td>{e.fichaje.motivo}</td>
-                                </tr><br/>
-                            </tbody>
-                        ))}
+                                </tr>
+                            ))}
+                        </tbody>
                     </table>
                 </div>
             }

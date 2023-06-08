@@ -17,15 +17,17 @@ export const Query = {
     },
     getFichaje: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
-        const fichaje = await db.collection("Fichaje").find({ persona: user._id, fecha: new Date().toLocaleDateString() }).toArray();
-        if (fichaje) return fichaje;
+        const fichajes = await db.collection("Fichaje").find({ persona: user._id, fecha: new Date().toLocaleDateString() }).toArray();
+        if (fichajes) return fichajes;
         else return "Aun no hay Fichajes solicitados";
     },
     getFichajeMens: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
         const { mes, anio } = args;
 
-        const fichaje = await db.collection('Fichaje').find({
+        console.log(mes + "/" + anio)
+
+        const fichajes = await db.collection('Fichaje').find({
             persona: new ObjectId(user._id),
             fecha: {
                 $regex: `^${mes}/\\d{1,2}/${anio}`,
@@ -33,7 +35,7 @@ export const Query = {
             },
         }).toArray();
 
-        if (fichaje) return fichaje;
+        if (fichajes) return fichajes;
         else return "Aun no hay Fichajes solicitados";
     },
     getTrabajoReg: async (parent: any, args: any, context: any) => {
@@ -48,16 +50,15 @@ export const Query = {
         const { db, user } = context;
         const { mes, anio } = args;
 
-        console.log(mes + " aa " + anio)
-
-
-        const trabajoReg = await db.collection('TrabajoReg').find({
+        const trabajoReg = await db.collection("TrabajoReg").find({
             persona: new ObjectId(user._id),
             fecha: {
                 $regex: `^${mes}/\\d{1,2}/${anio}`,
                 $options: 'i'
             },
         }).toArray();
+
+        console.log(mes + "/" + anio + "----" + trabajoReg)
 
         if (trabajoReg) return trabajoReg;
         else return "Aun no hay Trabajo registrado";
@@ -67,12 +68,4 @@ export const Query = {
         if (user) return user;
         else return "Usuario no existe";
     },
-    getUsers: async (parent: any, args: any, context: any) => {
-        const { db } = context;
-
-        const usuarios = await db.collection("Usuarios").find({}).toArray();
-
-        if (usuarios) return usuarios;
-        else return "No hay usuarios en la base de datos";
-    }
 }

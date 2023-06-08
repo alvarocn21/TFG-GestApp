@@ -21,7 +21,7 @@ else {
         resolvers,
         context: async ({ req, res }) => {
 
-          const reqAuth = ["getUser", "editUser", "getFichajeMens",  "getTrabajoRegMens", "editUsers", "editUserAdmin", "userChangePassword", "getVacaciones", "gestionaVacaciones", "getFichaje", "editFichaje", "deleteFichaje", "getTrabajoReg", "logOut", "createUser", "setVacaciones", "editVacaciones", "deleteVacaciones", "setFichaje", "setTrabajoReg", "deleteTrabajoReg", "editTrabajoReg", "getMes"];
+          const reqAuth = ["logOut", "createUser", "editUser",  "setTrabajoReg", "editTrabajoReg", "deleteTrabajoReg", "setFichaje", "deleteFichaje", "setVacaciones", "gestionaVacaciones", "deleteVacaciones", "getVacacionesUsu", "getVacacionesAdmin", "getFichaje", "getFichajeMens", "getTrabajoReg", "getUser"];
           if (reqAuth.some((q) => req.body.query.includes(q))) {
             const token = req.headers.authorization || "";
             if (token != "") {
@@ -29,8 +29,6 @@ else {
               if (user) return { db: client.db("myAppTfg"), user: user }; else throw new ApolloError("No autorizado", "403");
             } else throw new ApolloError("No autorizado", "403");
           } else return { db: client.db("myAppTfg") };
-          // const user = await client.db("myAppTfg").collection("Usuarios").findOne({ correo: "A@gmail.com", contrasena: "$2b$04$EU2I.QWclj824G.XRW/QjO2O/S1UAcCbnCLwlTMUXrBOG2bRWGFeu"})
-          // return { db: client.db("myAppTfg"), user }
         },
       });
       server.listen().then(({ url }) => {
