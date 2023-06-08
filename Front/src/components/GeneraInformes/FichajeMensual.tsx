@@ -51,7 +51,7 @@ const FichajeMensual: FC<{
 
 
     const descargarTxt = () => {
-        const contenido = data ? JSON.stringify(datos) : "No hay registros para ese mes y año";
+        const contenido = JSON.stringify(datos);
 
         console.log(contenido)
 
