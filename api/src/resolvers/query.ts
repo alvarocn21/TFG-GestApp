@@ -1,25 +1,25 @@
 import { ObjectId } from "mongodb";
 
 export const Query = {
-    getVacacionesUsu: async (parent: any, args: any, context: any) => {
+    getAusenciaUsu: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
-        const vacaciones: any = await db.collection("Vacaciones").find({ persona: user._id }).toArray();
+        const vacaciones: any = await db.collection("Ausencia").find({ persona: user._id }).toArray();
         if (vacaciones) return vacaciones;
-        else return "Aun no hay Vacaciones solicitadas";
+        else return "Aun no hay ninguna ausencia";
     },
-    getVacacionesAdmin: async (parent: any, args: any, context: any) => {
+    getAusenciaAdmin: async (parent: any, args: any, context: any) => {
         const { db } = context;
 
-        const vacaciones: any = await db.collection("Vacaciones").find({ estado: "Solicitada" }).toArray();
+        const vacaciones: any = await db.collection("Ausencia").find({ estado: "Solicitada" }).toArray();
 
         if (vacaciones) return vacaciones;
-        else return "Aun no hay Vacaciones solicitadas";
+        else return "No se ha encontrado ninguna ausencia para ningún empleado";
     },
     getFichaje: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
         const fichajes = await db.collection("Fichaje").find({ persona: user._id, fecha: new Date().toLocaleDateString() }).toArray();
         if (fichajes) return fichajes;
-        else return "Aun no hay Fichajes solicitados";
+        else return "Aun no hay Fichajes";
     },
     getFichajeMens: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
@@ -27,7 +27,7 @@ export const Query = {
 
         console.log(mes + "/" + anio)
 
-        const fichajes = await db.collection('Fichaje').find({
+        const fichajes = await db.collection("Fichaje").find({
             persona: new ObjectId(user._id),
             fecha: {
                 $regex: `^${mes}/\\d{1,2}/${anio}`,
@@ -36,7 +36,7 @@ export const Query = {
         }).toArray();
 
         if (fichajes) return fichajes;
-        else return "Aun no hay Fichajes solicitados";
+        else return "No se han encontrado fichajes para los datos introducidos";
     },
     getTrabajoReg: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
@@ -61,7 +61,7 @@ export const Query = {
         console.log(mes + "/" + anio + "----" + trabajoReg)
 
         if (trabajoReg) return trabajoReg;
-        else return "Aun no hay Trabajo registrado";
+        else return "No se han encontrado datos para el mes y año introducidos";
     },
     getUser: async (parent: any, args: any, context: any) => {
         const { user } = context;

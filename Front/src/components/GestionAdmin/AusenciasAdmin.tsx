@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
-type vacas = {
+type ausencias = {
     _id: string;
     correoPersona: string;
     idAusencia: string;
@@ -11,7 +11,7 @@ type vacas = {
 
 const GETVACAS = gql`
 query Query {
-    getVacacionesAdmin {
+    getAusenciaAdmin {
       _id
       correoPersona
       idAusencia
@@ -22,7 +22,7 @@ query Query {
 `
 const GESTIONAVACAS = gql`
 mutation GestionaVacaciones($id: String, $estado: String) {
-    gestionaVacaciones(_id: $id, estado: $estado) {
+    gestionaAusencia(_id: $id, estado: $estado) {
         estado
     }
   }
@@ -30,12 +30,12 @@ mutation GestionaVacaciones($id: String, $estado: String) {
 
 
 
-const VacasAdmin: FC<{
+const AusenciasAdmin: FC<{
     reloadHandler: () => void;
 }> = ({ reloadHandler }) => {
     const [gestionaVacas] = useMutation(GESTIONAVACAS);
 
-    const { data, loading, error } = useQuery<{ getVacacionesAdmin: vacas[] }>(
+    const { data, loading, error } = useQuery<{ getAusenciaAdmin: ausencias[] }>(
         GETVACAS,
         {
             context: {
@@ -46,6 +46,8 @@ const VacasAdmin: FC<{
         }
     );
 
+    console.log(data)
+
     if (loading) return <div>Loading...</div>;
     if (data && error) return <div>Error :(</div>;
 
@@ -53,7 +55,7 @@ const VacasAdmin: FC<{
         <div>
             <div className="underline underline-offset-1 mx-5">Todas las vacaciones</div>
             <div className="grid grid-cols-3">
-                {data?.getVacacionesAdmin.map((e) => (
+                {data?.getAusenciaAdmin.map((e) => (
                     <div key={e._id} className="m-5 border-colapse h-max w-max border-2 border-black text bg-amber-100 border-double p-2">
                         <div className="font-bold">Usuario</div>
                         <div className="p-2">{e.correoPersona}</div>
@@ -105,4 +107,4 @@ const VacasAdmin: FC<{
     )
 }
 
-export default VacasAdmin;
+export default AusenciasAdmin;

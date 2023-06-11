@@ -91,7 +91,7 @@ const RegHorasMensual: FC<{
 
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = 'mi-archivo.pdf';
+                link.download = 'RegistrosHorasSemanal.pdf';
                 link.click();
 
                 URL.revokeObjectURL(url);
@@ -107,10 +107,11 @@ const RegHorasMensual: FC<{
         <div className="mx-10 mt-10">
             <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                 setGenerador("")
-            }}>atras</button>
+            }}>&lt;</button>
             <div className=" my-5 underline underline-offset-1 mx-5">Registro de horas mensual</div>
             <div className="flex items-center mb-4">
-                <select className="mr-2" onChange={(e) => setMes(e.target.value)}>
+                <select className="mr-2 bg-white p-2 m-2" onChange={(e) => setMes(e.target.value)}>
+                    <option value="1">Enero</option>
                     <option value="1">Enero</option>
                     <option value="2">Febrero</option>
                     <option value="3">Marzo</option>
@@ -124,7 +125,7 @@ const RegHorasMensual: FC<{
                     <option value="11">Noviembre</option>
                     <option value="12">Diciembre</option>
                 </select>
-                <select onChange={(e) => setAnio(e.target.value)}>
+                <select className="mr-2 bg-white p-2" onChange={(e) => setAnio(e.target.value)}>
                     <option value="2023">2023</option>
                     <option value="2024">2024</option>
                 </select>

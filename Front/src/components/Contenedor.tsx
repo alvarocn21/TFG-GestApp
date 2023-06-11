@@ -4,7 +4,7 @@ import Fichaje from "./Fichaje"
 import RegHoras from "./RegHoras"
 import LogIn from "./LogIn";
 import CrearUsuarios from "./GestionAdmin/CrearUsuarios";
-import Vacas from "./Vacas";
+import Ausencias from "./Ausencias";
 import PerfilUsuario from "./PerfilUsuario";
 import GeneradorInformes from "./GeneradorInformes";
 import { PDFDocument, PageSizes, StandardFonts, rgb } from "pdf-lib";
@@ -147,11 +147,14 @@ const Contenedor: FC<{
   if (error) return <div>Error :(</div>;
 
   return (
-    <div className="h-screen">
+    <div>
       {token ? (
-        <div>
+        <div className="contenedor bg-[url('./Fondo.jpg')] h-screen bg-cover bg-no-repeat">
+          <div className="flex justify-end w-full">
+            <div className="contenedor bg-[url('./Logo.jpg')] bg-cover bg-no-repeat w-16 h-16 m-2 border border-teal-900" />
+          </div>
           <div className="dark hidden bg-gray-900 md:fixed md:inset-y-0 md:flex md:w-[180px] md:flex-col">
-            <div className="flex h-full min-h-0 flex-col ">
+            <div className="flex h-full min-h-0 flex-col">
               <div className="scrollbar-trigger flex h-full w-full flex-1 items-start border-white/20">
                 <nav className="flex h-full flex-1 flex-col space-y-1 p-2">
                   <button onClick={() => setPantallas(0)} className="flex py-3 px-3 items-center gap-3 rounded-md hover:bg-gray-500/10 transition-colors duration-200 text-white cursor-pointer text-sm">
@@ -220,13 +223,15 @@ const Contenedor: FC<{
           </div>
           {pantallas === 0 &&
             <div>
-              <div className="flex h-full flex-1 flex-col md:pl-[190px] p-4 mb-56 mx-32">
-                <div className="flex justify-center p-8 underline underline-offset-1 font-serif">{fecha}</div>
+              <div className=" flex flex-col min-h-screen flex-1 md:pl-[190px] p-4">
+                <div className="flex items-center justify-between p-8 underline underline-offset-1 font-serif">
+                  <div className="flex justify-center w-full">{fecha}</div>
+                </div>
                 Bienvenido {data?.getUser.nombre} a GestApp, donde podras gestionar tus entradas y salidas, tus vacaciones y el trabajo que realizas durante tu jornada laboral. ¡Explora nuestro sitio y descubre todo lo que tenemos para ofrecerte!
                 <button className="my-10" onClick={descargarManualUso}>Manual de uso</button>
               </div>
-              <div className="md:pt-[400px]">
-                <footer className="footer flex flex-row p-10 bg-neutral text-neutral-content md:pl-[190px]">
+              <div className="flex-none bg-gray-200">
+                <footer className="footer flex flex-row p-10 bg-neutral text-neutral-content md:pl-[190px] bottom-0">
                   <div className="mx-20">
                     <span className="footer-title">Company</span>
                     <button className="link link-hover">About us</button>
@@ -241,10 +246,11 @@ const Contenedor: FC<{
                   </div>
                 </footer>
               </div>
+
             </div>
           }
           {pantallas === 1 && data &&
-            <Vacas diasHabiles={data.getUser.diasHabiles} reloadHandler={reloadHandler} permisos={data?.getUser.permisos}></Vacas>
+            <Ausencias diasHabiles={data.getUser.diasHabiles} reloadHandler={reloadHandler} permisos={data?.getUser.permisos}></Ausencias>
           }
           {pantallas === 2 && data &&
             <div>

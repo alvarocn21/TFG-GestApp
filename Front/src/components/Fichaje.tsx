@@ -60,7 +60,7 @@ const Fichaje: FC<{
     if (error) return <div>Error...</div>
 
     return (
-        <div className="flex h-full flex-1 flex-col md:pl-[190px]">
+        <div className="flex h-screen flex-1 flex-col md:pl-[190px]">
             {pantalla === 0 &&
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => setPantalla(1)}>
@@ -74,7 +74,7 @@ const Fichaje: FC<{
                         {data?.getFichaje.map((e) => (
                             <div>
                                 {data.getFichaje.indexOf(e) % 2 === 0 &&
-                                    <div className="m-5 border-colapse h-52 w-48 border-2 border-black text bg-amber-100 border-double p-2">
+                                    <div className="m-5 border-colapse h-52 w-48 border-2 border-slate-400 text bg-amber-100 border-double p-2">
                                         <div className="font-bold">Entrada</div>
                                         <div className="font-bold">Hora</div> {e.hora}
                                         <div className="font-bold">Motivo</div>
@@ -98,7 +98,7 @@ const Fichaje: FC<{
                                     </div>
                                 }
                                 {data.getFichaje.indexOf(e) % 2 !== 0 &&
-                                    <div className="m-5 border-colapse h-52 w-48 border-2 border-black text bg-amber-100 border-double p-2">
+                                    <div className="m-5 border-colapse h-52 w-48 border-2 border-slate-400 text bg-amber-100 border-double p-2">
                                         <div className="font-bold">Salida</div>
                                         <div className="font-bold">Hora</div> {e.hora}
                                         <div className="font-bold">Motivo</div>
@@ -132,7 +132,7 @@ const Fichaje: FC<{
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
-                    }}>atras</button>
+                    }}>&lt;</button>
                     <div className="flex justify-start p-4 underline underline-offset-1 font-serif">Añade la hora de entrada/salida</div>
                     <div className="block mx-4">
                         <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">

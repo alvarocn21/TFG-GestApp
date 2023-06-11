@@ -1,17 +1,18 @@
 import { FC, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import DiasMes from "./Calendario/Calendario";
-import VacasAdmin from "./GestionAdmin/VacasAdmin";
+import VacasAdmin from "./GestionAdmin/AusenciasAdmin";
 
-type vacas = {
+type ausen = {
     _id: string;
+    idAusencia: string;
     diasVacas: string[];
     estado: string
 }
 
 const SET_VACAS = gql`
 mutation Mutation($idAusencia: String!, $fhasta: String, $fdesde: String) {
-    setVacaciones(idAusencia: $idAusencia, Fhasta: $fhasta, Fdesde: $fdesde) {
+    setAusencia(idAusencia: $idAusencia, Fhasta: $fhasta, Fdesde: $fdesde) {
       diasVacas
     }
   }
@@ -19,7 +20,7 @@ mutation Mutation($idAusencia: String!, $fhasta: String, $fdesde: String) {
 
 const GETVACAS = gql`
 query Query {
-    getVacacionesUsu {
+    getAusenciaUsu {
       _id
       idAusencia
       diasVacas
@@ -30,13 +31,13 @@ query Query {
 
 const DELETEVACAS = gql`
 mutation Mutation($id: String) {
-    deleteVacaciones(_id: $id) {
+    deleteAusencia(_id: $id) {
       _id
     }
   }
 `
 
-const Vacas: FC<{
+const Ausencias: FC<{
     reloadHandler: () => void;
     diasHabiles: number;
     permisos: string;
@@ -50,7 +51,7 @@ const Vacas: FC<{
     const [setVacas] = useMutation(SET_VACAS);
     const [deleteVacas] = useMutation(DELETEVACAS);
 
-    const { data, loading, error } = useQuery<{ getVacacionesUsu: vacas[] }>(
+    const { data, loading, error } = useQuery<{ getAusenciaUsu: ausen[] }>(
         GETVACAS,
         {
             context: {
@@ -61,11 +62,11 @@ const Vacas: FC<{
         }
     );
 
-    const vacasAceptadas: string[] | undefined = [];
+    const ausenAceptadas: string[] | undefined = [];
     if (data) {
-        data.getVacacionesUsu.map((e: any) => {
+        data.getAusenciaUsu.map((e: any) => {
             if (e.estado === "Aceptada") {
-                vacasAceptadas.push(e.diasVacas);
+                ausenAceptadas.push(e.diasVacas);
             }
         });
     }
@@ -74,24 +75,26 @@ const Vacas: FC<{
     if (data && error) return <div>Error :(</div>;
 
     return (
-        <div className="flex h-full flex-1 flex-col md:pl-[190px] my-12 mx-4">Asistencia-Ausencias
+        <div className="flex flex-col md:pl-[190px]">Asistencia-Ausencias
             {pantalla === 0 &&
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black border- font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(1);
-                    }}>Añadir vacaciones</button>
+                    }}>Añadir ausencias</button>
                     {permisos === "Administrador" &&
                         <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                             setPantalla(2);
-                        }}>Gestionar Vacaciones</button>
+                        }}>Gestionar Ausencia</button>
                     }
-                    <DiasMes key={""} vacaciones={vacasAceptadas}></DiasMes>
-                    <div className=" my-5 underline underline-offset-1 mx-5">Tus Vacaciones</div>
+                    <DiasMes key={""} ausencias={ausenAceptadas}></DiasMes>
+                    <div className=" my-5 underline underline-offset-1 mx-5">Tus Ausencia</div>
                     <div className="grid grid-cols-3">
-                        {data?.getVacacionesUsu.map((e) => (
+                        {data?.getAusenciaUsu.map((e) => (
                             <div key={e._id} className="m-5 border-colapse h-max w-max border-2 border-black text bg-amber-100 border-double p-2">
                                 <div className="font-bold">Dias</div>
                                 {new Date(e.diasVacas[0]).toLocaleDateString()} - {new Date(e.diasVacas[e.diasVacas.length - 1]).toLocaleDateString()}
+                                <div className="font-bold">Identificador Ausencia</div>
+                                <div className="p-2"> {e.idAusencia} </div>
                                 <div className="font-bold">Estado</div>
                                 <div className="p-2">{e.estado}</div>
                                 <button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => {
@@ -108,7 +111,7 @@ const Vacas: FC<{
                                         }).then(() => {
                                             reloadHandler();
                                         });
-                                    } else window.alert("Solo se pueden borrar Vacaciones en estado Solicitadas");
+                                    } else window.alert("Solo se pueden borrar Ausencia en estado Solicitadas");
                                 }}><svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
                                         <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
                                     </svg></button>
@@ -121,9 +124,9 @@ const Vacas: FC<{
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
-                    }}>atras</button>
+                    }}>&lt;</button>
                     <div className="p-3 font-serif">Dias disponibles: {diasHabiles}<br></br></div>
-                    <div className="flex justify-start p-4 underline underline-offset-1 font-serif">Selecciona la fecha de inicio y de fin de tus vacaciones</div>
+                    <div className="flex justify-start p-4 underline underline-offset-1 font-serif">Selecciona la fecha de inicio y de fin de tus ausencias</div>
                     <div className="block mx-4">
                         <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
                             Fecha Inicio
@@ -154,18 +157,18 @@ const Vacas: FC<{
                             <option></option>
                             <option value="PE">PE - Permiso Enfermedad</option>
                             <option value="PP">PP - Permiso Personal</option>
-                            <option value="V">V - Vacaciones</option>
+                            <option value="V">V - Ausencia</option>
                         </select>
                     </div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         if (hasta === "" && desde === "") window.alert("CUIDADO, no estas añadiendo ninguna fecha en algun parametro.")
                         else if (new Date(hasta) < new Date(desde)) window.alert("CUIDADO, estas poniendo una fecha de fin inferior a la fecha de inicio.")
-                        else if (diasHabiles === 0) window.alert("No te quedan dias de Vacaciones.")
+                        else if (diasHabiles === 0) window.alert("No te quedan dias de Ausencia.")
                         else if (ausencia === "") window.alert("La ausencia debe tener un id")
                         else if (new Date(hasta) < new Date() || new Date(desde) < new Date()) window.alert("Las fechas tienen que ser posteriores al dia de hoy.")
                         else {
                             let entra = false;
-                            data?.getVacacionesUsu.forEach((e) => {
+                            data?.getAusenciaUsu.forEach((e) => {
                                 e.diasVacas.forEach((a) => {
                                     if (new Date(a) <= new Date(hasta) && new Date(a) >= new Date(desde)) entra = true;
                                 })
@@ -188,7 +191,7 @@ const Vacas: FC<{
                                     reloadHandler();
                                     setPantalla(0)
                                 })
-                            } else window.alert("Ya tienes vacaciones seleccionadas con esa fecha.")
+                            } else window.alert("Ya tienes ausencias seleccionadas con esa fecha.")
                         }
                     }
                     }>Aceptar</button>
@@ -198,7 +201,7 @@ const Vacas: FC<{
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
-                    }}>atras</button>
+                    }}>&lt;</button>
                     {permisos === "Administrador" &&
                         <VacasAdmin reloadHandler={reloadHandler}></VacasAdmin>
                     }
@@ -208,4 +211,4 @@ const Vacas: FC<{
     )
 }
 
-export default Vacas;
+export default Ausencias;

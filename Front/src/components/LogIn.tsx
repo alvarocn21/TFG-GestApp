@@ -30,7 +30,7 @@ const LogIn: FC<{
 
     return (
         <div>
-            <div className="hero min-h-screen bg-base-200">
+            <div className="hero min-h-screen bg-base-200 bg-[url('./Fondo.jpg')] bg-cover bg-no-repeat">
                 <div className="hero-content flex-col">
                     <div className="text-center lg:text-left">
                         <h1 className="text-5xl font-bold">Iniciar Sesión!</h1>
@@ -67,7 +67,7 @@ const LogIn: FC<{
                                             contrasena
                                         },
                                     });
-                                }}>Login</label>
+                                }}>Iniciar Sesion</label>
                             </div>
                         </div>
                     </div>

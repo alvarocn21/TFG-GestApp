@@ -123,17 +123,8 @@ const CrearUsuarios: FC<{
                             type="text"
                             value={direccion}
                             onChange={(e) => setDireccion(e.target.value)}
-                        /></div >
-                        <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
-                            Motivo
-                        </span>
-                        <select onChange={(e) => setTurno(e.target.value)} className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md sm:text-sm focus:ring-1">
-                            <option value="Mañana">Mañana</option>
-                            <option value="Tarde">Tarde</option>
-                            <option value="Noche">Noche</option>
-                        </select>
-                    </div>
+                        />
+                    </div >
                     <div className="block mx-4">
                         <label className="label cursor-pointer">
                             <span className="block text-sm font-medium text-slate-700 mt-5">Usuario</span>
@@ -144,12 +135,25 @@ const CrearUsuarios: FC<{
                             <input type="radio" name="radio-10" className="radio checked:bg-red-500 m-1" onChange={() => setpermisos("Administrador")} />
                         </label>
                     </div>
+                    <div className="block mx-4">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                            Turno
+                        </span>
+                        <select onChange={(e) => setTurno(e.target.value)} className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md sm:text-sm focus:ring-1">
+                            <option value="Mañana">Mañana</option>
+                            <option value="Tarde">Tarde</option>
+                            <option value="Noche">Noche</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <button className=" border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300  mx-56 my-10" onClick={() => {
-                if (nombre === "" || apellido1 === "" || apellido2 === "" || contrasena === "" || correo === "" || horasSemanales === 0 || permisos === "") {
+                if (nombre === "" || apellido1 === "" || apellido2 === "" || contrasena === "" || correo === "" || horasSemanales === 0 || permisos === "" || turno == "" || dni == "") {
                     window.alert("Falta por añadir algun campo OBLIGATORIO");
-                } else {
+                } else if (!correo.includes("@")) window.alert("El correo debe contener un @");
+                else if (telefono.length != 9) window.alert("El telefono debe contener 9 caracteres");
+                else if (dni.length != 9) window.alert("El dni debe contener 9 caracteres");
+                else {
                     createUser({
                         variables: {
                             nombre: nombre,

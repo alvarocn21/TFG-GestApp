@@ -203,7 +203,7 @@ const RegHoras: FC<{
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
-                    }}>atras</button>
+                    }}>&lt;</button>
                     <div className="flex justify-start p-4 underline underline-offset-1 font-serif">Añade el trabajo realizado</div>
                     <div className="block mx-4">
                         <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
@@ -250,9 +250,9 @@ const RegHoras: FC<{
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         if (tiempo === 0) window.alert("Es obligatorio poner el tiempo dedicado a tus tareas.")
                         else if (trabajoRealizado === "") window.alert("Es obligatorio poner la tarea realizada.")
-                        else if (trabajoRealizado.length > 30) window.alert("El limite de caracteres para ese campo es de 30.")
+                        else if (trabajoRealizado.length > 30) window.alert("El limite de caracteres del campo Trabajo Realizado es 30.")
                         else if (fdesde === "") window.alert("Es obligatorio poner la hora de comienzo.")
-                        else if (comentario.length > 50) window.alert("El limite de caracteres para ese campo es de 50.")
+                        else if (comentario.length > 50) window.alert("El limite de caracteres del campo Comentario es 50.")
                         else {
                             regHoras({
                                 variables: {
@@ -282,7 +282,7 @@ const RegHoras: FC<{
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
-                    }}>atras</button>
+                    }}>&lt;</button>
                     <div className="block mx-4">
                         <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
                             Tiempo dedicado

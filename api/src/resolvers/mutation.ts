@@ -109,36 +109,33 @@ export const Mutation = {
 
         if (comprobarCorreo) return new ApolloError("Ese correo ya esta en uso.");
 
-        const usuario = await db.collection("Usuarios").findOne({ _id: user._id });
-
-        if (!usuario) {
-            return new ApolloError("Usuario no encontrado");
+        if (contrasena !== "") {
+            const salt = genSaltSync(contrasena.length);
+            const hash = hashSync(contrasena, salt);
+            await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { contrasena: hash, correo: correo.toLowerCase(), telefono, direccion, dni } });
         } else {
-            if (contrasena !== "") {
-                const salt = genSaltSync(contrasena.length);
-                const hash = hashSync(contrasena, salt);
-                await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { contrasena: hash, correo: correo.toLowerCase(), telefono, direccion, dni } });
-            } else {
-                await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { correo: correo.toLowerCase(), telefono, direccion, dni } });
-            }
-            return usuario;
+            await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { correo: correo.toLowerCase(), telefono, direccion, dni } });
         }
+        return user;
+
     },
     setFichaje: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
         const { motivo } = args;
 
-        const fecha = new Date().toLocaleDateString();
-        const hora = new Date().toTimeString().slice(0,8);
+        if (motivo && motivo != "") {
+            const fecha = new Date().toLocaleDateString();
+            const hora = new Date().toTimeString().slice(0, 8);
 
-        const insertedId = await db.collection("Fichaje").insertOne({ persona: user._id, fecha, hora, motivo });
-        return {
-            _id: insertedId.insertedId,
-            persona: user._id,
-            fecha,
-            hora,
-            motivo: motivo,
-        }
+            const insertedId = await db.collection("Fichaje").insertOne({ persona: user._id, fecha, hora, motivo });
+            return {
+                _id: insertedId.insertedId,
+                persona: user._id,
+                fecha,
+                hora,
+                motivo: motivo,
+            }
+        } else return new ApolloError("Se debe introducir el motivo del fichaje");
     },
     deleteFichaje: async (parent: any, args: any, context: any) => {
         const { db } = context;
@@ -154,16 +151,18 @@ export const Mutation = {
         const { db, user } = context;
         const { tiempo, trabajoRealizado, Fdesde, comentario } = args;
 
-        const insertedId = await db.collection("TrabajoReg").insertOne({ persona: user._id, tiempo, fecha: new Date().toLocaleDateString(), trabajoRealizado, Fdesde, comentario });
-        return {
-            _id: insertedId.insertedId,
-            persona: user._id,
-            fecha: new Date().toLocaleDateString(),
-            tiempo,
-            trabajoRealizado,
-            Fdesde,
-            comentario
-        }
+        if (tiempo && trabajoRealizado && Fdesde && tiempo != 0 && trabajoRealizado != "" && Fdesde != "") {
+            const insertedId = await db.collection("TrabajoReg").insertOne({ persona: user._id, tiempo, fecha: new Date().toLocaleDateString(), trabajoRealizado, Fdesde, comentario });
+            return {
+                _id: insertedId.insertedId,
+                persona: user._id,
+                fecha: new Date().toLocaleDateString(),
+                tiempo,
+                trabajoRealizado,
+                Fdesde,
+                comentario
+            }
+        } else return new ApolloError("Alguno de los campos no esta relleno");
     },
     editTrabajoReg: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
@@ -193,7 +192,7 @@ export const Mutation = {
         else return new ApolloError("Registro no encontrado");
         return trabRegHoy;
     },
-    setVacaciones: async (parent: any, args: any, context: any) => {
+    setAusencia: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
         const { Fdesde, Fhasta, idAusencia } = args;
 
@@ -219,7 +218,7 @@ export const Mutation = {
         } else {
             await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { $set: { diasHabiles: user.diasHabiles - diasVacas.length } });
             const usuario = await db.collection("Usuarios").findOne({ _id: user._id });
-            const insertedId = await db.collection("Vacaciones").insertOne({ persona: usuario._id, idAusencia, correoPersona: usuario.correo, diasVacas, estado: "Solicitada", });
+            const insertedId = await db.collection("Ausencia").insertOne({ persona: usuario._id, idAusencia, correoPersona: usuario.correo, diasVacas, estado: "Solicitada", });
             return {
                 _id: insertedId.insertedId,
                 correoPersona: usuario._id,
@@ -229,37 +228,37 @@ export const Mutation = {
             }
         }
     },
-    gestionaVacaciones: async (parent: any, args: any, context: any) => {
+    gestionaAusencia: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
         const { _id, estado } = args;
 
-        const Vacaciones = await db.collection("Vacaciones").findOne({ _id: new ObjectId(_id), estado: "Solicitada" });
+        const Ausencia = await db.collection("Ausencia").findOne({ _id: new ObjectId(_id), estado: "Solicitada" });
 
-        if (Vacaciones) {
+        if (Ausencia) {
             if (estado == "Denegada") {
-                await db.collection("Usuarios").findOneAndUpdate({ _id: Vacaciones.persona }, { '$set': { diasHabiles: user.diasHabiles + Vacaciones.diasVacas.length } });
-                await db.collection("Vacaciones").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { estado: "Denegada" } });
-            } else await db.collection("Vacaciones").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { estado: "Aceptada" } });
+                await db.collection("Usuarios").findOneAndUpdate({ _id: Ausencia.persona }, { '$set': { diasHabiles: user.diasHabiles + Ausencia.diasVacas.length } });
+                await db.collection("Ausencia").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { estado: "Denegada" } });
+            } else await db.collection("Ausencia").findOneAndUpdate({ _id: new ObjectId(_id) }, { '$set': { estado: "Aceptada" } });
         }
         else return new ApolloError("Registro no encontrado o solicitud ya gestionada.");
-        return Vacaciones;
+        return Ausencia;
     },
-    deleteVacaciones: async (parent: any, args: any, context: any) => {
+    deleteAusencia: async (parent: any, args: any, context: any) => {
         const { db, user } = context;
         const { _id } = args;
 
-        const Vacaciones = await db.collection("Vacaciones").findOne({ _id: new ObjectId(_id) });
+        const Ausencia = await db.collection("Ausencia").findOne({ _id: new ObjectId(_id) });
 
-        if (Vacaciones) {
-            if (Vacaciones.estado == "Solicitada") {
-                await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { diasHabiles: user.diasHabiles + Vacaciones.diasVacas.length } });
-                await db.collection("Vacaciones").deleteOne({ _id: new ObjectId(_id) })
+        if (Ausencia) {
+            if (Ausencia.estado == "Solicitada") {
+                await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { diasHabiles: user.diasHabiles + Ausencia.diasVacas.length } });
+                await db.collection("Ausencia").deleteOne({ _id: new ObjectId(_id) })
             } else {
-                return new ApolloError("Solo se pueden borrar Vacaciones en estado Solicitadas");
+                return new ApolloError("Solo se pueden borrar Ausencia en estado Solicitadas");
             }
         }
         else return new ApolloError("Registro no encontrado");
-        return Vacaciones;
+        return Ausencia;
     },
 }
 

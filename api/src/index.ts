@@ -21,7 +21,7 @@ else {
         resolvers,
         context: async ({ req, res }) => {
 
-          const reqAuth = ["logOut", "createUser", "editUser",  "setTrabajoReg", "editTrabajoReg", "deleteTrabajoReg", "setFichaje", "deleteFichaje", "setVacaciones", "gestionaVacaciones", "deleteVacaciones", "getVacacionesUsu", "getVacacionesAdmin", "getFichaje", "getFichajeMens", "getTrabajoReg", "getUser"];
+          const reqAuth = ["logOut", "createUser", "editUser",  "setTrabajoReg", "editTrabajoReg", "deleteTrabajoReg", "setFichaje", "deleteFichaje", "setAusencia", "gestionaAusencia", "deleteAusencia", "getAusenciaUsu", "getAusenciaAdmin", "getFichaje", "getFichajeMens", "getTrabajoReg", "getUser"];
           if (reqAuth.some((q) => req.body.query.includes(q))) {
             const token = req.headers.authorization || "";
             if (token != "") {

@@ -19,7 +19,7 @@ export const typeDefs = gql`
         direccion: String!
     }
 
-    type Vacaciones {
+    type Ausencia {
         _id: String!
         persona: String!
         idAusencia: String!
@@ -40,23 +40,23 @@ export const typeDefs = gql`
         _id: String!
         persona: String!
         fecha: String!
-        tiempo: Float
+        tiempo: Float!
         trabajoRealizado: String!
         Fdesde: String!
         comentario: String
     }
 
     type Query{
-        getVacacionesUsu: [Vacaciones]!
-        getVacacionesAdmin: [Vacaciones]!
+        getUser: Persona!
 
         getFichaje: [Fichaje]!
         getFichajeMens(mes: String, anio: String): [Fichaje]!
 
         getTrabajoReg: [TrabajoReg]!
         getTrabajoRegMens(mes: String, anio: String): [TrabajoReg]!
-
-        getUser: Persona!
+    
+        getAusenciaUsu: [Ausencia]!
+        getAusenciaAdmin: [Ausencia]!
     }
 
     type Mutation{
@@ -74,8 +74,9 @@ export const typeDefs = gql`
         editTrabajoReg(_id: String, tiempo: Float, trabajoRealizado: String, Fdesde: String, comentario: String): TrabajoReg!
         deleteTrabajoReg(_id: String): TrabajoReg!
 
-        setVacaciones(Fdesde: String, Fhasta: String, idAusencia: String): Vacaciones!
-        gestionaVacaciones(_id: String, estado: String): Vacaciones!
-        deleteVacaciones(_id: String): Vacaciones!
+        setAusencia(Fdesde: String, Fhasta: String, idAusencia: String): Ausencia!
+        deleteAusencia(_id: String): Ausencia!
+        
+        gestionaAusencia(_id: String, estado: String): Ausencia!
     }
 `

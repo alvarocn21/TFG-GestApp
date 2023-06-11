@@ -4,8 +4,8 @@ import dayjs from 'dayjs';
 dayjs.locale('es');
 
 const Calendario: FC<{
-    vacaciones: string[] | undefined;
-}> = (vacaciones) => {
+    ausencias: string[] | undefined;
+}> = (ausencias) => {
     const [fecha, setFecha] = useState(dayjs());
 
     const prevMonth = () => {
@@ -16,7 +16,7 @@ const Calendario: FC<{
         setFecha(fecha.add(1, 'month'));
     };
 
-    const dias = vacaciones.vacaciones;
+    const dias = ausencias.ausencias;
 
     const renderCalendarDays = () => {
         const daysInMonth = fecha.daysInMonth();
@@ -55,7 +55,7 @@ const Calendario: FC<{
     };
 
     return (
-        <div className="m-2 calendar bg-white border border-gray-300 rounded shadow p-4">
+        <div className="m-2 calendar bg-white border-2 border-gray-300 rounded shadow p-4">
             <div className="m-2 flex justify-between items-center mb-4">
                 <button
                     className="bg-blue-300 hover:bg-blue-600 text-white px-2 py-1 rounded"
