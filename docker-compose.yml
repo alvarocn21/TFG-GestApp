@@ -12,7 +12,7 @@ services:
     depends_on:
       - mongo_db
     environment:
-      - MONGO_URL=mongodb+srv://Alvaro:Naciones2@cluster0.ulh10.mongodb.net/myAppTfg?retryWrites=true&w=majority #mongodb://mongo_db:27017/test
+      - MONGO_URL=mongodb+srv://Alvaro:Naciones2@cluster0.ulh10.mongodb.net/myAppTfg?retryWrites=true&w=majority
 
   front: 
     image: node:16

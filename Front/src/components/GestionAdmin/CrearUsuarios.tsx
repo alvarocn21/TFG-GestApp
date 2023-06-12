@@ -148,11 +148,11 @@ const CrearUsuarios: FC<{
                 </div>
             </div>
             <button className=" border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300  mx-56 my-10" onClick={() => {
-                if (nombre === "" || apellido1 === "" || apellido2 === "" || contrasena === "" || correo === "" || horasSemanales === 0 || permisos === "" || turno == "" || dni == "") {
+                if (nombre === "" || apellido1 === "" || apellido2 === "" || contrasena === "" || correo === "" || horasSemanales === 0 || permisos === "" || turno === "" || dni === "") {
                     window.alert("Falta por añadir algun campo OBLIGATORIO");
                 } else if (!correo.includes("@")) window.alert("El correo debe contener un @");
-                else if (telefono.length != 9) window.alert("El telefono debe contener 9 caracteres");
-                else if (dni.length != 9) window.alert("El dni debe contener 9 caracteres");
+                else if (telefono.length !== 9) window.alert("El telefono debe contener 9 caracteres");
+                else if (dni.length !== 9) window.alert("El dni debe contener 9 caracteres");
                 else {
                     createUser({
                         variables: {

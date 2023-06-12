@@ -2,6 +2,7 @@ import { ApolloError } from "apollo-server";
 import { ObjectId } from "mongodb";
 import { v4 as uuid } from "uuid";
 import { compareSync, genSaltSync, hashSync } from "bcrypt";
+import nodemailer from 'nodemailer';
 
 export const Mutation = {
     logIn: async (parent: any, args: any, context: any) => {
@@ -62,12 +63,41 @@ export const Mutation = {
 
         const usuario = await db.collection("Usuarios").findOne({ correo: correo.toLowerCase() });
 
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'passworrdrecover@gmail.com',
+                pass: 'rikvqeblwielmojs'
+            }
+        });
+
 
         if (usuario) {
-            return usuario;
-        } else {
-            throw new ApolloError("Usuario no encontrado");
-        }
+
+            try {
+
+                const token = uuid();
+
+                const mailOptions = {
+                    from: 'passworrdrecover@gmail.com',
+                    to: correo,
+                    subject: 'Recuperación de contraseña',
+                    text: `Esta es tu nueva contraseña: ${token}, recuerda una vez inicies sesión cambiar la contraseña en la pantalla de Perfil de Usuario`
+                };
+
+                const salt = genSaltSync(10);
+                const hash = hashSync(token, salt);
+
+                await db.collection("Usuarios").findOneAndUpdate({ _id: usuario._id }, { '$set': { contrasena: hash } });
+
+                await transporter.sendMail(mailOptions);
+
+                return usuario;
+            } catch (error) {
+                console.error('Error al enviar el correo electrónico:', error);
+                throw new ApolloError('Ocurrió un error al enviar el correo electrónico de recuperación de contraseña');
+            }
+        } else throw new ApolloError("Usuario no encontrado");
     },
     createUser: async (parent: any, args: any, context: any) => {
         const db = context.db;
@@ -78,7 +108,7 @@ export const Mutation = {
         if (usuario) {
             return new ApolloError("Usuario ya registrado");
         } else {
-            const salt = genSaltSync(contrasena.length);
+            const salt = genSaltSync(10);
             const hash = hashSync(contrasena, salt);
 
             const insertedId = await db.collection("Usuarios").insertOne({ nombre, apellido1, apellido2, telefono, contrasena: hash, token: null, correo: correo.toLowerCase(), turno, cargo, horasSemanales, diasHabiles, permisos, dni, direccion });
@@ -110,7 +140,7 @@ export const Mutation = {
         if (comprobarCorreo) return new ApolloError("Ese correo ya esta en uso.");
 
         if (contrasena !== "") {
-            const salt = genSaltSync(contrasena.length);
+            const salt = genSaltSync(10);
             const hash = hashSync(contrasena, salt);
             await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { contrasena: hash, correo: correo.toLowerCase(), telefono, direccion, dni } });
         } else {

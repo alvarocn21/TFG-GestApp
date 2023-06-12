@@ -149,7 +149,7 @@ const Contenedor: FC<{
   return (
     <div>
       {token ? (
-        <div className="contenedor bg-[url('./Fondo.jpg')] h-screen bg-cover bg-no-repeat">
+        <div className="bg-[url('./Fondo.jpg')] h-screen bg-cover bg-no-repeat">
           <div className="flex justify-end w-full">
             <div className="contenedor bg-[url('./Logo.jpg')] bg-cover bg-no-repeat w-16 h-16 m-2 border border-teal-900" />
           </div>
@@ -227,7 +227,7 @@ const Contenedor: FC<{
                 <div className="flex items-center justify-between p-8 underline underline-offset-1 font-serif">
                   <div className="flex justify-center w-full">{fecha}</div>
                 </div>
-                Bienvenido {data?.getUser.nombre} a GestApp, donde podras gestionar tus entradas y salidas, tus vacaciones y el trabajo que realizas durante tu jornada laboral. ¡Explora nuestro sitio y descubre todo lo que tenemos para ofrecerte!
+                <div className="mx-80">Bienvenido {data?.getUser.nombre} a GestApp, donde podras gestionar tus entradas y salidas, tus vacaciones y el trabajo que realizas durante tu jornada laboral. ¡Explora nuestro sitio y descubre todo lo que tenemos para ofrecerte!</div>
                 <button className="my-10" onClick={descargarManualUso}>Manual de uso</button>
               </div>
               <div className="flex-none bg-gray-200">
