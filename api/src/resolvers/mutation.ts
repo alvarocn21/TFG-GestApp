@@ -226,24 +226,24 @@ export const Mutation = {
         const { db, user } = context;
         const { Fdesde, Fhasta, idAusencia } = args;
 
+
         let diasVacas: String[] = [];
 
         const fechaInicio = new Date(Fdesde)
         const fechaFin = new Date(Fhasta)
 
-        if (fechaInicio < new Date() || fechaFin < new Date()) return new ApolloError("Las fechas tienen que ser posteriores al dia de hoy.");
-
-        if (fechaInicio > fechaFin) {
-            return new ApolloError("La fecha de inicio es mayor a la fecha fin");
-        } else {
-            fechaFin.setDate(fechaFin.getDate() + 1);
-            while (fechaInicio < fechaFin) {
-                diasVacas.push(new Date(fechaInicio).toLocaleDateString());
-                fechaInicio.setDate(fechaInicio.getDate() + 1);
-            }
-        }
-
         if (user.diasHabiles == 0 || user.diasHabiles < diasVacas.length) {
+            if (fechaInicio < new Date() || fechaFin < new Date()) return new ApolloError("Las fechas tienen que ser posteriores al dia de hoy.");
+
+            if (fechaInicio > fechaFin) {
+                return new ApolloError("La fecha de inicio es mayor a la fecha fin");
+            } else {
+                fechaFin.setDate(fechaFin.getDate() + 1);
+                while (fechaInicio < fechaFin) {
+                    diasVacas.push(new Date(fechaInicio).toLocaleDateString());
+                    fechaInicio.setDate(fechaInicio.getDate() + 1);
+                }
+            }
             return new ApolloError("No tienes dias habiles");
         } else {
             await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { $set: { diasHabiles: user.diasHabiles - diasVacas.length } });

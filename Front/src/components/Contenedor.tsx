@@ -101,15 +101,13 @@ const Contenedor: FC<{
   }
 
 
-  const descargarManualUso = async () => {
+  const descargarManualUso = async (titulo: string, numero: number) => {
     try {
       const pdfDoc = await PDFDocument.create();
 
       const page = pdfDoc.addPage(PageSizes.A4);
 
-      const mensaje = mensajes.mensajes;
-
-      const text = mensaje.join('\n\n');
+      const mensaje = mensajes.mensajes.at(numero);
 
       const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
       const fontSize = 12;
@@ -125,13 +123,13 @@ const Contenedor: FC<{
         wrap: true,
       };
 
-      page.drawText(text, drawTextOptions);
+      if (mensaje) page.drawText(mensaje, drawTextOptions);
 
       const pdfDataUri = `data:application/pdf;base64,${bufferToBase64(await pdfDoc.save())}`;
 
       const link = document.createElement('a');
       link.href = pdfDataUri;
-      link.download = 'manual.pdf';
+      link.download = `${titulo}.pdf`;
       link.target = '_blank';
       link.click();
 
@@ -149,9 +147,9 @@ const Contenedor: FC<{
   return (
     <div>
       {token ? (
-        <div className="bg-[url('./Fondo.jpg')] h-screen bg-cover bg-no-repeat">
+        <div className="bg-[url('./Fondo.jpg')] h-full bg-cover bg-no-repeat">
           <div className="flex justify-end w-full">
-            <div className="contenedor bg-[url('./Logo.jpg')] bg-cover bg-no-repeat w-16 h-16 m-2 border border-teal-900" />
+            <div className=" flex justify-end contenedor bg-[url('./Logo.jpg')] bg-cover bg-no-repeat w-16 h-16 m-2 border border-teal-900" />
           </div>
           <div className="dark hidden bg-gray-900 md:fixed md:inset-y-0 md:flex md:w-[180px] md:flex-col">
             <div className="flex h-full min-h-0 flex-col">
@@ -223,30 +221,29 @@ const Contenedor: FC<{
           </div>
           {pantallas === 0 &&
             <div>
-              <div className=" flex flex-col min-h-screen flex-1 md:pl-[190px] p-4">
+              <div className="flex flex-col flex-1 md:pl-[190px]">
                 <div className="flex items-center justify-between p-8 underline underline-offset-1 font-serif">
-                  <div className="flex justify-center w-full">{fecha}</div>
+                  <h1 className="flex w-full text-5xl">¡Bienvenido a GestAPP!</h1>
                 </div>
-                <div className="mx-80">Bienvenido {data?.getUser.nombre} a GestApp, donde podras gestionar tus entradas y salidas, tus vacaciones y el trabajo que realizas durante tu jornada laboral. ¡Explora nuestro sitio y descubre todo lo que tenemos para ofrecerte!</div>
-                <button className="my-10" onClick={descargarManualUso}>Manual de uso</button>
+                <div className="flex items-center justify-between p-8 font-serif text-1xl">Bienvenido/a {data?.getUser.nombre}</div>
+                <div className="flex items-center justify-between p-8 font-serif"> GestApp contiene una serie de pantallas accesibles: <br /><br />  "Perfil" donde podras consultar todos tus datos personales y del empleado. <br />   "Fichaje" donde podras grabar y consultar todos tus fichajes del día.<br />   "Registro de horas" donde podras registrar y consultar todas tus tareas realizadas.<br />   "Documentos" donde podras consultar y descargar diferentes informes.<br />   "Calendario" donde podras guardar y consultas tus ausencias.</div>
               </div>
-              <div className="flex-none bg-gray-200">
-                <footer className="footer flex flex-row p-10 bg-neutral text-neutral-content md:pl-[190px] bottom-0">
-                  <div className="mx-20">
-                    <span className="footer-title">Company</span>
-                    <button className="link link-hover">About us</button>
-                    <button className="link link-hover">Contact</button>
-                    <button className="link link-hover">Jobs</button>
-                  </div>
-                  <div className="mx-20">
-                    <span className="footer-title">Legal</span>
-                    <button className="link link-hover">Terms of use</button>
-                    <button className="link link-hover">Privacy policy</button>
-                    <button className="link link-hover">Cookie policy</button>
-                  </div>
-                </footer>
+              <div className="flex flex-row mt-56 p-10 bg-neutral text-neutral-content md:pl-[190px]">
+                <div className="mx-20">
+                  <button onClick={() => descargarManualUso("Manual de uso", 0)}>Manual de uso</button>
+                  <button onClick={() => descargarManualUso("Caracteristicas de la aplicación", 1)}>Caracteristicas de la aplicación</button>
+                  <button onClick={() => descargarManualUso("Acceso a la aplicación", 2)}>Acceso a la aplicación</button>
+                </div>
+                <div className="mx-20">
+                  <button onClick={() => descargarManualUso("Funcionamiento de la aplicacion", 3)}>Funcionamiento de la aplicacion</button>
+                  <button onClick={() => descargarManualUso("Politica de privacidad y condiciones de uso", 4)}>Politica de privacidad y condiciones de uso</button>
+                  <button onClick={() => descargarManualUso("Incidencias en el funcionamineto", 5)}>Incidencias en el funcionamineto</button>
+                </div>
+                <div className="mx-20">
+                  <button onClick={() => descargarManualUso("Numero de contacto", 6)}>Numero de contacto</button>
+                  <button onClick={() => descargarManualUso("Política de Cookies", 7)}>Política de Cookies</button>
+                </div>
               </div>
-
             </div>
           }
           {pantallas === 1 && data &&

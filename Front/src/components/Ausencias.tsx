@@ -75,7 +75,7 @@ const Ausencias: FC<{
     if (data && error) return <div>Error :(</div>;
 
     return (
-        <div className="flex flex-col md:pl-[190px]">Asistencia-Ausencias
+        <div className="flex h-screen flex-col md:pl-[190px]">Asistencia-Ausencias
             {pantalla === 0 &&
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black border- font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {

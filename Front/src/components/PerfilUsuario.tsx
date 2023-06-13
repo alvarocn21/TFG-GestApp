@@ -40,11 +40,11 @@ const PerfilUsuario: FC<{
     const [cambio, setCambio] = useState<string >("");
 
     return (
-        <div>
+        <div className="h-full">
             {data &&
-                <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden m-4">
+                <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
                     <div className="flex items-center justify-center">
-                        <div className="bg-primary text-white w-20 h-20 flex items-center justify-center rounded-full" style={{ pointerEvents: 'none' }}>
+                        <div className="mt-2 bg-primary text-white w-20 h-20 flex items-center justify-center rounded-full" style={{ pointerEvents: 'none' }}>
                             <span className="text-2xl font-bold">{data.nombre[0].toUpperCase()}{data.apellido1[0].toUpperCase()}{data.apellido2[0].toUpperCase()}</span>
                         </div>
                     </div>

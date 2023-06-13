@@ -90,7 +90,7 @@ const RegHoras: FC<{
     if (error) return <div>Error :(</div>;
 
     return (
-        <div className="flex h-full flex-1 flex-col md:pl-[190px]">
+        <div className="flex h-screen flex-1 flex-col md:pl-[190px]">
             {pantalla === 0 &&
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
