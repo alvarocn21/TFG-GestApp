@@ -53,7 +53,7 @@ const AusenciasAdmin: FC<{
 
     return (
         <div>
-            <div className="underline underline-offset-1 mx-5">Todas las vacaciones</div>
+            <div className="underline underline-offset-1 mx-5 text-lg m-5">Todas las vacaciones</div>
             <div className="grid grid-cols-3">
                 {data?.getAusenciaAdmin.map((e) => (
                     <div key={e._id} className="m-5 border-colapse h-max w-max border-2 border-black text bg-amber-100 border-double p-2">

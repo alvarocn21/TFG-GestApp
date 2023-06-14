@@ -63,18 +63,18 @@ const Fichaje: FC<{
         <div className="flex h-screen flex-1 flex-col md:pl-[190px]">
             {pantalla === 0 &&
                 <div>
-                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => setPantalla(1)}>
+                    <button className=" text-lg border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => setPantalla(1)}>
                         Fichar
                     </button>
                     {horasSemanales &&
-                        <div className="p-4 font-serif">Horas al dia: {horasSemanales / 5}</div>
+                        <div className="p-4 text-lg font-serif">Horas al dia: {horasSemanales / 5}</div>
                     }
-                    <div className="underline underline-offset-1 mx-5">Marcajes</div>
+                    <div className="underline underline-offset-1 text-lg mx-5">Marcajes</div>
                     <div className="grid grid-cols-2 mx-5">
                         {data?.getFichaje.map((e) => (
                             <div>
                                 {data.getFichaje.indexOf(e) % 2 === 0 &&
-                                    <div className="m-5 border-colapse h-52 w-48 border-2 border-slate-400 text bg-amber-100 border-double p-2">
+                                    <div className="m-10 border-colapse h-52 w-48 border-2 border-slate-400 text bg-amber-100 border-double p-2">
                                         <div className="font-bold">Entrada</div>
                                         <div className="font-bold">Hora</div> {e.hora}
                                         <div className="font-bold">Motivo</div>
@@ -133,19 +133,19 @@ const Fichaje: FC<{
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
                     }}>&lt;</button>
-                    <div className="flex justify-start p-4 underline underline-offset-1 font-serif">Añade la hora de entrada/salida</div>
+                    <div className="flex justify-start p-4 underline underline-offset-1 font-serif text-lg m-10">Añade la hora de entrada/salida</div>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*']  after:ml-0.5 after:text-red-500 block text-lg m-10 font-medium text-slate-700 mt-5">
                             Motivo
                         </span>
-                        <select onChange={(e) => setMotivo(e.target.value)} className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md sm:text-sm focus:ring-1">
+                        <select onChange={(e) => setMotivo(e.target.value)} className="m-10 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md sm:text-sm focus:ring-1">
                             <option value=""></option>
                             <option value="Entrada/Salida">Entrada/Salida</option>
                             <option value="Asuntos personales">Asuntos personales</option>
                             <option value="Pausa">Pausa</option>
                         </select>
                     </div>
-                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
+                    <button className="border-black-300 border-2 m-10 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         if (motivo === "") {
                             window.alert("Tienes que marcar un motivo")
                         } else {

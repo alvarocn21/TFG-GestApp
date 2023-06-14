@@ -17,7 +17,7 @@ const GeneradorInformes: FC = () => {
     };
 
     return (
-        <div className="flex h-screen flex-1 flex-col md:pl-[190px]">
+        <div className="flex h-full flex-1 flex-col md:pl-[190px]">
             {generador === "" &&
                 <div>
                     <div className="flex items-center max-w-md mx-auto bg-white border border-gray-300 rounded-full overflow-hidden my-10 mb-10">
@@ -39,16 +39,16 @@ const GeneradorInformes: FC = () => {
                     {resultadoBusqueda === "" &&
                         <div>
                             <div className="m-4 bg-stone-300 p-4 rounded">
-                                <button className="my-4 mx-10" onClick={() => setGenerador("Fichaje mensual")}>Fichaje mensual</button><br></br>
+                                <button className="my-4 mx-10 text-lg font-bold" onClick={() => setGenerador("Fichaje mensual")}>Fichaje mensual</button><br></br>
                             </div>
                             <div className="m-4 bg-stone-300 p-4 rounded">
-                                <button className="my-4 mx-10" onClick={() => setGenerador("Registro de horas mensual")}>Registro de horas mensual</button><br></br>
+                                <button className="my-4 mx-10 text-lg font-bold" onClick={() => setGenerador("Registro de horas mensual")}>Registro de horas mensual</button><br></br>
                             </div>
                         </div>
                     }
                     {resultadoBusqueda &&
                         <div className="m-4 bg-stone-300 p-4 rounded">
-                            <button className="my-4 mx-10" onClick={() => setGenerador(resultadoBusqueda)}>{resultadoBusqueda}</button>
+                            <button className="my-4 mx-10 text-lg font-bold" onClick={() => setGenerador(resultadoBusqueda)}>{resultadoBusqueda}</button>
                         </div>
                     }
                 </div>
@@ -59,6 +59,7 @@ const GeneradorInformes: FC = () => {
             {generador === "Registro de horas mensual" &&
                 <RegHorasMensual setGenerador={setGenerador}></RegHorasMensual>
             }
+            <br/>
         </div>
     )
 }

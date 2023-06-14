@@ -31,95 +31,95 @@ const CrearUsuarios: FC<{
     return (
         <div>
             <div className="flex h-full flex-1 flex-col md:pl-[190px]">
-                <div className="flex justify-start p-4 underline underline-offset-1 font-serif">Crear usuario</div>
+                <div className="flex justify-start p-4 underline underline-offset-1 font-serif text-xl">Crear usuario</div>
                 <div className="grid grid-cols-2 mx-5">
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Nombre
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="text"
                             value={nombre}
                             onChange={(e) => setNombre(e.target.value)}
                         /></div>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Primer apellido
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="text"
                             value={apellido1}
                             onChange={(e) => setApellido1(e.target.value)}
                         /></div>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Segundo Apellido
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="text"
                             value={apellido2}
                             onChange={(e) => setApellido2(e.target.value)}
                         /></div >
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Telefono
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="text"
                             value={telefono}
                             onChange={(e) => setTelefono(e.target.value)}
                         /></div >
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Contraseña
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="password"
                             value={contrasena}
                             onChange={(e) => setContrasena(e.target.value)}
                         /></div >
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Correo
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="text"
                             value={correo}
                             onChange={(e) => setCorreo(e.target.value)}
                         /></div >
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Horas semanales
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="number"
                             value={horasSemanales}
                             onChange={(e) => setHorasSemanales(e.target.valueAsNumber)}
                         /></div >
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Numero de dias habiles del empleado
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="number"
                             value={diasHabiles}
                             onChange={(e) => setDiasHabiles(e.target.valueAsNumber)}
                         />
                     </div >
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             DNI
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="text"
                             value={dni}
                             onChange={(e) => setDni(e.target.value)}
                         /></div >
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Direccion
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="text"
                             value={direccion}
                             onChange={(e) => setDireccion(e.target.value)}
@@ -127,19 +127,19 @@ const CrearUsuarios: FC<{
                     </div >
                     <div className="block mx-4">
                         <label className="label cursor-pointer">
-                            <span className="block text-sm font-medium text-slate-700 mt-5">Usuario</span>
+                            <span className="block text-lg font-medium text-slate-700 mt-5">Usuario</span>
                             <input type="radio" name="radio-10" className="radio checked:bg-blue-500 m-1" checked onChange={() => setpermisos("Usuario")} />
                         </label>
                         <label className="label cursor-pointer">
-                            <span className="block text-sm font-medium text-slate-700 mt-5">Administrador</span>
+                            <span className="block text-lg font-medium text-slate-700 mt-5">Administrador</span>
                             <input type="radio" name="radio-10" className="radio checked:bg-red-500 m-1" onChange={() => setpermisos("Administrador")} />
                         </label>
                     </div>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Turno
                         </span>
-                        <select onChange={(e) => setTurno(e.target.value)} className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md sm:text-sm focus:ring-1">
+                        <select onChange={(e) => setTurno(e.target.value)} className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md sm:text-lg focus:ring-1">
                             <option value="Mañana">Mañana</option>
                             <option value="Tarde">Tarde</option>
                             <option value="Noche">Noche</option>

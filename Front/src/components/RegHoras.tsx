@@ -93,12 +93,12 @@ const RegHoras: FC<{
         <div className="flex h-screen flex-1 flex-col md:pl-[190px]">
             {pantalla === 0 &&
                 <div>
-                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
+                    <button className="text-lg border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(1)
                     }}>Registrar trabajo</button>
-                    {horasSemanales && <div className="p-4 font-serif">HORAS RESTANTES: {horasSemanales / 5 - a}</div>}
+                    {horasSemanales && <div className="p-4 font-serif text-lg ">HORAS RESTANTES: {horasSemanales / 5 - a}</div>}
 
-                    <div className="m-2">
+                    <div className="m-2 text-lg">
                         Ordernar<br />
                         <select
                             className="mr-2 bg-white text-gray-800 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-300"
@@ -201,15 +201,15 @@ const RegHoras: FC<{
             }
             {pantalla === 1 &&
                 <div>
-                    <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
+                    <button className=" text-lg border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
                     }}>&lt;</button>
-                    <div className="flex justify-start p-4 underline underline-offset-1 font-serif">Añade el trabajo realizado</div>
-                    <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                    <div className="flex justify-start p-4 text-xl underline underline-offset-1 font-serif">Añade el trabajo realizado</div>
+                    <div className="block mx-4 text-lg">
+                        <span className="after:content-['*'] after:ml-0.5  after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Tiempo dedicado (en horas)
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             step="0.1"
                             type="number"
                             value={tiempo}
@@ -218,30 +218,30 @@ const RegHoras: FC<{
                         ></input>
                     </div>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Tarea realizada
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="text"
                             value={trabajoRealizado}
                             onChange={(e) => setTrabajoRealizado(e.target.value)}
                         ></input>
                     </div>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Hora de inicio
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="time"
                             value={fdesde}
                             onChange={(e) => setFdesde(e.target.value)}
                         ></input>
                     </div>
                     <div className="block mx-4">
-                        <span className="after:ml-0.5 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:ml-0.5 block text-lg font-medium text-slate-700 mt-5">
                             Comentario
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="text"
                             value={comentario}
                             onChange={(e) => setComentario(e.target.value)}
@@ -284,10 +284,10 @@ const RegHoras: FC<{
                         setPantalla(0)
                     }}>&lt;</button>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Tiempo dedicado
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             step="0.1"
                             type="number"
                             value={tiempo}
@@ -296,30 +296,30 @@ const RegHoras: FC<{
                         ></input>
                     </div>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Tarea realizada
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="text"
                             value={trabajoRealizado}
                             onChange={(e) => setTrabajoRealizado(e.target.value)}
                         ></input>
                     </div>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Hora de inicio
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="time"
                             value={fdesde}
                             onChange={(e) => setFdesde(e.target.value)}
                         ></input>
                     </div>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg font-medium text-slate-700 mt-5">
                             Comentario
                         </span>
-                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg focus:ring-1"
                             type="text"
                             value={comentario}
                             onChange={(e) => setComentario(e.target.value)}

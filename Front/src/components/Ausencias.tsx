@@ -75,7 +75,7 @@ const Ausencias: FC<{
     if (data && error) return <div>Error :(</div>;
 
     return (
-        <div className="flex h-screen flex-col md:pl-[190px]">Asistencia-Ausencias
+        <div className="flex h-screen flex-col md:pl-[190px]">
             {pantalla === 0 &&
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black border- font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
@@ -128,10 +128,10 @@ const Ausencias: FC<{
                     <div className="p-3 font-serif">Dias disponibles: {diasHabiles}<br></br></div>
                     <div className="flex justify-start p-4 underline underline-offset-1 font-serif">Selecciona la fecha de inicio y de fin de tus ausencias</div>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg m-2  font-medium text-slate-700 mt-5">
                             Fecha Inicio
                         </span>
-                        <input className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg m-2  focus:ring-1"
                             type="date"
                             value={desde}
                             onChange={(e) => setDesde(e.target.value)}
@@ -139,10 +139,10 @@ const Ausencias: FC<{
                         />
                     </div>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg m-2  font-medium text-slate-700 mt-5">
                             Fecha Fin
                         </span>
-                        <input className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-sm focus:ring-1"
+                        <input className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block rounded-md sm:text-lg m-2  focus:ring-1"
                             type="date"
                             value={hasta}
                             onChange={(e) => setHasta(e.target.value)}
@@ -150,14 +150,14 @@ const Ausencias: FC<{
                         />
                     </div>
                     <div className="block mx-4">
-                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700 mt-5">
+                        <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-lg m-2  font-medium text-slate-700 mt-5">
                             Identificador de la Ausencia
                         </span>
-                        <select onChange={(e) => setAusencia(e.target.value)} className="m-2 mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md sm:text-sm focus:ring-1">
+                        <select onChange={(e) => setAusencia(e.target.value)} className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 rounded-md sm:text-lg m-2  focus:ring-1">
                             <option></option>
                             <option value="PE">PE - Permiso Enfermedad</option>
                             <option value="PP">PP - Permiso Personal</option>
-                            <option value="V">V - Ausencia</option>
+                            <option value="V">V - Vacaciones</option>
                         </select>
                     </div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {

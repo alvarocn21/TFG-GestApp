@@ -108,7 +108,7 @@ const RegHorasMensual: FC<{
             <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                 setGenerador("")
             }}>&lt;</button>
-            <div className=" my-5 underline underline-offset-1 mx-5">Registro de horas mensual</div>
+            <div className=" my-5 underline underline-offset-1 mx-5 text-lg">Registro de horas mensual</div>
             <div className="flex items-center mb-4">
                 <select className="mr-2 bg-white p-2 m-2" onChange={(e) => setMes(e.target.value)}>
                     <option value="1">Enero</option>
@@ -130,13 +130,13 @@ const RegHorasMensual: FC<{
                     <option value="2024">2024</option>
                 </select>
             </div><br />
-            <button className="mr-2" onClick={() =>
+            <button className="text-lg font-bold  bg-stone-300 p-4 rounded" onClick={() =>
                 setMostrar(true)
             }>Mostrar</button><br /><br />
-            <button className="mb-10" onClick={descargarPDF}>Descargar PDF</button>
+            <button className="text-lg font-bold bg-stone-300 p-4 rounded mb-8" onClick={descargarPDF}>Descargar PDF</button>
             {mostrar === true &&
                 <div className="flex flex-row">
-                    <table className="w-full text-left">
+                    <table className="w-full text-lg text-center">
                         <thead>
                             <tr>
                                 <th>Tarea realizada</th>

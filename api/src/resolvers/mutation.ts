@@ -146,6 +146,7 @@ export const Mutation = {
         } else {
             await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { correo: correo.toLowerCase(), telefono, direccion, dni } });
         }
+        await db.collection("Ausencia").findOneAndUpdate({ _id: user._id }, { '$set': { correo: correo.toLowerCase() }});
         return user;
 
     },
