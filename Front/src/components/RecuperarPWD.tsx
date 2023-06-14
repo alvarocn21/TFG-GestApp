@@ -17,7 +17,7 @@ const RecuperarPWD: FC<{
 
     const [recuperarContrasena, { error }] = useMutation(RECUPERARPWD, {
         onCompleted: (data) => {
-            setPantallaRecuperarPWS(false);
+            window.confirm("Revise su correo electronico")
         },
         onError: (error) => {
             console.log(error);

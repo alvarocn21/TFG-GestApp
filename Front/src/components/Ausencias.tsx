@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import DiasMes from "./Calendario/Calendario";
+import Calendario from "./Calendario/Calendario";
 import VacasAdmin from "./GestionAdmin/AusenciasAdmin";
 
 type ausen = {
@@ -62,13 +62,13 @@ const Ausencias: FC<{
         }
     );
 
-    const ausenAceptadas: string[] | undefined = [];
+    const ausenAceptadas: string[][] | undefined = [];
     if (data) {
-        data.getAusenciaUsu.map((e: any) => {
+        for (const e of data.getAusenciaUsu) {
             if (e.estado === "Aceptada") {
                 ausenAceptadas.push(e.diasVacas);
             }
-        });
+        };
     }
 
     if (loading) return <div>Loading...</div>;
@@ -86,7 +86,7 @@ const Ausencias: FC<{
                             setPantalla(2);
                         }}>Gestionar Ausencia</button>
                     }
-                    <DiasMes key={""} ausencias={ausenAceptadas}></DiasMes>
+                    <Calendario key={""} ausencias={ausenAceptadas}></Calendario>
                     <div className=" my-5 underline underline-offset-1 mx-5">Tus Ausencia</div>
                     <div className="grid grid-cols-3">
                         {data?.getAusenciaUsu.map((e) => (
@@ -167,13 +167,19 @@ const Ausencias: FC<{
                         else if (ausencia === "") window.alert("La ausencia debe tener un id")
                         else if (new Date(hasta) < new Date() || new Date(desde) < new Date()) window.alert("Las fechas tienen que ser posteriores al dia de hoy.")
                         else {
-                            let entra = false;
-                            data?.getAusenciaUsu.forEach((e) => {
-                                e.diasVacas.forEach((a) => {
-                                    if (new Date(a) <= new Date(hasta) && new Date(a) >= new Date(desde)) entra = true;
-                                })
-                            })
-                            if (entra === false) {
+                            let incluye: boolean = true;
+
+                            if (data) {
+                                for (const e of data.getAusenciaUsu) {
+                                    for (const a of e.diasVacas) {
+                                        if (new Date(a).toLocaleDateString() === new Date(desde).toLocaleDateString() || new Date(a).toLocaleDateString() === new Date(hasta).toLocaleDateString()) {
+                                            incluye = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            if (incluye === true) {
                                 setVacas({
                                     variables: {
                                         fhasta: hasta,

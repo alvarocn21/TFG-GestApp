@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 dayjs.locale('es');
 
 const Calendario: FC<{
-    ausencias: string[] | undefined;
+    ausencias: string[][] | undefined;
 }> = (ausencias) => {
     const [fecha, setFecha] = useState(dayjs());
 

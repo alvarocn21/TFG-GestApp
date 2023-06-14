@@ -63,17 +63,15 @@ export const Mutation = {
 
         const usuario = await db.collection("Usuarios").findOne({ correo: correo.toLowerCase() });
 
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'passworrdrecover@gmail.com',
-                pass: 'rikvqeblwielmojs'
-            }
-        });
-
-
         if (usuario) {
-
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'passworrdrecover@gmail.com',
+                    pass: 'rikvqeblwielmojs'
+                }
+            });
+            
             try {
 
                 const token = uuid();
@@ -146,7 +144,7 @@ export const Mutation = {
         } else {
             await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { '$set': { correo: correo.toLowerCase(), telefono, direccion, dni } });
         }
-        await db.collection("Ausencia").findOneAndUpdate({ _id: user._id }, { '$set': { correo: correo.toLowerCase() }});
+        await db.collection("Ausencia").findOneAndUpdate({ _id: user._id }, { '$set': { correo: correo.toLowerCase() } });
         return user;
 
     },
@@ -234,6 +232,8 @@ export const Mutation = {
         const fechaFin = new Date(Fhasta)
 
         if (user.diasHabiles == 0 || user.diasHabiles < diasVacas.length) {
+            return new ApolloError("No tienes dias habiles");
+        } else {
             if (fechaInicio < new Date() || fechaFin < new Date()) return new ApolloError("Las fechas tienen que ser posteriores al dia de hoy.");
 
             if (fechaInicio > fechaFin) {
@@ -245,8 +245,7 @@ export const Mutation = {
                     fechaInicio.setDate(fechaInicio.getDate() + 1);
                 }
             }
-            return new ApolloError("No tienes dias habiles");
-        } else {
+
             await db.collection("Usuarios").findOneAndUpdate({ _id: user._id }, { $set: { diasHabiles: user.diasHabiles - diasVacas.length } });
             const usuario = await db.collection("Usuarios").findOne({ _id: user._id });
             const insertedId = await db.collection("Ausencia").insertOne({ persona: usuario._id, idAusencia, correoPersona: usuario.correo, diasVacas, estado: "Solicitada", });
