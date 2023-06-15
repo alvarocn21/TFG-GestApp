@@ -57,7 +57,7 @@ const PerfilUsuario: FC<{
                             <div className="font-bold text-xl">DNI</div>
                             <p className="text-gray-700">{data.dni}
                                 <button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => setCambio("DNI")}>
-                                    <svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                    <svg style={{ fill: 'black' }}  height="1em" viewBox="0 0 512 512">
                                         <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" /></svg>
                                 </button>
                                 {cambio === "DNI" &&
@@ -102,7 +102,7 @@ const PerfilUsuario: FC<{
                             <div className="font-bold text-xl mb-2">Correo</div>
                             <p className="text-gray-700 mb-4">{data.correo}
                                 <button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => setCambio("Correo")}>
-                                    <svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                    <svg style={{ fill: 'black' }}  height="1em" viewBox="0 0 512 512">
                                         <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" /></svg>
                                 </button>
                                 {cambio === "Correo" &&
@@ -137,7 +137,7 @@ const PerfilUsuario: FC<{
                                                     reloadHandler();
                                                 })
 
-                                            } else window.alert("El nuevo correo no existe");
+                                            } else window.alert("El nuevo correo contiene @ o no existe");
                                         }}>Aceptar</button>
                                     </div>
                                 }
@@ -147,7 +147,7 @@ const PerfilUsuario: FC<{
                             <div className="font-bold text-xl mb-2">Contraseña</div>
                             <p className="text-gray-700 mb-4">*************
                                 <button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => setCambio("Contraseña")}>
-                                    <svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                    <svg style={{ fill: 'black' }}  height="1em" viewBox="0 0 512 512">
                                         <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" /></svg>
                                 </button>
                                 {cambio === "Contraseña" &&
@@ -202,7 +202,7 @@ const PerfilUsuario: FC<{
                             <div className="font-bold text-xl mb-2">Telefono</div>
                             <p className="text-gray-700 mb-4">{data.telefono}
                                 <button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => setCambio("Telefono")}>
-                                    <svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                    <svg style={{ fill: 'black' }}  height="1em" viewBox="0 0 512 512">
                                         <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" /></svg>
                                 </button>
                                 {cambio === "Telefono" &&
@@ -246,7 +246,7 @@ const PerfilUsuario: FC<{
                         <div className="w-1/2 mt-4">
                             <div className="font-bold text-xl mb-2">Direccion</div>
                             <p className="text-gray-700 mb-4">{data.direccion}<button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => setCambio("Direccion")}>
-                                <svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                <svg style={{ fill: 'black' }}  height="1em" viewBox="0 0 512 512">
                                     <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" /></svg>
                             </button>
                                 {cambio === "Direccion" &&

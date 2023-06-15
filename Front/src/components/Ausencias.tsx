@@ -171,10 +171,12 @@ const Ausencias: FC<{
 
                             if (data) {
                                 for (const e of data.getAusenciaUsu) {
-                                    for (const a of e.diasVacas) {
-                                        if (new Date(a).toLocaleDateString() === new Date(desde).toLocaleDateString() || new Date(a).toLocaleDateString() === new Date(hasta).toLocaleDateString()) {
-                                            incluye = false;
-                                            break;
+                                    if (e.estado !== "Denegada") {
+                                        for (const a of e.diasVacas) {
+                                            if (new Date(a).toLocaleDateString() === new Date(desde).toLocaleDateString() || new Date(a).toLocaleDateString() === new Date(hasta).toLocaleDateString()) {
+                                                incluye = false;
+                                                break;
+                                            }
                                         }
                                     }
                                 }
@@ -203,7 +205,8 @@ const Ausencias: FC<{
                     }>Aceptar</button>
                 </div>
             }
-            {pantalla === 2 &&
+            {
+                pantalla === 2 &&
                 <div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
                         setPantalla(0)
@@ -213,7 +216,7 @@ const Ausencias: FC<{
                     }
                 </div>
             }
-        </div>
+        </div >
     )
 }
 

@@ -116,7 +116,7 @@ const RegHoras: FC<{
                                 else if (parseInt(o1.Fdesde[0] + o1.Fdesde[1]) + (parseInt(o1.Fdesde[3] + o1.Fdesde[4]) / 60) > parseInt(o2.Fdesde[0] + o2.Fdesde[1]) + (parseInt(o2.Fdesde[3] + o2.Fdesde[4]) / 60)) return 1;
                                 else return 0;
                             }).map((e) => (
-                                <div className="m-5 border-colapse h-max w-max border-2 border-black text bg-amber-100 border-double p-2">
+                                <div key={"orden1" + e._id} className="m-5 border-colapse h-max w-max border-2 border-black text bg-amber-100 border-double p-2">
                                     <div className="font-bold">Tiempo</div> {e.tiempo} h
                                     <div className="font-bold">Trabajo Realizado</div> {e.trabajoRealizado}
                                     <div className="font-bold">Hora de comienzo</div> {e.Fdesde} h
@@ -130,7 +130,7 @@ const RegHoras: FC<{
                                         setId(e._id);
                                         setPantalla(2);
                                     }}>
-                                        <svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                        <svg style={{ fill: 'black' }}  height="1em" viewBox="0 0 512 512">
                                             <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" /></svg>
                                     </button>
                                     <button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => {
@@ -146,7 +146,7 @@ const RegHoras: FC<{
                                         }).then(() => {
                                             reloadHandler();
                                         });
-                                    }}><svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                                    }}><svg style={{ fill: 'black' }}  height="1em" viewBox="0 0 448 512">
                                             <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
                                         </svg></button>
                                 </div>
@@ -160,7 +160,7 @@ const RegHoras: FC<{
                                 else if (parseInt(o1.Fdesde[0] + o1.Fdesde[1]) + (parseInt(o1.Fdesde[3] + o1.Fdesde[4]) / 60) > parseInt(o2.Fdesde[0] + o2.Fdesde[1]) + (parseInt(o2.Fdesde[3] + o2.Fdesde[4]) / 60)) return 1;
                                 else return 0;
                             }).reverse().map((e) => (
-                                <div className="m-5 border-colapse h-max w-max border-2 border-black text bg-amber-100 border-double p-2">
+                                <div key={"orden1" + e._id} className="m-5 border-colapse h-max w-max border-2 border-black text bg-amber-100 border-double p-2">
                                     <div className="font-bold">Tiempo</div> {e.tiempo} h
                                     <div className="font-bold">Trabajo Realizado</div> {e.trabajoRealizado}
                                     <div className="font-bold">Hora de comienzo</div> {e.Fdesde} h
@@ -174,7 +174,7 @@ const RegHoras: FC<{
                                         setId(e._id);
                                         setPantalla(2);
                                     }}>
-                                        <svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                                        <svg style={{ fill: 'black' }}  height="1em" viewBox="0 0 512 512">
                                             <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" /></svg>
                                     </button>
                                     <button className="m-2 hover:bg-slate-300 text-black font-bold py-2 px-2 rounded transition-colors duration-300" onClick={() => {
@@ -190,7 +190,7 @@ const RegHoras: FC<{
                                         }).then(() => {
                                             reloadHandler();
                                         });
-                                    }}><svg style={{ fill: 'black' }} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                                    }}><svg style={{ fill: 'black' }}  height="1em" viewBox="0 0 448 512">
                                             <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" />
                                         </svg></button>
                                 </div>
@@ -248,11 +248,11 @@ const RegHoras: FC<{
                         ></input>
                     </div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
-                        if (tiempo === 0) window.alert("Es obligatorio poner el tiempo dedicado a tus tareas.")
+                        if (tiempo === 0 || !tiempo) window.alert("Es obligatorio poner el tiempo dedicado a tus tareas.")
                         else if (trabajoRealizado === "") window.alert("Es obligatorio poner la tarea realizada.")
                         else if (trabajoRealizado.length > 30) window.alert("El limite de caracteres del campo Trabajo Realizado es 30.")
                         else if (fdesde === "") window.alert("Es obligatorio poner la hora de comienzo.")
-                        else if (comentario.length > 50) window.alert("El limite de caracteres del campo Comentario es 50.")
+                        else if (comentario.length > 50) window.alert("El limite de caracteres del campo Comentario es entre 0 y 50.")
                         else {
                             regHoras({
                                 variables: {
@@ -327,7 +327,7 @@ const RegHoras: FC<{
                     </div>
                     <button className="border-black-300 border-2 m-2 bg-slate-400 hover:bg-slate-300 text-black font-bold py-2 px-4 rounded transition-colors duration-300" onClick={() => {
 
-                        if (tiempo === 0) window.alert("Es obligatorio poner el tiempo dedicado a tus tareas.")
+                        if (tiempo === 0 || !tiempo) window.alert("Es obligatorio poner el tiempo dedicado a tus tareas.")
                         else if (trabajoRealizado === "") window.alert("Es obligatorio poner la tarea realizada.")
                         else if (trabajoRealizado.length > 30) window.alert("El limite de caracteres para ese campo es de 30.")
                         else if (fdesde === "") window.alert("Es obligatorio poner la hora de comienzo.")

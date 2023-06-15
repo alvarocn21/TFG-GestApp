@@ -16,11 +16,11 @@ const RecuperarPWD: FC<{
     const [correo, setCorreo] = useState<string>("");
 
     const [recuperarContrasena, { error }] = useMutation(RECUPERARPWD, {
-        onCompleted: (data) => {
+        onCompleted: () => {
             window.confirm("Revise su correo electronico")
         },
-        onError: (error) => {
-            console.log(error);
+        onError: () => {
+            window.alert("Ha ocurrido un error al enviar el correo electronico.")
         }
     });
 

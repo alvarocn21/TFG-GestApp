@@ -25,8 +25,6 @@ export const Query = {
         const { db, user } = context;
         const { mes, anio } = args;
 
-        console.log(mes + "/" + anio)
-
         const fichajes = await db.collection("Fichaje").find({
             persona: new ObjectId(user._id),
             fecha: {
@@ -57,8 +55,6 @@ export const Query = {
                 $options: 'i'
             },
         }).toArray();
-
-        console.log(mes + "/" + anio + "----" + trabajoReg)
 
         if (trabajoReg) return trabajoReg;
         else return "No se han encontrado datos para el mes y año introducidos";
