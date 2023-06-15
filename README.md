@@ -1,17 +1,24 @@
 # TFG-GestApp
 
-Se va a describir el proceso de despliegue de la aplicación con la utilización de Docker Compose desde un repositorio en Github. El despliegue es un paso fundamental para poner en marcha el proyecto en un entorno de producción. GestApp se encuentra en un repositorio de GitHub, lo que va a permitir mantener un control de versiones.  
+En este documento se describirá el proceso de despliegue de la aplicación utilizando Docker Compose desde un repositorio en GitHub. El despliegue es un paso fundamental para poner en marcha el proyecto en un entorno de producción, y al utilizar un repositorio de GitHub, se facilita el control de versiones.
 
-Para el despliegue se van a seguir una serie de pasos: 
+Pasos para el Despliegue
+A continuación se detallan los pasos necesarios para llevar a cabo el despliegue:
 
-1.Tener Visual Studio Code o cualquier otro editor de código fuente que permita clonar un repositorio de github. 
+Clonar el Repositorio: Abre tu editor de código fuente (como Visual Studio Code) y clona el repositorio "alvarocn21/TFG-GestApp" desde GitHub. Puedes hacerlo usando la opción "Git: Clone" en la paleta de comandos e ingresando la URL del repositorio. Esto creará una copia del repositorio en tu proyecto local.
 
-2.Clonar el repositorio “alvarocn21/TFG-GestApp (github.com)”, para ello lo primero que hay que hacer es crear un nuevo proyecto y pulsar las teclas “Ctrl + Mayus + P” para que aparezca la paleta de comandos, dentro de la paleta añadir el siguiente texto “git:clone” y pegar la url del repositorio. Esto realizará una copia del repositorio en tu proyecto. 
+Instalar Dependencias del Backend: Abre un terminal en la carpeta raíz del proyecto y navega hasta la carpeta "api" utilizando el comando "cd api". A continuación, ejecuta el comando "npm install" para instalar todas las dependencias y paquetes necesarios para el Backend.
 
-3.El siguiente paso es instalar todas las dependencias y librerías necesarias para poder lanzar el Back, para ello hay abrir un terminal en el archivo raíz del proyecto y poner “cd api”. A continuación, hay que poner en el terminal “npm install” lo que instalara todos los paquetes del proyecto. 
+Instalar Dependencias del Frontend: Repite el mismo proceso para instalar las dependencias y paquetes necesarios para el Frontend. Abre un terminal en la carpeta raíz del proyecto, navega hasta la carpeta "Front" con el comando "cd Front" y ejecuta "npm install".
 
-4.El siguiente paso es instalar todas las dependen¬cias y librerías necesarias, pero ahora para lanzar el Front, para ello hay que seguir los mismos pasos que para el back, primero abrir un terminal en el archivo raíz, poner “cd Front” y a continuación poner “npm install”, ahora si el proyecto estará correctamente instalado y disponibles para ejecutarse. 
+Ejecutar los Servicios: Finalmente, abre un terminal en la carpeta raíz del proyecto y ejecuta el comando "docker-compose up". Esto lanzará tanto el Backend como el Frontend como servicios en paralelo.
 
-5.Por último, para lanzar el proyecto hay que abrir un terminal en el archivo raíz y poner “Docker-Compose up”, este ejecutará ambos servicios en paralelo tanto el Backend como el Frontend.  
+Acceso a la Aplicación
+Una vez que el proyecto esté en ejecución, puedes acceder a la aplicación de la siguiente manera:
 
-Ahora, para poder abrir el Frontend, la web, habría que poner en cualquier navegador la siguiente url http://localhost:3000. Y si se quisiera consultar cualquier función del Backend bastaría con poner en un navegador la siguiente url http://localhost:6005. 
+Frontend (Web): Abre cualquier navegador y visita la siguiente URL: http://localhost:3000.
+
+Backend: Si deseas acceder a las funciones del Backend, simplemente ingresa la siguiente URL en un navegador: http://localhost:6005.
+
+¡Ahora la aplicación debería estar desplegada y lista para su uso!
+
