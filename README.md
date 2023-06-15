@@ -22,7 +22,9 @@ A continuación se detallan los pasos necesarios para llevar a cabo el despliegu
    - Ejecuta el comando `npm install` para instalar todas las dependencias y paquetes necesarios para el Frontend.
 
 4. **Ejecutar los Servicios**: Para lanzar la aplicación utilizando Docker Compose, realiza lo siguiente:
-   - Abre un terminal en la carpeta raíz del proyecto.
+   - En primer lugar, añadir un fichero ".env" en donde hay que informar el cluseter de la base de datos de MongoDb. ej:
+   `MONGO_URL=clustermongodb\usuario:contraseña\basededatos`
+   - Despues, abre un terminal en la carpeta raíz del proyecto.
    - Ejecuta el comando `docker-compose up`. Esto iniciará tanto el Backend como el Frontend como servicios en paralelo.
 
 ## Acceso a la Aplicación
